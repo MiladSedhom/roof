@@ -1,15 +1,10 @@
 import styled from "styled-components";
 
-export default function Link(props) {
-  return (
-    <A color={props.color} href={props.url}>
-      {props.name}
-    </A>
-  );
+export default function Button(props) {
+  return <StyledButton {...props}> {props.children} </StyledButton>;
 }
 
-const A = styled.a`
-  text-decoration: none;
+const StyledButton = styled.button`
   background-color: ${(props) => props.color || "darkgrey"};
   font-size: ${(props) => props.fontSize || "14px"};
   color: white;
@@ -17,4 +12,5 @@ const A = styled.a`
   border-radius: 10rem;
   margin: 0.5em;
   outline: 2px solid black;
+  border: none;
 `;
