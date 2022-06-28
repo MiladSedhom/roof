@@ -14,7 +14,7 @@ function App() {
       <Container>
         <MainContainer>
             <Logo>Roof</Logo>
-          <SearchBar searchEngine={DATA.searchEngine} />
+          <SearchBar searchEngine={DATA.searchEngine} prefixes={DATA.prefixes} />
         </MainContainer>
       </Container>
     </StyledApp>
