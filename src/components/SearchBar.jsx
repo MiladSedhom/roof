@@ -1,83 +1,85 @@
+import { useState } from "react";
 import styled from "styled-components";
+import Prefix from "./Prefix";
 
 export default function SearchBar(props) {
-  const {searchEngine, prefixes} = props
+  const {defaultSearchEngine, shortcuts} = props
+  const [currentUsedShortcut, setCurrentUsedShortcut] = useState(defaultSearchEngine.currentUsedShortcut)
+  const [inputText,setInputText] = useState("")
+
+  const onChangeHandler = (e) => {
+    setInputText(e.target.value)
+  }
 
   const submitHandler = (e) => {
-    let text = e.target.innerText;
-    let prefix = text.split(/\s/g)[0]
 
-    if (e.key === " ") {
-      if (prefix in prefixes) {
-        const newInnerHTML = turnPrefixToSpan(prefix,text,prefixes);
-        putTextIntoElement(newInnerHTML, e);
+    if (e.key ===" "){
+      e.preventDefault() //making the space dont actually m --going to read avout clean code
+      let firstWord = e.target.value.split(/\s/g)[0] // /\s/g is a regex for white spaces
+      if (firstWord in shortcuts) {
+        setCurrentUsedShortcut( firstWord )
+        setInputText("")
       }
+      else setInputText((inputText)=>inputText+" ")
+    }
+
+    if (e.key==="Backspace" && !inputText){
+      setCurrentUsedShortcut(null)
     }
 
     if (e.key === "Enter") {
-      e.preventDefault();
-      if (prefix in prefixes) {
-        //removing the prefix from the text
-        text = text.replace(prefix, "");
-        const url = prefixes[prefix].url.replace("%query", text);
-        window.location.href = url;
+      e.preventDefault()
+      const target = e.ctrlKey ? "_newtab" : "_self"
+      if (currentUsedShortcut) {
+        window.open(shortcuts[currentUsedShortcut].url.replace("%query", inputText),target)
         return;
       }
-      window.location.href = `https://www.google.com/search?q=${text}`;
+      window.open(defaultSearchEngine.url.replace("%query",inputText),target)
     }
   };
 
   return (
     <StyledDiv>
-      <EditableDiv
-        contentEditable
-        onKeyDown={(e) => {
-          submitHandler(e);
-        }}
-        placeholder={"Search with " + searchEngine + "..."}
-      ></EditableDiv>
+      <Container>
+        {currentUsedShortcut && <Prefix {...shortcuts[currentUsedShortcut]} />}
+
+        <Input  value={inputText}
+          onChange={(e) => { onChangeHandler(e) }}
+          onKeyDown={(e) => { submitHandler(e) }}
+          placeholder={"Search with " + (currentUsedShortcut ? shortcuts[currentUsedShortcut].name : defaultSearchEngine.name) + "..."}
+        />
+      </Container>
     </StyledDiv>
   );
 }
 
 const StyledDiv = styled.div`
-  width: 40%;
+  width: 70%;
   max-width: 600px;
+  min-width: 300px;
   height: 3rem;
   border: 2px solid black;
-  border-radius: 100rem;
+  border-radius: 10rem;
   background-color: wheat;
   display: flex;
   align-items: center;
-`;
+  `;
 
-const EditableDiv = styled.div`
+const Container = styled.div`
+  display: flex;
   width: 100%;
+  height: 100%;
+  `
+
+const Input = styled.input`
+  width: auto;
+  background-color: wheat;
   color: black;
   font-size: 1.2rem;
-  padding: 0 2em;
+  border-radius: 10rem;
+  border: none;
+  padding: 0 1em;
   &:focus {
     outline: none;
   }
-  &:empty::before {
-    content: attr(placeholder);
-  }
 `;
-
-const turnPrefixToSpan = (prefix, text, prefixesData) => {
-  const newHtml = text.replace(prefix,
-    `<span contenteditable="false" 
-    style="
-    background-color:${prefixesData[prefix].backgroundColor};
-    color:${prefixesData[prefix].textColor};
-    border-radius:5px;
-    padding:0 0.25rem">
-    ${prefix}</span>`);
-  return newHtml;
-};
-
-const putTextIntoElement = (text, e) => {
-  e.target.innerHTML = text;
-  document.execCommand("selectAll", false, null);
-  document.getSelection().collapseToEnd();
-};

@@ -14,7 +14,7 @@ function App() {
       <Container>
         <MainContainer>
             <Logo>Roof</Logo>
-          <SearchBar searchEngine={DATA.searchEngine} prefixes={DATA.prefixes} />
+          <SearchBar defaultSearchEngine={DATA.defaultSearchEngine} shortcuts={DATA.shortcuts} />
         </MainContainer>
       </Container>
     </StyledApp>
@@ -25,7 +25,7 @@ function App() {
 export default App
 
 const StyledApp = styled.div`
-  background: #d7a42d;
+  background: #B5A484;   /*#888888; */
   height: 100vh;
 `
 
