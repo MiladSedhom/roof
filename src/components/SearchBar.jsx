@@ -72,7 +72,7 @@ const Container = styled.div`
   `
 
 const Input = styled.input`
-  width: auto;
+  width: 100%;
   background-color: wheat;
   color: black;
   font-size: 1.2rem;

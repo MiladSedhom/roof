@@ -14,5 +14,5 @@ const StyledSpan = styled.span`
     padding: 0.25em 0.5em;
     margin: 0 0 0 1em;
     align-self: center;
-    width: fit-content;
+    flex-shrink: 0;
 `
