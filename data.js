@@ -1,6 +1,6 @@
 const DATA = {
   background: "",
-  defaultSearchEngine: {name:"Google", url: "https://www.google.com/search?q=%query" , prefix:"g"},
+  defaultSearchEngine: {name:"Google", url: "https://www.google.com/search?q=%query" , shortcut:"g"},
   bookmarks: {
     bookmarksBar: [
       { name: "Github", url: "https://www.github.com", color: "#171515" },

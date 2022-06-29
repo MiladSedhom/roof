@@ -4,7 +4,7 @@ import Prefix from "./Prefix";
 
 export default function SearchBar(props) {
   const {defaultSearchEngine, shortcuts} = props
-  const [currentUsedShortcut, setCurrentUsedShortcut] = useState(defaultSearchEngine.currentUsedShortcut)
+  const [currentUsedShortcut, setCurrentUsedShortcut] = useState(defaultSearchEngine.shortcut)
   const [inputText,setInputText] = useState("")
 
   const onChangeHandler = (e) => {
