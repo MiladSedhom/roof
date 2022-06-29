@@ -44,6 +44,7 @@ export default function SearchBar(props) {
         {currentUsedShortcut && <Prefix {...shortcuts[currentUsedShortcut]} />}
 
         <Input  value={inputText}
+          type="search"
           onChange={(e) => { onChangeHandler(e) }}
           onKeyDown={(e) => { submitHandler(e) }}
           placeholder={"Search with " + (currentUsedShortcut ? shortcuts[currentUsedShortcut].name : defaultSearchEngine.name) + "..."}
