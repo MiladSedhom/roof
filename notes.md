@@ -1,15 +1,17 @@
-todo
-    how to clean the code / the styled components mess
-    improve the implementation of colored prefixes
-    bookmarks folder
-    a way to add, store and download the JSON
-    gerneral styling clean up
-    todo compoent
-    pomodor compoent
+### todo
 
-might add
-    spotify player
+    - [x] search prefix
+    - [x] coloring the prefixes /initial
+    - [x] improve the implementation of colored prefixes
+    - [>] figure out how to clean the code / the styled components mess
+    - [<] gerneral styling clean up
+    - [ ] bookmarks folder
+    - [ ] a way to add, store and download the JSON
+    - [ ] add settings and make everything customizable
+    - [ ] todo compoent
+    - [ ] pomodor compoent
 
-done
-    search prefix
-    coloring the prefixes /initial 
+### might add
+
+    - [ ] spotify player component
+    - [ ] landing page

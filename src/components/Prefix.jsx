@@ -8,11 +8,11 @@ export default function Prefix (props) {
 }
 
 const StyledSpan = styled.span`
-    background-color:${ props => props.backgroundColor || "darkgrey" };
-    color:${ props => props.textColor || "white" };
-    border-radius:10rem;
-    padding: 0.25em 0.5em;
-    margin: 0 0 0 1em;
     align-self: center;
     flex-shrink: 0;
+    padding: 0.25em 0.5em;
+    margin: 0 0 0 1em;
+    border-radius:10rem;
+    background-color:${ props => props.backgroundColor || "darkgrey" };
+    color:${ props => props.textColor || "white" };
 `

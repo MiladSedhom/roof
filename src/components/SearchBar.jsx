@@ -14,7 +14,7 @@ export default function SearchBar(props) {
   const submitHandler = (e) => {
 
     if (e.key ===" "){
-      e.preventDefault() //making the space dont actually m --going to read avout clean code
+      e.preventDefault() 
       let firstWord = e.target.value.split(/\s/g)[0] // /\s/g is a regex for white spaces
       if (firstWord in shortcuts) {
         setCurrentUsedShortcut( firstWord )
@@ -40,7 +40,6 @@ export default function SearchBar(props) {
 
   return (
     <StyledDiv>
-      <Container>
         {currentUsedShortcut && <Prefix {...shortcuts[currentUsedShortcut]} />}
 
         <Input  value={inputText}
@@ -49,12 +48,13 @@ export default function SearchBar(props) {
           onKeyDown={(e) => { submitHandler(e) }}
           placeholder={"Search with " + (currentUsedShortcut ? shortcuts[currentUsedShortcut].name : defaultSearchEngine.name) + "..."}
         />
-      </Container>
     </StyledDiv>
   );
 }
 
 const StyledDiv = styled.div`
+  display: flex;
+  align-items: center;
   width: 70%;
   max-width: 600px;
   min-width: 300px;
@@ -62,24 +62,16 @@ const StyledDiv = styled.div`
   border: 2px solid black;
   border-radius: 10rem;
   background-color: wheat;
-  display: flex;
-  align-items: center;
   `;
-
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  `
 
 const Input = styled.input`
   width: 100%;
+  padding: 0 1em;
+  border: none;
+  border-radius: 10rem;
   background-color: wheat;
   color: black;
   font-size: 1.2rem;
-  border-radius: 10rem;
-  border: none;
-  padding: 0 1em;
   &:focus {
     outline: none;
   }

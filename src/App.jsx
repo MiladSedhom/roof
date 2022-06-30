@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styled from 'styled-components'
+import styled,{ createGlobalStyle} from 'styled-components'
 import BookmarksBar from './components/BookmarksBar'
 import SearchBar from "./components/SearchBar"
 import { DATA } from '../data'
@@ -9,13 +9,14 @@ function App() {
 
   return (
     <div className="App">
+    <GlobalStyle />
     <StyledApp >
       <BookmarksBar data={DATA} />
       <Container>
-        <MainContainer>
+        <SearchBarLogoContainer>
             <Logo>Roof</Logo>
           <SearchBar defaultSearchEngine={DATA.defaultSearchEngine} shortcuts={DATA.shortcuts} />
-        </MainContainer>
+        </SearchBarLogoContainer>
       </Container>
     </StyledApp>
     </div>
@@ -36,12 +37,12 @@ const Container = styled.div`
   height: calc(100vh - 2.5rem);
 `
 
-const MainContainer = styled.div`
+const SearchBarLogoContainer = styled.div`
   display: flex;
   flex-flow: column;
-  width: 100%;
   justify-content: center;
   align-items: center;
+  width: 100%;
   margin: 0 0 10rem 0;
 `
 const Logo = styled.p`
@@ -49,4 +50,20 @@ const Logo = styled.p`
   font-size: 3rem;
   margin: 1rem;
   color: #333333
+`
+
+const GlobalStyle = createGlobalStyle`
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 `

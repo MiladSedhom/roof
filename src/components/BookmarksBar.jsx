@@ -20,12 +20,15 @@ export default function BookmarksBar(props) {
 }
 
 const StyledDiv = styled.div`
-  background-color: #383838;
-  height: 2.5rem;
+  background-color: #383535;
+  height: 2.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid black;
+  border-block: 2px solid black;
 `;
 
-const BookmarksContainer = styled.div``;
+const BookmarksContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
