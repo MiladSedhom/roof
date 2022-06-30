@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export default function Link(props) {
-  const {name, ...restOfProps} = props
+
   return (
-    <A {...restOfProps} href={props.url}>
-      {props.name}
+    <A {...props} href={props.url}>
+      {props.children}
     </A>
   );
 }

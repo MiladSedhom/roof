@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled,{ createGlobalStyle} from 'styled-components'
 import BookmarksBar from './components/BookmarksBar'
 import SearchBar from "./components/SearchBar"
-import Accordion from './components/Accordion'
+import OthersContainer from './components/OthersContainer'
 import { DATA } from '../data'
 import { useToggle } from './hooks/useToggle'
 
@@ -15,7 +15,7 @@ function App() {
       <GlobalStyle />
       <StyledApp >
         <BookmarksBar data={DATA} toggleIsOthers={toggleIsOthers} />
-        {/* <Accordion /> */}
+        {isOthers && <OthersContainer bookmarksFolders={DATA.bookmarks.others} />}
         <Container>
           <SearchBarLogoContainer>
             <Logo>Roof</Logo>
@@ -69,5 +69,22 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #484848;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2f2f2f;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #212020;
 }
 `

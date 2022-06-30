@@ -15,4 +15,5 @@ const StyledButton = styled.button`
   font-size: ${(props) => props.fontSize || "14px"};
   font-family: "Inter", sans-serif;
   font-weight: 500;
+  cursor: pointer;
 `;

@@ -12,7 +12,7 @@ export default function BookmarksBar(props) {
     <StyledDiv>
       <BookmarksContainer>
         {props.data.bookmarks.bookmarksBar.map((bookmark) => (
-          <Link key={bookmark.name} {...bookmark} />
+          <Link key={bookmark.name} {...bookmark}> {bookmark.name} </Link>
         ))}
       </BookmarksContainer>
       <Button onClick={onClickHandler} > Others </Button>
