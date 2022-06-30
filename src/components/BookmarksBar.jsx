@@ -15,7 +15,7 @@ export default function BookmarksBar(props) {
           <Link key={bookmark.name} {...bookmark} />
         ))}
       </BookmarksContainer>
-      <Button onClick={(e)=>{onClickHandler(e)} } > Others </Button>
+      <Button onClick={onClickHandler} > Others </Button>
     </StyledDiv>
   );
 }

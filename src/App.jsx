@@ -2,8 +2,9 @@ import { useState } from 'react'
 import styled,{ createGlobalStyle} from 'styled-components'
 import BookmarksBar from './components/BookmarksBar'
 import SearchBar from "./components/SearchBar"
+import Accordion from './components/Accordion'
 import { DATA } from '../data'
-import { useToggle } from './components/Hooks/useToggle'
+import { useToggle } from './hooks/useToggle'
 
 
 function App() {
@@ -11,19 +12,17 @@ function App() {
 
   return (
     <div className="App">
-    <GlobalStyle />
-    <StyledApp >
-      <BookmarksBar data={DATA} setIsOthers={toggleIsOthers} />
-      {/* <div>
-        for each folder => <div className="accordon"> children </div>
-      </div> */}
-      <Container>
-        <SearchBarLogoContainer>
+      <GlobalStyle />
+      <StyledApp >
+        <BookmarksBar data={DATA} toggleIsOthers={toggleIsOthers} />
+        {/* <Accordion /> */}
+        <Container>
+          <SearchBarLogoContainer>
             <Logo>Roof</Logo>
-        <SearchBar defaultSearchEngine={DATA.defaultSearchEngine} shortcuts={DATA.shortcuts} />
-        </SearchBarLogoContainer>
-      </Container>
-    </StyledApp>
+            <SearchBar defaultSearchEngine={DATA.defaultSearchEngine} shortcuts={DATA.shortcuts} />
+         </SearchBarLogoContainer>
+        </Container>
+      </StyledApp>
     </div>
   )
 }
