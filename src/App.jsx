@@ -3,19 +3,24 @@ import styled,{ createGlobalStyle} from 'styled-components'
 import BookmarksBar from './components/BookmarksBar'
 import SearchBar from "./components/SearchBar"
 import { DATA } from '../data'
+import { useToggle } from './components/Hooks/useToggle'
 
 
 function App() {
+  const [isOthers,toggleIsOthers] = useToggle(false)
 
   return (
     <div className="App">
     <GlobalStyle />
     <StyledApp >
-      <BookmarksBar data={DATA} />
+      <BookmarksBar data={DATA} setIsOthers={toggleIsOthers} />
+      {/* <div>
+        for each folder => <div className="accordon"> children </div>
+      </div> */}
       <Container>
         <SearchBarLogoContainer>
             <Logo>Roof</Logo>
-          <SearchBar defaultSearchEngine={DATA.defaultSearchEngine} shortcuts={DATA.shortcuts} />
+        <SearchBar defaultSearchEngine={DATA.defaultSearchEngine} shortcuts={DATA.shortcuts} />
         </SearchBarLogoContainer>
       </Container>
     </StyledApp>

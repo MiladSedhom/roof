@@ -3,6 +3,11 @@ import Link from "./Link";
 import Button from "./Button";
 
 export default function BookmarksBar(props) {
+  
+  const onClickHandler = (e)=>{
+    props.toggleIsOthers()
+  }
+
   return (
     <StyledDiv>
       <BookmarksContainer>
@@ -10,11 +15,7 @@ export default function BookmarksBar(props) {
           <Link key={bookmark.name} {...bookmark} />
         ))}
       </BookmarksContainer>
-      <Button> Others </Button>
-      {/* <div>
-        accordin
-        accordin
-      </div> */}
+      <Button onClick={(e)=>{onClickHandler(e)} } > Others </Button>
     </StyledDiv>
   );
 }
