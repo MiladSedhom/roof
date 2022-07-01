@@ -1,11 +1,17 @@
 import styled from "styled-components"
-import Accordion from "./Accordion"
+import Accordion, { AccordionLink } from "./Accordion"
 
-export default function OthersContainer ({bookmarksFolders}) {
+export default function OthersContainer ({bookmarksOthers}) {
 
     return (
         <StyledDiv>
-            {Object.keys(bookmarksFolders).map((key)=><Accordion bookmarksList={bookmarksFolders[key]} folderName={key} />)}
+            {bookmarksOthers.map((element)=>{
+                if (element.type === "folder")
+                    return <Accordion notNested children={element.children} name={element.name}/>
+                if (element.type === "link")
+                    return <AccordionLink url= {element.url}>{element.name}</AccordionLink>
+            }
+            )}
         </StyledDiv>
         )
     }

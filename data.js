@@ -8,41 +8,17 @@ const DATA = {
       { name: "Imdb", url: "https://www.imdb.com", color: "#d9b226" , textColor: "black" },
       { name: "Spotify", url: "https://open.spotify.com", color: "#1DB954" , textColor: "black" },
     ],
-    others:{
-      folder1: [{ name: "google drive", url: "http://drive.google.com" },{ name: "google drive", url: "http://drive.google.com" }],
-      folder2: [
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-        { name: "google drive", url: "http://drive.google.com" },
-      ],
-      folder3: [{ name: "google drive", url: "http://drive.google.com" }],
-      folder5: [{ name: "google drive", url: "http://drive.google.com" }],
-      folder6: [{ name: "google drive", url: "http://drive.google.com" }],
-      folder7: [{ name: "google drive", url: "http://drive.google.com" }],
-      folder8: [{ name: "google drive", url: "http://drive.google.com" }],
-  }
+    others:[
+        {type:"folder", name:"folder", children:[
+          {type:"link", name:"Google Drive", url:"https://drive.google.com"},
+          {type:"folder", name:"subfolder", children:[
+            {type:"link", name:"Google Drive", url:"https://drive.google.com"}
+          ]}
+        ],},
+  
     
-  },
-
+      ],
+    },
   shortcuts : {
     g: {name:"Google", url: "https://www.google.com/search?q=%query", backgroundColor: "#1aa260 ", textColor:"white", },
     gm: {name:"Google Maps",url: "https://www.google.com/maps?q=%query ", backgroundColor: "#1aa260", textColor:"white"  },
@@ -51,8 +27,8 @@ const DATA = {
     qw: {name:"Qwant",url: "https://www.qwant.com/?q=%query", backgroundColor: "#5C97FF", textColor:"black"  },
     you: {name:"You.com",url: "https://you.com/search?q=%query&fromSearchBar=true", color: "#6cd16b", textColor:"black" },
     p : {name:"Pintrest",url:"https://www.pinterest.com/search/pins/?q=%query", backgroundColor:"#E60023", textColor:"white" },
-    s : {name:"Spotify",url:"https://open.spotify.com/search/%query", backgroundColor:"#1DB954", textColor:"black"}
-  }
+    s : {name:"Spotify",url:"https://open.spotify.com/search/%query", backgroundColor:"#1DB954", textColor:"black"},
+  },
 };
 
 export { DATA };

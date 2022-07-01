@@ -15,7 +15,7 @@ function App() {
       <GlobalStyle />
       <StyledApp >
         <BookmarksBar data={DATA} toggleIsOthers={toggleIsOthers} />
-        {isOthers && <OthersContainer bookmarksFolders={DATA.bookmarks.others} />}
+        {isOthers && <OthersContainer bookmarksOthers={DATA.bookmarks.others} />}
         <Container>
           <SearchBarLogoContainer>
             <Logo>Roof</Logo>
