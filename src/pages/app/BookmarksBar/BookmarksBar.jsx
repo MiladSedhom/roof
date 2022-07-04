@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Link from "./Link";
-import Button from "./Button";
+import Button from "../../../components/Button/Button";
+import Link from "../../../components/Link/Link";
 
 export default function BookmarksBar(props) {
   

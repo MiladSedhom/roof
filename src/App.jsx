@@ -1,15 +1,14 @@
 import { useState,useEffect} from 'react'
 import styled,{ createGlobalStyle} from 'styled-components'
-import BookmarksBar from './components/BookmarksBar'
-import SearchBar from "./components/SearchBar"
-import OthersContainer from './components/OthersContainer'
-import BackDrop from './components/BackDrop'
-import FileUpload from './components/FileUpload'
+import BookmarksBar from './pages/app/BookmarksBar/BookmarksBar'
+import SearchBar from './pages/app/SearchBar/SearchBar'
+import OthersContainer from "./pages/app/BookmarksBar/OthersContainer"
+import BackDrop from './components/BackDrop/BackDrop'
 import { DATA } from '../data'
 import { useToggle } from './hooks/useToggle'
 import { useLocalStorage } from './hooks/useLocalStorage'
-import AddBookmarkForm from './components/AddBookmarkForm'
-import SettingsPage from './pages/SettingsPage'
+import AddBookmarkForm from './pages/app/BookmarksBar/AddBookmarkForm'
+import SettingsPage from './pages/app/SettingsModal/SettingsModal'
 
 
 function App() {

@@ -1,17 +1,15 @@
 import { useState } from "react"
 import styled from "styled-components"
 import { useToggle } from "../../../hooks/useToggle"
-import Button from "./Button"
-import Link from "./Link"
+import Button from "../../../components/Button/Button"
+import Link from "../../../components/Link/Link"
 
 export default function Accordion({children,name,notNested}) {
     const [isExpand,toggleIsExpand] = useToggle(true)
 
     return(
     <Container notNested={notNested} >
-
         <AccordionButton onClick={toggleIsExpand}>{name}<span>{isExpand?"-":"+"}</span></AccordionButton> 
-        {/* <Content> */}
             {isExpand && children.map((child) =>
             {
                 if (child.type==="folder")
@@ -20,8 +18,6 @@ export default function Accordion({children,name,notNested}) {
                 return <AccordionLink url= {child.url}>{child.name}</AccordionLink>
             })
         }
-        {/* </Content> */}
-         
     </Container>
     )
 } 
