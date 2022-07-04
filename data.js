@@ -3,20 +3,12 @@ const DATA = {
   defaultSearchEngine: {name:"Google", url: "https://www.google.com/search?q=%query" , shortcut:"g"},
   bookmarks: {
     bookmarksBar: [
-      { name: "Github", url: "https://www.github.com", color: "#171515", textColor: "white" },
-      { name: "Pintrest", url: "https://pinterest.com", color: "#bd081c" , textColor: "white" },
-      { name: "Imdb", url: "https://www.imdb.com", color: "#d9b226" , textColor: "black" },
-      { name: "Spotify", url: "https://open.spotify.com", color: "#1DB954" , textColor: "black" },
+    //   { name: "Github", url: "https://www.github.com", color: "#171515", textColor: "white" },
+    //   { name: "Pintrest", url: "https://pinterest.com", color: "#bd081c" , textColor: "white" },
+    //   { name: "Imdb", url: "https://www.imdb.com", color: "#d9b226" , textColor: "black" },
+    //   { name: "Spotify", url: "https://open.spotify.com", color: "#1DB954" , textColor: "black" },
     ],
     others:[
-        {type:"folder", name:"folder", children:[
-          {type:"link", name:"Google Drive", url:"https://drive.google.com"},
-          {type:"folder", name:"subfolder", children:[
-            {type:"link", name:"Google Drive", url:"https://drive.google.com"}
-          ]}
-        ],},
-  
-    
       ],
     },
   shortcuts : {

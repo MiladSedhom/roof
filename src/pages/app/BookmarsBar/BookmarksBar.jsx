@@ -4,18 +4,22 @@ import Button from "./Button";
 
 export default function BookmarksBar(props) {
   
-  const onClickHandler = (e)=>{
-    props.toggleIsOthers()
+  const addBookmark = (e)=>{
+    props.toggleIsAdd()
   }
 
   return (
     <StyledDiv>
-      <BookmarksContainer>
+      <Container>
         {props.data.bookmarks.bookmarksBar.map((bookmark) => (
           <Link key={bookmark.name} {...bookmark}> {bookmark.name} </Link>
         ))}
-      </BookmarksContainer>
-      <Button onClick={onClickHandler} > Others </Button>
+      </Container>
+      <Container>
+        <Button onClick={addBookmark} > add bookmark </Button>
+        <Button onClick={props.toggleIsOthers} > Others </Button>
+        <Button onClick={addBookmark} > settings </Button>
+      </Container>
     </StyledDiv>
   );
 }
@@ -29,7 +33,7 @@ const StyledDiv = styled.div`
   border-block: 2px solid black;
 `;
 
-const BookmarksContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
 `;

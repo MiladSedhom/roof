@@ -1,25 +1,37 @@
-import { useState } from 'react'
+import { useState,useEffect} from 'react'
 import styled,{ createGlobalStyle} from 'styled-components'
 import BookmarksBar from './components/BookmarksBar'
 import SearchBar from "./components/SearchBar"
 import OthersContainer from './components/OthersContainer'
+import BackDrop from './components/BackDrop'
+import FileUpload from './components/FileUpload'
 import { DATA } from '../data'
 import { useToggle } from './hooks/useToggle'
+import { useLocalStorage } from './hooks/useLocalStorage'
+import AddBookmarkForm from './components/AddBookmarkForm'
+import SettingsPage from './pages/SettingsPage'
 
 
 function App() {
   const [isOthers,toggleIsOthers] = useToggle(false)
+  const [isAdd,toggleIsAdd] = useToggle(false)
+  const [isSettings, toggleIsSettings] = useToggle(true)
+  const [data,setData] = useLocalStorage("roofData")
 
+  
   return (
     <div className="App">
       <GlobalStyle />
+      {isSettings && <SettingsPage toggleIsSettings={toggleIsSettings} />}
       <StyledApp >
-        <BookmarksBar data={DATA} toggleIsOthers={toggleIsOthers} />
-        {isOthers && <OthersContainer bookmarksOthers={DATA.bookmarks.others} />}
+        <BookmarksBar data={data || DATA} toggleIsOthers={toggleIsOthers} toggleIsAdd={toggleIsAdd} />
+        {isOthers && <OthersContainer bookmarksOthers={data.bookmarks.others || DATA.bookmarks.others} />}
+        {isAdd && <AddBookmarkForm/>}
         <Container>
+          {/* <FileUpload setData={setData} />   */}
           <SearchBarLogoContainer>
             <Logo>Roof</Logo>
-            <SearchBar defaultSearchEngine={DATA.defaultSearchEngine} shortcuts={DATA.shortcuts} />
+            <SearchBar defaultSearchEngine={data.defaultSearchEngine || DATA.defaultSearchEngine} shortcuts={data.shortcuts || DATA.shortcuts} />
          </SearchBarLogoContainer>
         </Container>
       </StyledApp>
