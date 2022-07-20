@@ -15,22 +15,30 @@ import { getFolders } from './pages/app/BookmarksBar/helpers'
 
 function App() {
   const [data, setData] = useLocalStorage("roofData")
+  console.log(!!data)
+  if( !data ) {
+    setData(DATA)
+  }
+  console.log("data: ", data)
+  console.log("DATA: ", DATA)
+
   const [isOthers, setIsOthers] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [isSettings, toggleIsSettings] = useToggle(true)
+
 
   return (
     <div className="App">
       <GlobalStyle />
       <StyledApp >
-        <BookmarksBar data={data ? data : DATA} setIsOthers={setIsOthers} setIsAdd={setIsAdd} />
-        {isOthers && <OthersContainer bookmarksOthers={data ? data.bookmarks.others : DATA.bookmarks.others} />}
+        <BookmarksBar data={ data } setIsOthers={setIsOthers} setIsAdd={setIsAdd} />
+        {isOthers && <OthersContainer bookmarksOthers={ data.bookmarks.others } />}
         {isAdd && <AddBookmarkForm setData={setData} foldersList={getFolders(data)} />}
         <Container>
           <FileUpload setData={setData} />
           <SearchBarLogoContainer>
             <Logo>Roof</Logo>
-            <SearchBar defaultSearchEngine={data ? data.defaultSearchEngine : DATA.defaultSearchEngine} shortcuts={data? data.shortcuts : DATA.shortcuts} />
+            <SearchBar defaultSearchEngine={data.defaultSearchEngine } shortcuts={ data.shortcuts} />
           </SearchBarLogoContainer>
         </Container>
       </StyledApp>

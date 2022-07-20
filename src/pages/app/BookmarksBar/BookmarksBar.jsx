@@ -21,16 +21,22 @@ export default function BookmarksBar({data,setIsAdd,setIsOthers}) {
 
   return (
     <StyledDiv>
+
       <Container>
-        {data.bookmarks.bookmarksBar.map((bookmark) => (
-        <Link key={bookmark.name} {...bookmark}> {bookmark.name} </Link>
-        ))}
+        {data.bookmarks[0].children.map((bookmark) => {
+          if (bookmark.type === "link") {
+            return <Link key={bookmark.name} {...bookmark}> {bookmark.name} </Link>
+          }
+        })
+        }
       </Container>
+
       <Container>
         <Button onClick={toggleAddBookmarkContainer} > add bookmark </Button>
         <Button onClick={toggleOthersContainer} > Others </Button>
         <Button onClick={addBookmark} > settings </Button>
       </Container>
+
     </StyledDiv>
   );
 }

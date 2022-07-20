@@ -14,7 +14,7 @@ const A = styled.a`
   margin: 0.5em;
   border-radius: 10rem;
   outline: 2px solid black;
-  background-color: ${props => props.color || "wheat"};
+  background-color: ${props => props.backgroundColor || "wheat"};
   color: ${props => props.textColor || "black"};
   font-size: ${props => props.fontSize || "14px"};
   font-family: "Inter", sans-serif;

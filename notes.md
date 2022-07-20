@@ -26,6 +26,9 @@
     - [ ] addBookmarkForm
         - [x] a function that updates a deeply nested property
         - [x] a function that gets all the folders
-        - [x] fix useLocalStorage
-        - [ ] plan
         - [ ] validation
+
+    - [x] fix useLocalStorage
+    - [x] remake the data strucuture
+    - [ ] clean up and extract components
+    - [ ] <Folder /> component

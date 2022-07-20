@@ -31,10 +31,10 @@ export default function SearchBar(props) {
       e.preventDefault()
       const target = e.ctrlKey ? "_newtab" : "_self"
       if (currentUsedShortcut) {
-        window.open(shortcuts[currentUsedShortcut].url.replace("%query", inputText),target)
+        window.open(shortcuts[currentUsedShortcut].url.replace("%QUERY", inputText),target)
         return;
       }
-      window.open(defaultSearchEngine.url.replace("%query",inputText),target)
+      window.open(defaultSearchEngine.url.replace("%QUERY",inputText),target)
     }
   };
 
