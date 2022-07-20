@@ -1,3 +1,4 @@
+import { useId } from "react"
 import styled from "styled-components"
 import Accordion, { AccordionLink } from "./Accordion"
 
@@ -7,9 +8,11 @@ export default function OthersContainer ({bookmarksOthers}) {
         <StyledDiv>
             {bookmarksOthers.map((element)=>{
                 if (element.type === "folder")
-                    return <Accordion notNested children={element.children} name={element.name}/>
+                    return <Accordion notNested accordionChildren={element.children} name={element.name} key={element.name} >
+                        {element.children}
+                    </Accordion>
                 if (element.type === "link")
-                    return <AccordionLink url= {element.url}>{element.name}</AccordionLink>
+                    return <AccordionLink url= {element.url} key={child.name}  > {child.name} </AccordionLink>
             }
             )}
         </StyledDiv>

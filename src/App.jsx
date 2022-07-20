@@ -1,5 +1,5 @@
-import { useState,useEffect} from 'react'
-import styled,{ createGlobalStyle} from 'styled-components'
+import { useState, useEffect } from 'react'
+import styled, { createGlobalStyle } from 'styled-components'
 import BookmarksBar from './pages/app/BookmarksBar/BookmarksBar'
 import SearchBar from './pages/app/SearchBar/SearchBar'
 import OthersContainer from "./pages/app/BookmarksBar/OthersContainer"
@@ -9,29 +9,29 @@ import { useToggle } from './hooks/useToggle'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import AddBookmarkForm from './pages/app/BookmarksBar/AddBookmarkForm'
 import SettingsPage from './pages/app/SettingsModal/SettingsModal'
+import FileUpload from './components/FileUpload'
+import { getFolders } from './pages/app/BookmarksBar/helpers'
 
 
 function App() {
-  const [isOthers,toggleIsOthers] = useToggle(false)
-  const [isAdd,toggleIsAdd] = useToggle(false)
+  const [data, setData] = useLocalStorage("roofData")
+  const [isOthers, setIsOthers] = useState(false)
+  const [isAdd, setIsAdd] = useState(false)
   const [isSettings, toggleIsSettings] = useToggle(true)
-  const [data,setData] = useLocalStorage("roofData")
 
-  
   return (
     <div className="App">
       <GlobalStyle />
-      {isSettings && <SettingsPage toggleIsSettings={toggleIsSettings} />}
       <StyledApp >
-        <BookmarksBar data={data || DATA} toggleIsOthers={toggleIsOthers} toggleIsAdd={toggleIsAdd} />
-        {isOthers && <OthersContainer bookmarksOthers={data.bookmarks.others || DATA.bookmarks.others} />}
-        {isAdd && <AddBookmarkForm/>}
+        <BookmarksBar data={data ? data : DATA} setIsOthers={setIsOthers} setIsAdd={setIsAdd} />
+        {isOthers && <OthersContainer bookmarksOthers={data ? data.bookmarks.others : DATA.bookmarks.others} />}
+        {isAdd && <AddBookmarkForm setData={setData} foldersList={getFolders(data)} />}
         <Container>
-          {/* <FileUpload setData={setData} />   */}
+          <FileUpload setData={setData} />
           <SearchBarLogoContainer>
             <Logo>Roof</Logo>
             <SearchBar defaultSearchEngine={data.defaultSearchEngine || DATA.defaultSearchEngine} shortcuts={data.shortcuts || DATA.shortcuts} />
-         </SearchBarLogoContainer>
+          </SearchBarLogoContainer>
         </Container>
       </StyledApp>
     </div>

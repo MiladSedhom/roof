@@ -1,4 +1,4 @@
-### todo
+### features todo
 
     - [x] search prefixs
     - [x] coloring the prefixes /initial
@@ -7,9 +7,10 @@
     - [>] gerneral styling clean up
     - [x] bookmarks folder
     - [x] bookmarks subfolders
-    - [ ] a way to add, store and download the JSON         // useEffect and dealing with files
-    - [ ] a way to add a bookmark                           // just normal setState
-    - [ ] add settings and make everything customizable     // setState
+    - [>] a way to add a bookmark                           // bookmarks bar
+    - [ ] a way to remove bookmarks                         // bookmarks bar
+    - [>] a way to add, store and download the JSON         // settings
+    - [ ] add settings and make everything customizable     // settings
     - [ ] theme provider                                    // probably useContext
     - [ ] todo compoent
     - [ ] pomodor compoent
@@ -18,3 +19,11 @@
 
     - [ ] spotify player component
     - [ ] landing page
+    - [ ] the more component
+
+### todo
+
+    - [ ] addBookmarkForm
+        - [x] a function that updates a deeply nested property
+        - [x] a function that gets all the folders
+        - [ ] validation

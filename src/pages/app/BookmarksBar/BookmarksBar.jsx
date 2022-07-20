@@ -1,23 +1,34 @@
+import { useId } from "react";
 import styled from "styled-components";
 import Button from "../../../components/Button/Button";
 import Link from "../../../components/Link/Link";
 
-export default function BookmarksBar(props) {
+export default function BookmarksBar({data,setIsAdd,setIsOthers}) {
   
   const addBookmark = (e)=>{
     props.toggleIsAdd()
   }
 
+  const toggleOthersContainer =() => {
+    setIsAdd(false)
+    setIsOthers((prevState)=>!prevState)
+  }
+
+  const toggleAddBookmarkContainer =() => {
+    setIsOthers(false)
+    setIsAdd((prevState)=>!prevState)
+  }
+
   return (
     <StyledDiv>
       <Container>
-        {props.data.bookmarks.bookmarksBar.map((bookmark) => (
-          <Link key={bookmark.name} {...bookmark}> {bookmark.name} </Link>
+        {data.bookmarks.bookmarksBar.map((bookmark) => (
+        <Link key={bookmark.name} {...bookmark}> {bookmark.name} </Link>
         ))}
       </Container>
       <Container>
-        <Button onClick={addBookmark} > add bookmark </Button>
-        <Button onClick={props.toggleIsOthers} > Others </Button>
+        <Button onClick={toggleAddBookmarkContainer} > add bookmark </Button>
+        <Button onClick={toggleOthersContainer} > Others </Button>
         <Button onClick={addBookmark} > settings </Button>
       </Container>
     </StyledDiv>
