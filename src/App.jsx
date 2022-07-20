@@ -30,7 +30,7 @@ function App() {
           <FileUpload setData={setData} />
           <SearchBarLogoContainer>
             <Logo>Roof</Logo>
-            <SearchBar defaultSearchEngine={data.defaultSearchEngine || DATA.defaultSearchEngine} shortcuts={data.shortcuts || DATA.shortcuts} />
+            <SearchBar defaultSearchEngine={data ? data.defaultSearchEngine : DATA.defaultSearchEngine} shortcuts={data? data.shortcuts : DATA.shortcuts} />
           </SearchBarLogoContainer>
         </Container>
       </StyledApp>

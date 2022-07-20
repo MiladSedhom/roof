@@ -26,4 +26,6 @@
     - [ ] addBookmarkForm
         - [x] a function that updates a deeply nested property
         - [x] a function that gets all the folders
+        - [x] fix useLocalStorage
+        - [ ] plan
         - [ ] validation
