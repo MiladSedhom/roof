@@ -23,10 +23,12 @@ export default function AddBookmarkForm({ setData, foldersList }) {
             : { type, url, name, backgroundColor, textColor, }
 
         setData((prevState) => {
+            //its important to copy state so react does recongizr its not the same object ===> https://pgarciacamou.medium.com/react-doesnt-always-trigger-a-re-render-on-setstate-4644212560a?source=post_page-----86c00f9cf489----2---------------------------- 
+            const newState ={...prevState}
             const folder = foldersList.filter(element => { return element.name === target })[0]
             const updatedFolder = { ...folder, children: [...folder.children, newBookmark] }
-            replaceNestedProperty(prevState, folder, updatedFolder)
-            return prevState
+            replaceNestedProperty(newState, folder, updatedFolder)
+            return newState
         })
         //TODO: validaton 
     }
