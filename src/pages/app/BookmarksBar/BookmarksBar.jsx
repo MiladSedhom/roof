@@ -23,7 +23,7 @@ export default function BookmarksBar({data,setIsAdd,setIsOthers,toggleIsSettings
   }
 
   return (
-    <StyledDiv>
+    <StyledDiv backgroundColor={theme.containersColor} >
 
       <Container>
         {data.bookmarks[0].children.map((bookmark) => {
@@ -35,9 +35,9 @@ export default function BookmarksBar({data,setIsAdd,setIsOthers,toggleIsSettings
       </Container>
 
       <Container>
-        <Button onClick={toggleAddBookmarkContainer} backgroundColor={theme.secondaryColor}  > + </Button>
-        <Button onClick={toggleOthersContainer} backgroundColor={theme.secondaryColor}  > Others </Button>
-        <Button onClick={toggleSettings} backgroundColor={theme.secondaryColor}  > settings </Button>
+        <Button onClick={toggleAddBookmarkContainer} backgroundColor={theme.fieldsColor}  > + </Button>
+        <Button onClick={toggleOthersContainer} backgroundColor={theme.fieldsColor}  > Others </Button>
+        <Button onClick={toggleSettings} backgroundColor={theme.fieldsColor}  > settings </Button>
       </Container>
 
     </StyledDiv>
@@ -45,7 +45,7 @@ export default function BookmarksBar({data,setIsAdd,setIsOthers,toggleIsSettings
 }
 
 const StyledDiv = styled.div`
-  background-color: #383535;
+  background-color: ${props=> props.backgroundColor || "#383535 "};
   height: 3rem;
   display: flex;
   justify-content: space-between;

@@ -28,5 +28,5 @@ const StyledDiv = styled.div`
     margin: 1rem;
     padding: 1rem;
     border-radius: 1rem;
-    background-color: #383535;
+    background-color: containersColor;
 `

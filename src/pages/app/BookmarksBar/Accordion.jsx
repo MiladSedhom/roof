@@ -34,7 +34,7 @@ const AccordionButton = styled(Button)`
     padding:0;
     margin: 0.5rem 0 ;
     outline: none;
-    background-color: #383535;
+    background-color: containersColor;
     color: white;
     font-weight: bold;
     font-size: 14px;
@@ -47,7 +47,7 @@ export const AccordionLink = styled(Link)`
     outline: none;
     border-left: 2px gray solid ;
     border-radius: 0;
-    background-color: #383535;
+    background-color: containersColor;
     color: white;
     font-size: 12px;
 `

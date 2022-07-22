@@ -5,6 +5,8 @@ import Input from "../../../components/Input/Input"
 import ColorInput from "../../../components/ColorInput/ColorInput"
 import Select from "../../../components/Select/Select"
 import { replaceNestedProperty } from "./helpers"
+import { useContext } from "react"
+import { ThemeContext } from "../../../contexts/ThemeContext"
 
 export default function AddBookmarkForm({ setData, foldersList }) {
 
@@ -14,6 +16,7 @@ export default function AddBookmarkForm({ setData, foldersList }) {
     const [type, setType] = useState("link")
     const [backgroundColor, setBackgroundColor] = useState("#F5DEB3")
     const [textColor, setTextColor] = useState("#000000")
+    const theme = useContext(ThemeContext)
 
 
     function submitHandler(e) {
@@ -35,7 +38,7 @@ export default function AddBookmarkForm({ setData, foldersList }) {
 
     return (
         //TODO: extract components
-        <StyledDiv>
+        <StyledDiv backgroundColor={theme.containersColor} >
             <Form action="none">
                 <Input value={name}
                     onInput={(e) => { setName(e.target.value) }}
@@ -81,7 +84,7 @@ const StyledDiv = styled.div`
     margin: 1rem;
     padding: 1rem;
     border-radius: 1rem;
-    background-color: #383535;
+    background-color: ${props=> props.backgroundColor || "#383535 "};
     color: white;
 `
 

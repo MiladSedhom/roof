@@ -75,7 +75,7 @@ const Logo = styled.p`
   font-family: Fascinate;
   font-size: 3rem;
   margin: 1rem;
-  color: ${theme.primaryColor}
+  color: ${theme.containersColor}
 `
 
 const GlobalStyle = createGlobalStyle`

@@ -1,4 +1,4 @@
-### features todo
+### todo
 
     - [x] search prefixs
     - [x] coloring the prefixes /initial
@@ -7,11 +7,11 @@
     - [>] gerneral styling clean up
     - [x] bookmarks folder
     - [x] bookmarks subfolders
-    - [>] a way to add a bookmark                           // bookmarks bar
-    - [ ] a way to remove bookmarks                         // bookmarks bar
+    - [x] a way to add a bookmark
+    - [ ] a way to remove bookmarks
     - [>] a way to add, store and download the JSON         // settings
     - [ ] add settings and make everything customizable     // settings
-    - [ ] theme provider                                    // probably useContext
+    - [x] theme provider
     - [ ] todo compoent
     - [ ] pomodor compoent
 
@@ -31,5 +31,7 @@
     - [x] fix useLocalStorage
     - [x] remake the data strucuture
     - [x] clean up and extract components
-    - [x] themeContext
+    - [x] themeContext //may need improvements
     - [ ] <Folder /> component
+    - [ ] ux refine
+    - [ ] settings
