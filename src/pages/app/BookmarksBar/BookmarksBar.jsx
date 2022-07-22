@@ -1,12 +1,15 @@
-import { useId } from "react";
 import styled from "styled-components";
 import Button from "../../../components/Button/Button";
 import Link from "../../../components/Link/Link";
+import { ThemeContext } from "../../../contexts/ThemeContext";
+import { useContext } from "react";
 
-export default function BookmarksBar({data,setIsAdd,setIsOthers}) {
+export default function BookmarksBar({data,setIsAdd,setIsOthers,toggleIsSettings}) {
   
-  const addBookmark = (e)=>{
-    props.toggleIsAdd()
+  const theme = useContext(ThemeContext)
+
+  const toggleSettings = (e)=>{
+    toggleIsSettings()
   }
 
   const toggleOthersContainer =() => {
@@ -32,9 +35,9 @@ export default function BookmarksBar({data,setIsAdd,setIsOthers}) {
       </Container>
 
       <Container>
-        <Button onClick={toggleAddBookmarkContainer} > add bookmark </Button>
-        <Button onClick={toggleOthersContainer} > Others </Button>
-        <Button onClick={addBookmark} > settings </Button>
+        <Button onClick={toggleAddBookmarkContainer} backgroundColor={theme.secondaryColor}  > + </Button>
+        <Button onClick={toggleOthersContainer} backgroundColor={theme.secondaryColor}  > Others </Button>
+        <Button onClick={toggleSettings} backgroundColor={theme.secondaryColor}  > settings </Button>
       </Container>
 
     </StyledDiv>
@@ -43,11 +46,10 @@ export default function BookmarksBar({data,setIsAdd,setIsOthers}) {
 
 const StyledDiv = styled.div`
   background-color: #383535;
-  height: 2.75rem;
+  height: 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-block: 2px solid black;
 `;
 
 const Container = styled.div`

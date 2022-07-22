@@ -21,6 +21,7 @@ export function useLocalStorage(string) {
         }
 
         setState(updatedData)
+        console.log(data)
         localStorage.setItem(string,JSON.stringify(updatedData))
     }
 

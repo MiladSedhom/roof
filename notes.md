@@ -30,5 +30,6 @@
 
     - [x] fix useLocalStorage
     - [x] remake the data strucuture
-    - [ ] clean up and extract components
+    - [x] clean up and extract components
+    - [x] themeContext
     - [ ] <Folder /> component

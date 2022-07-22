@@ -11,37 +11,40 @@ import AddBookmarkForm from './pages/app/BookmarksBar/AddBookmarkForm'
 import SettingsPage from './pages/app/SettingsModal/SettingsModal'
 import FileUpload from './components/FileUpload'
 import { getFolders } from './pages/app/BookmarksBar/helpers'
+import {ThemeContext, theme} from './contexts/ThemeContext'
 
 
 function App() {
   const [data, setData] = useLocalStorage("roofData")
-  console.log(!!data)
   if( !data ) {
     setData(DATA)
   }
-  console.log("data: ", data)
-  console.log("DATA: ", DATA)
 
   const [isOthers, setIsOthers] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
-  const [isSettings, toggleIsSettings] = useToggle(true)
-
+  const [isSettings, toggleIsSettings] = useToggle(false)
 
   return (
     <div className="App">
       <GlobalStyle />
+      
+      <ThemeContext.Provider value={theme}>
+
       <StyledApp >
-        <BookmarksBar data={ data } setIsOthers={setIsOthers} setIsAdd={setIsAdd} />
+        <BookmarksBar data={ data } setIsOthers={setIsOthers} setIsAdd={setIsAdd} toggleIsSettings={toggleIsSettings} />
         {isOthers && <OthersContainer bookmarksOthers={ data.bookmarks.others } />}
         {isAdd && <AddBookmarkForm setData={setData} foldersList={getFolders(data)} />}
+
         <Container>
-          <FileUpload setData={setData} />
+          {isSettings && <FileUpload setData={setData} />}
           <SearchBarLogoContainer>
             <Logo>Roof</Logo>
             <SearchBar defaultSearchEngine={data.defaultSearchEngine } shortcuts={ data.shortcuts} />
           </SearchBarLogoContainer>
         </Container>
+
       </StyledApp>
+      </ThemeContext.Provider>
     </div>
   )
 }
@@ -72,7 +75,7 @@ const Logo = styled.p`
   font-family: Fascinate;
   font-size: 3rem;
   margin: 1rem;
-  color: #333333
+  color: ${theme.primaryColor}
 `
 
 const GlobalStyle = createGlobalStyle`

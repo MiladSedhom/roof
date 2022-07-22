@@ -1,13 +1,16 @@
-import { useState, useId } from "react"
+import { useState } from "react"
 import styled from "styled-components"
 import Button from "../../../components/Button/Button"
+import Input from "../../../components/Input/Input"
+import ColorInput from "../../../components/ColorInput/ColorInput"
+import Select from "../../../components/Select/Select"
 import { replaceNestedProperty } from "./helpers"
 
 export default function AddBookmarkForm({ setData, foldersList }) {
 
     const [url, setUrl] = useState("")
     const [name, setName] = useState("")
-    const [target, setTarget] = useState("bookmarksBar")
+    const [target, setTarget] = useState("Bookmarks Bar")
     const [type, setType] = useState("link")
     const [backgroundColor, setBackgroundColor] = useState("#F5DEB3")
     const [textColor, setTextColor] = useState("#000000")
@@ -16,17 +19,9 @@ export default function AddBookmarkForm({ setData, foldersList }) {
     function submitHandler(e) {
         e.preventDefault()
         const newBookmark = type === "folder"
-            ? { type, url, name, color: backgroundColor, textColor, children: [] }
-            : { type, url, name, color: backgroundColor, textColor, }
+            ? { type, url, name, backgroundColor, textColor, children: [] }
+            : { type, url, name, backgroundColor, textColor, }
 
-        if (target === "bookmarksBar") {
-            setData((prevData) => {
-                const newData = { ...prevData }
-                newData.bookmarks.bookmarksBar = [...newData.bookmarks.bookmarksBar, newBookmark]
-                return newData
-            })
-            return
-        }
         setData((prevState) => {
             const folder = foldersList.filter(element => { return element.name === target })[0]
             const updatedFolder = { ...folder, children: [...folder.children, newBookmark] }
@@ -46,31 +41,30 @@ export default function AddBookmarkForm({ setData, foldersList }) {
                 {type === "link" ? <Input value={url}
                     onInput={(e) => { setUrl(e.target.value) }}
                     type="text" placeholder="url" /> : null}
+                
                 <div>
-                    <label> location: </label>
-                    <Select value={target} onChange={(e) => { setTarget(e.target.value) }} >
-                        <option value="bookmarksBar">Bookmarks bar</option>
+                    <Select label={"location: "} value={target} onChange={(e) => { setTarget(e.target.value) }} >
                         {foldersList.map((element) =>
-                            <option value={element.name} key={useId()} > {element.name} </option>
+                            <option value={element.name} key={element.name} > {element.name} </option>
                         )}
                     </Select>
                 </div>
+
                 <div>
-                    <label> type: </label>
-                    <Select value={type} onChange={(e) => { setType(e.target.value) }} >
+                    <Select label={"type: "} value={type} onChange={(e) => { setType(e.target.value) }} >
                         <option value="link">Link</option>
                         <option value="folder">Folder</option>
                     </Select>
                 </div>
                 <div>
-                    <Input value={backgroundColor}
+                    <ColorInput value={backgroundColor}
                         onChange={(e) => { setBackgroundColor(e.target.value) }}
                         type="color" placeholder="background color" />
-                    <Input value={textColor}
+                    <ColorInput value={textColor}
                         onInput={(e) => { setTextColor(e.target.value) }}
                         type="color" placeholder="text color" />
                 </div>
-                <Button onClick={(e) => { submitHandler(e) }}>Add</Button>
+                <Button style={{outline:"solid 2px black"}} onClick={(e) => { submitHandler(e) }}>Add</Button>
             </Form>
         </StyledDiv>
     )
@@ -87,23 +81,6 @@ const StyledDiv = styled.div`
     border-radius: 1rem;
     background-color: #383535;
     color: white;
-`
-
-const Input = styled.input`
-    background-color: #373737;
-    border: 2px black solid;
-    border-radius: 1rem;
-    height: 2rem;
-    padding: 0 0.5rem;
-    color: white;
-    margin: 0.5rem 0 0 0 ;
-    &:focus{
-        outline: none;
-    }
-`
-const Select = styled.select`
-    background-color: #373737;
-    color: lightgray
 `
 
 const Form = styled.form`
