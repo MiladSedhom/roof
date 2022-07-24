@@ -1,14 +1,13 @@
 import { useId } from "react";
 import styled from "styled-components";
 
-export default function Select({ label, children, restOfProps }) {
+export default function Select({ label, children, onChange, restOfProps }) {
 	const id = useId();
 	return (
 		<StyledDiv>
 			<label htmlFor={id}> {label} </label>
-			<StyledSelect id={id} {...restOfProps}>
-				{" "}
-				{children}{" "}
+			<StyledSelect id={id} onChange={onChange} {...restOfProps}>
+				{children}
 			</StyledSelect>
 		</StyledDiv>
 	);

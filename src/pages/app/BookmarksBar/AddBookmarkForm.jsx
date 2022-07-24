@@ -70,8 +70,7 @@ export default function AddBookmarkForm({ setData, foldersList }) {
 					>
 						{foldersList.map((element) => (
 							<option value={element.name} key={element.name}>
-								{" "}
-								{element.name}{" "}
+								{element.name}
 							</option>
 						))}
 					</Select>
