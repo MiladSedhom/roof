@@ -35,3 +35,9 @@
     - [ ] <Folder /> component
     - [ ] ux refine
     - [ ] settings
+
+### ux
+
+    -adding bookmark will be frequent ig
+    -accessing existing bookmarks must be easy and clear
+    -
