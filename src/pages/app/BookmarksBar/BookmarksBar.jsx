@@ -3,8 +3,9 @@ import Button from "../../../components/Button/Button";
 import Link from "../../../components/Link/Link";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import { useContext } from "react";
+import Folder from "./Folder";
 
-export default function BookmarksBar({ data, setIsAdd, setIsOthers, toggleIsSettings }) {
+export default function BookmarksBar({ data, toggleIsAdd, toggleIsOthers, toggleIsSettings }) {
 	const theme = useContext(ThemeContext);
 
 	const toggleSettings = (e) => {
@@ -12,13 +13,14 @@ export default function BookmarksBar({ data, setIsAdd, setIsOthers, toggleIsSett
 	};
 
 	const toggleOthersContainer = () => {
-		setIsAdd(false);
-		setIsOthers((prevState) => !prevState);
+		toggleIsAdd(false);
+		toggleIsSettings(false);
+		toggleIsOthers();
 	};
 
 	const toggleAddBookmarkContainer = () => {
-		setIsOthers(false);
-		setIsAdd((prevState) => !prevState);
+		toggleIsOthers(false);
+		toggleIsAdd();
 	};
 
 	return (
@@ -28,26 +30,20 @@ export default function BookmarksBar({ data, setIsAdd, setIsOthers, toggleIsSett
 					if (bookmark.type === "link") {
 						return (
 							<Link key={bookmark.name} {...bookmark}>
-								{" "}
-								{bookmark.name}{" "}
+								{bookmark.name}
 							</Link>
 						);
-					}
+					} else return <Folder folder={bookmark} />;
 				})}
 			</Container>
 
 			<Container>
 				<Button onClick={toggleAddBookmarkContainer} backgroundColor={theme.fieldsColor}>
-					{" "}
-					+{" "}
+					+
 				</Button>
-				<Button onClick={toggleOthersContainer} backgroundColor={theme.fieldsColor}>
-					{" "}
-					Others{" "}
-				</Button>
+				<Folder folder={data.bookmarks[1]} />
 				<Button onClick={toggleSettings} backgroundColor={theme.fieldsColor}>
-					{" "}
-					settings{" "}
+					settings
 				</Button>
 			</Container>
 		</StyledDiv>
@@ -57,12 +53,16 @@ export default function BookmarksBar({ data, setIsAdd, setIsOthers, toggleIsSett
 const StyledDiv = styled.div`
 	background-color: ${(props) => props.backgroundColor || "#383535 "};
 	height: 3rem;
+	max-height: 3rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	position: relative;
 `;
 
 const Container = styled.div`
 	display: flex;
 	align-items: center;
+	height: 3rem;
+	overflow: visible;
 `;

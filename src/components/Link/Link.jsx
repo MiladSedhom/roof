@@ -2,13 +2,18 @@ import styled from "styled-components";
 
 export default function Link(props) {
 	return (
-		<A {...props} href={props.url}>
+		<A {...props} title={props.children} href={props.url}>
 			{props.children}
 		</A>
 	);
 }
 
 const A = styled.a`
+	//this make the prevernt text from overflowing and adds
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 7rem;
 	padding: 0.25em 1em;
 	margin: 0.5em;
 	border-radius: 10rem;

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import BookmarksBar from "./pages/app/BookmarksBar/BookmarksBar";
 import SearchBar from "./pages/app/SearchBar/SearchBar";
-import OthersContainer from "./pages/app/BookmarksBar/OthersContainer";
 import BackDrop from "./components/BackDrop/BackDrop";
 import { DATA } from "../data";
 import { useToggle } from "./hooks/useToggle";
@@ -12,6 +11,7 @@ import SettingsPage from "./pages/app/SettingsModal/SettingsModal";
 import FileUpload from "./components/FileUpload";
 import { getFolders } from "./pages/app/BookmarksBar/helpers";
 import { ThemeContext, theme } from "./contexts/ThemeContext";
+import Folder from "./pages/app/BookmarksBar/Folder";
 
 function App() {
 	const [data, setData] = useLocalStorage("roofData");
@@ -19,8 +19,8 @@ function App() {
 		setData(DATA);
 	}
 
-	const [isOthers, setIsOthers] = useState(false);
-	const [isAdd, setIsAdd] = useState(false);
+	const [isOthers, toggleIsOthers] = useToggle(false);
+	const [isAdd, toggleIsAdd] = useToggle(false);
 	const [isSettings, toggleIsSettings] = useToggle(false);
 
 	return (
@@ -31,11 +31,10 @@ function App() {
 				<StyledApp>
 					<BookmarksBar
 						data={data}
-						setIsOthers={setIsOthers}
-						setIsAdd={setIsAdd}
+						toggleIsOthers={toggleIsOthers}
+						toggleIsAdd={toggleIsAdd}
 						toggleIsSettings={toggleIsSettings}
 					/>
-					{isOthers && <OthersContainer bookmarksOthers={data.bookmarks.others} />}
 					{isAdd && <AddBookmarkForm setData={setData} foldersList={getFolders(data)} />}
 
 					<Container>

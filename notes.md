@@ -32,7 +32,10 @@
     - [x] remake the data strucuture
     - [x] clean up and extract components
     - [x] themeContext //may need improvements
+    - [x] addbookmark button bug fix
     - [ ] <Folder /> component
+        - [x] logic
+        - [ ] style
     - [ ] ux refine
     - [ ] settings
 
