@@ -13,6 +13,7 @@ const A = styled.a`
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	//
 	max-width: 7rem;
 	padding: 0.25em 1em;
 	margin: 0.5em;
@@ -20,7 +21,7 @@ const A = styled.a`
 	outline: 2px solid black;
 	background-color: ${(props) => props.backgroundColor || "wheat"};
 	color: ${(props) => props.textColor || "black"};
-	font-size: ${(props) => props.fontSize || "14px"};
+	font-size: ${(props) => props.fontSize || "12px"};
 	font-family: "Inter", sans-serif;
 	font-weight: 500;
 	text-decoration: none;

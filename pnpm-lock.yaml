@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@styled-icons/boxicons-solid': ^10.38.0
+  '@styled-icons/fa-solid': ^10.34.0
   '@types/react': ^18.0.0
   '@types/react-dom': ^18.0.0
   '@vitejs/plugin-react': ^1.3.0
@@ -14,6 +15,7 @@ specifiers:
 
 dependencies:
   '@styled-icons/boxicons-solid': 10.38.0_eb6zb4csny6bofei5ykbhergru
+  '@styled-icons/fa-solid': 10.34.0_eb6zb4csny6bofei5ykbhergru
   lodash: 4.17.21
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -372,6 +374,18 @@ packages:
 
   /@styled-icons/boxicons-solid/10.38.0_eb6zb4csny6bofei5ykbhergru:
     resolution: {integrity: sha512-uuMtF1R61smQT5r6HIYMHvpVD0XSErXXNQYl5d6lCtMyefd0gIE5Rw+iD9i/RxHFUHNHbvL69LvitCLtNWrSqw==}
+    peerDependencies:
+      react: '*'
+      styled-components: '*'
+    dependencies:
+      '@babel/runtime': 7.18.9
+      '@styled-icons/styled-icon': 10.6.3_eb6zb4csny6bofei5ykbhergru
+      react: 18.2.0
+      styled-components: 5.3.5_7i5myeigehqah43i5u7wbekgba
+    dev: false
+
+  /@styled-icons/fa-solid/10.34.0_eb6zb4csny6bofei5ykbhergru:
+    resolution: {integrity: sha512-PnJMUPcbuPA7gswxl9FKd725qaqP5VSbmX7rk+ZZ7ivdA6Dbi1VoKYXqAc62OEisGDhzn5g56KbBvE14W1n7vw==}
     peerDependencies:
       react: '*'
       styled-components: '*'

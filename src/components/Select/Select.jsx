@@ -16,6 +16,7 @@ const StyledDiv = styled.div`
 	font-size: 14px;
 `;
 const StyledSelect = styled.select`
+	max-width: 12.5rem;
 	height: 1.5rem;
 	padding: 0 1rem;
 	margin: 0.5rem 0 0 0;

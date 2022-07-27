@@ -5,17 +5,11 @@ import { ThemeContext } from "../../../contexts/ThemeContext";
 import { useContext } from "react";
 import Folder from "./Folder";
 
-export default function BookmarksBar({ data, toggleIsAdd, toggleIsOthers, toggleIsSettings }) {
+export default function BookmarksBar({ data, toggleIsAdd, toggleIsSettings }) {
 	const theme = useContext(ThemeContext);
 
 	const toggleSettings = (e) => {
 		toggleIsSettings();
-	};
-
-	const toggleOthersContainer = () => {
-		toggleIsAdd(false);
-		toggleIsSettings(false);
-		toggleIsOthers();
 	};
 
 	const toggleAddBookmarkContainer = () => {
@@ -52,8 +46,8 @@ export default function BookmarksBar({ data, toggleIsAdd, toggleIsOthers, toggle
 
 const StyledDiv = styled.div`
 	background-color: ${(props) => props.backgroundColor || "#383535 "};
-	height: 3rem;
-	max-height: 3rem;
+	height: 2.5rem;
+	max-height: 2.5rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -63,6 +57,6 @@ const StyledDiv = styled.div`
 const Container = styled.div`
 	display: flex;
 	align-items: center;
-	height: 3rem;
+	height: rem;
 	overflow: visible;
 `;

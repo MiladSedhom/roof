@@ -8,7 +8,7 @@ import { replaceNestedProperty } from "./helpers";
 import { useContext } from "react";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 
-export default function AddBookmarkForm({ setData, foldersList }) {
+export default function AddBookmarkForm({ setData, foldersList, toggleIsAdd }) {
 	const [url, setUrl] = useState("");
 	const [name, setName] = useState("");
 	const [target, setTarget] = useState("Bookmarks Bar");
@@ -35,6 +35,7 @@ export default function AddBookmarkForm({ setData, foldersList }) {
 			return newState;
 		});
 		//TODO: validaton
+		toggleIsAdd();
 	}
 
 	return (
@@ -107,7 +108,7 @@ export default function AddBookmarkForm({ setData, foldersList }) {
 					/>
 				</div>
 				<Button
-					style={{ outline: "solid 2px black" }}
+					style={{ outline: "solid 1px black" }}
 					onClick={(e) => {
 						submitHandler(e);
 					}}

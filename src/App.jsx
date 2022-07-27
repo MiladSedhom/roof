@@ -19,7 +19,6 @@ function App() {
 		setData(DATA);
 	}
 
-	const [isOthers, toggleIsOthers] = useToggle(false);
 	const [isAdd, toggleIsAdd] = useToggle(false);
 	const [isSettings, toggleIsSettings] = useToggle(false);
 
@@ -29,13 +28,14 @@ function App() {
 
 			<ThemeContext.Provider value={theme}>
 				<StyledApp>
-					<BookmarksBar
-						data={data}
-						toggleIsOthers={toggleIsOthers}
-						toggleIsAdd={toggleIsAdd}
-						toggleIsSettings={toggleIsSettings}
-					/>
-					{isAdd && <AddBookmarkForm setData={setData} foldersList={getFolders(data)} />}
+					<BookmarksBar data={data} toggleIsAdd={toggleIsAdd} toggleIsSettings={toggleIsSettings} />
+					{isAdd && (
+						<AddBookmarkForm
+							setData={setData}
+							foldersList={getFolders(data)}
+							toggleIsAdd={toggleIsAdd}
+						/>
+					)}
 
 					<Container>
 						{isSettings && <FileUpload setData={setData} />}

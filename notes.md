@@ -27,15 +27,16 @@
         - [x] a function that updates a deeply nested property
         - [x] a function that gets all the folders
         - [ ] validation
+        - [ ] a simple way to paste a url like a button or an auto paste
 
     - [x] fix useLocalStorage
     - [x] remake the data strucuture
     - [x] clean up and extract components
     - [x] themeContext //may need improvements
     - [x] addbookmark button bug fix
-    - [ ] <Folder /> component
+    - [x] <Folder /> component
         - [x] logic
-        - [ ] style
+        - [x] style
     - [ ] ux refine
     - [ ] settings
 
@@ -44,3 +45,7 @@
     -adding bookmark will be frequent ig
     -accessing existing bookmarks must be easy and clear
     -
+
+akbr mo4ka 3ndy hya el styling
+lazem azbot el css bgd
+its the only thing holding me back
