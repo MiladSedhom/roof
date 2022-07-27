@@ -95,15 +95,7 @@ function ListFolder(props) {
 	console.log(listFolderPosisionTop);
 	return (
 		<>
-			<ListFolderContainer
-				onMouseOver={(e) => {
-					toggleIsNestedList(true);
-				}}
-				onMouseOut={(e) => {
-					toggleIsNestedList(false);
-				}}
-				ref={listFolderRef}
-			>
+			<ListFolderContainer onClick={toggleIsNestedList} ref={listFolderRef}>
 				{isNestedList && (
 					<List
 						folder={props.folder}
