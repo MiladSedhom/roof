@@ -39,6 +39,7 @@
         - [x] style
     - [ ] ux refine
     - [ ] settings
+        - [ ] plan it
 
 ### ux
 

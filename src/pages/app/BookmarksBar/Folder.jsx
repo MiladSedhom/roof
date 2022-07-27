@@ -1,6 +1,6 @@
-import Link from "../../../components/Link/Link";
 import Button from "../../../components/Button/Button";
 import styled from "styled-components";
+import BackDrop from "../../../components/BackDrop/BackDrop";
 import { useToggle } from "../../../hooks/useToggle";
 import { Folder as FolderIcon, FolderOpen as OpenFolderIcon } from "@styled-icons/boxicons-solid";
 import { CaretRight } from "@styled-icons/fa-solid";
@@ -16,6 +16,7 @@ export default function Folder({ folder }) {
 
 	return (
 		<>
+			{isList && <BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />}
 			<Button
 				innerRef={buttonRef}
 				onClick={(e) => {

@@ -4,6 +4,7 @@ import Button from "../../../components/Button/Button";
 import Input from "../../../components/Input/Input";
 import ColorInput from "../../../components/ColorInput/ColorInput";
 import Select from "../../../components/Select/Select";
+import BackDrop from "../../../components/BackDrop/BackDrop";
 import { replaceNestedProperty } from "./helpers";
 import { useContext } from "react";
 import { ThemeContext } from "../../../contexts/ThemeContext";
@@ -39,84 +40,86 @@ export default function AddBookmarkForm({ setData, foldersList, toggleIsAdd }) {
 	}
 
 	return (
-		//TODO: extract components
-		<StyledDiv backgroundColor={theme.containersColor}>
-			<Form action="none">
-				<Input
-					value={name}
-					onInput={(e) => {
-						setName(e.target.value);
-					}}
-					type="text"
-					placeholder="Name"
-				/>
-				{type === "link" ? (
+		<>
+			<BackDrop onClick={toggleIsAdd} style={{ backgroundColor: "transparent" }} />
+			<StyledDiv backgroundColor={theme.containersColor}>
+				<Form action="none">
 					<Input
-						value={url}
+						value={name}
 						onInput={(e) => {
-							setUrl(e.target.value);
+							setName(e.target.value);
 						}}
 						type="text"
-						placeholder="url"
+						placeholder="Name"
 					/>
-				) : null}
+					{type === "link" ? (
+						<Input
+							value={url}
+							onInput={(e) => {
+								setUrl(e.target.value);
+							}}
+							type="text"
+							placeholder="url"
+						/>
+					) : null}
 
-				<div>
-					<Select
-						label={"location: "}
-						value={target}
-						onChange={(e) => {
-							setTarget(e.target.value);
+					<div>
+						<Select
+							label={"location: "}
+							value={target}
+							onChange={(e) => {
+								setTarget(e.target.value);
+							}}
+						>
+							{foldersList.map((element) => (
+								<option value={element.name} key={element.name}>
+									{element.name}
+								</option>
+							))}
+						</Select>
+					</div>
+
+					<div>
+						<Select
+							label={"type: "}
+							value={type}
+							onChange={(e) => {
+								setType(e.target.value);
+							}}
+						>
+							<option value="link">Link</option>
+							<option value="folder">Folder</option>
+						</Select>
+					</div>
+					<div>
+						<ColorInput
+							value={backgroundColor}
+							onChange={(e) => {
+								setBackgroundColor(e.target.value);
+							}}
+							type="color"
+							placeholder="background color"
+						/>
+						<ColorInput
+							value={textColor}
+							onInput={(e) => {
+								setTextColor(e.target.value);
+							}}
+							type="color"
+							placeholder="text color"
+						/>
+					</div>
+					<Button
+						style={{ outline: "solid 1px black" }}
+						onClick={(e) => {
+							submitHandler(e);
 						}}
 					>
-						{foldersList.map((element) => (
-							<option value={element.name} key={element.name}>
-								{element.name}
-							</option>
-						))}
-					</Select>
-				</div>
-
-				<div>
-					<Select
-						label={"type: "}
-						value={type}
-						onChange={(e) => {
-							setType(e.target.value);
-						}}
-					>
-						<option value="link">Link</option>
-						<option value="folder">Folder</option>
-					</Select>
-				</div>
-				<div>
-					<ColorInput
-						value={backgroundColor}
-						onChange={(e) => {
-							setBackgroundColor(e.target.value);
-						}}
-						type="color"
-						placeholder="background color"
-					/>
-					<ColorInput
-						value={textColor}
-						onInput={(e) => {
-							setTextColor(e.target.value);
-						}}
-						type="color"
-						placeholder="text color"
-					/>
-				</div>
-				<Button
-					style={{ outline: "solid 1px black" }}
-					onClick={(e) => {
-						submitHandler(e);
-					}}
-				>
-					Add
-				</Button>
-			</Form>
-		</StyledDiv>
+						Add
+					</Button>
+				</Form>
+			</StyledDiv>
+		</>
 	);
 }
 
@@ -126,7 +129,7 @@ const StyledDiv = styled.div`
 	width: 15rem;
 	max-height: 85vh;
 	overflow-y: auto;
-	margin: 1rem;
+	margin: 0.5rem;
 	padding: 1rem;
 	border-radius: 1rem;
 	background-color: ${(props) => props.backgroundColor || "#383535 "};

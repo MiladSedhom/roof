@@ -6,7 +6,7 @@ export default function BackDrop(props) {
 }
 
 const Div = styled.div`
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	display: flex;
