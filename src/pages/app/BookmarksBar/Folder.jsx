@@ -23,9 +23,9 @@ export default function Folder({ folder }) {
 				}}
 			>
 				{isList ? (
-					<OpenFolderIcon style={{ width: "1em", marginRight: "4px" }} />
+					<OpenFolderIcon style={{ width: "1.2em", marginRight: "4px" }} />
 				) : (
-					<FolderIcon style={{ width: "1em", marginRight: "4px" }} />
+					<FolderIcon style={{ width: "1.2em", marginRight: "4px" }} />
 				)}
 				{folder.name}
 			</Button>

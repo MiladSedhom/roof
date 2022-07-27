@@ -4,6 +4,8 @@ import Link from "../../../components/Link/Link";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import { useContext } from "react";
 import Folder from "./Folder";
+import { Plus } from "@styled-icons/fa-solid";
+import { Cog } from "@styled-icons/boxicons-solid";
 
 export default function BookmarksBar({ data, toggleIsAdd, toggleIsSettings }) {
 	const theme = useContext(ThemeContext);
@@ -13,7 +15,6 @@ export default function BookmarksBar({ data, toggleIsAdd, toggleIsSettings }) {
 	};
 
 	const toggleAddBookmarkContainer = () => {
-		toggleIsOthers(false);
 		toggleIsAdd();
 	};
 
@@ -33,11 +34,11 @@ export default function BookmarksBar({ data, toggleIsAdd, toggleIsSettings }) {
 
 			<Container>
 				<Button onClick={toggleAddBookmarkContainer} backgroundColor={theme.fieldsColor}>
-					+
+					<Plus style={{ width: "1em", color: "white" }} />
 				</Button>
 				<Folder folder={data.bookmarks[1]} />
 				<Button onClick={toggleSettings} backgroundColor={theme.fieldsColor}>
-					settings
+					<Cog style={{ width: "1.3em", color: "white" }} />
 				</Button>
 			</Container>
 		</StyledDiv>
