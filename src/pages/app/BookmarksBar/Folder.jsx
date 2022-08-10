@@ -1,6 +1,7 @@
 import Button from "../../../components/Button/Button";
 import styled from "styled-components";
 import BackDrop from "../../../components/BackDrop/BackDrop";
+import Link from "../../../components/Link/Link";
 import { useToggle } from "../../../hooks/useToggle";
 import { Folder as FolderIcon, FolderOpen as OpenFolderIcon } from "@styled-icons/boxicons-solid";
 import { CaretRight } from "@styled-icons/fa-solid";
@@ -54,9 +55,9 @@ function List({ folder, positionTop, positionLeft }) {
 			{folder.children.map((child) => {
 				if (child.type === "link") {
 					return (
-						<ListLink key={child.name} href={child.url} title={child.name} {...child}>
+						<Link key={child.name} href={child.url} title={child.name} {...child}>
 							{child.name}
-						</ListLink>
+						</Link>
 					);
 				} else
 					return (
@@ -132,15 +133,4 @@ const ListFolderContainer = styled.div`
 	background-color: #171717;
 	color: white;
 	position: relative;
-`;
-const ListLink = styled.a`
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	width: 100%;
-	padding: 0 1rem;
-	margin: 0.25rem;
-	font-size: 12px;
-	color: white;
-	text-decoration: none;
 `;
