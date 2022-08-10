@@ -2,16 +2,14 @@ import { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import BookmarksBar from "./pages/app/BookmarksBar/BookmarksBar";
 import SearchBar from "./pages/app/SearchBar/SearchBar";
-import BackDrop from "./components/BackDrop/BackDrop";
 import { DATA } from "../data";
 import { useToggle } from "./hooks/useToggle";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import AddBookmarkForm from "./pages/app/BookmarksBar/AddBookmarkForm";
-import SettingsPage from "./pages/app/SettingsModal/SettingsModal";
+import SettingsModal from "./pages/app/SettingsModal/SettingsModal";
 import FileUpload from "./components/FileUpload";
 import { getFolders } from "./pages/app/BookmarksBar/helpers";
 import { ThemeContext, theme } from "./contexts/ThemeContext";
-import Folder from "./pages/app/BookmarksBar/Folder";
 
 function App() {
 	const [data, setData] = useLocalStorage("roofData");
@@ -38,7 +36,9 @@ function App() {
 					)}
 
 					<Container>
-						{isSettings && <FileUpload setData={setData} />}
+						{isSettings && (
+							<SettingsModal data={data} setData={setData} toggleIsSettings={toggleIsSettings} />
+						)}
 						<SearchBarLogoContainer>
 							<Logo>Roof</Logo>
 							<SearchBar
@@ -58,6 +58,7 @@ export default App;
 const StyledApp = styled.div`
 	background: #b5a484; /*#888888; */
 	height: 100vh;
+	position: relative;
 `;
 
 const Container = styled.div`
