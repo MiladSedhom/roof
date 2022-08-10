@@ -47,7 +47,7 @@ export default function SettingsPage({ data, setData, toggleIsSettings }) {
 								Download
 							</button>
 							<button>
-								<FileUpload />
+								<FileUpload setData={setData} />
 							</button>
 							<button
 								onClick={(e) => {
