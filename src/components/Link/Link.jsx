@@ -1,9 +1,19 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 export default function Link(props) {
+	const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
 	return (
 		<>
-			<A {...props} title={props.children} href={props.url}>
+			<A
+				{...props}
+				title={props.children}
+				href={props.url}
+				onContextMenu={(e) => {
+					e.preventDefault();
+					setAnchorPoint({ x: e.pageX, y: e.pageY });
+				}}
+			>
 				<img
 					style={{ margin: "0 8px 0 0" }}
 					src={`

@@ -91,24 +91,6 @@ export default function AddBookmarkForm({ setData, foldersList, toggleIsAdd }) {
 							<option value="folder">Folder</option>
 						</Select>
 					</div>
-					<div>
-						<ColorInput
-							value={backgroundColor}
-							onChange={(e) => {
-								setBackgroundColor(e.target.value);
-							}}
-							type="color"
-							placeholder="background color"
-						/>
-						<ColorInput
-							value={textColor}
-							onInput={(e) => {
-								setTextColor(e.target.value);
-							}}
-							type="color"
-							placeholder="text color"
-						/>
-					</div>
 					<Button
 						style={{ outline: "solid 1px black" }}
 						onClick={(e) => {
