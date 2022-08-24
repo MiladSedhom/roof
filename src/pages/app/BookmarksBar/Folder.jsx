@@ -6,8 +6,9 @@ import { useToggle } from "../../../hooks/useToggle";
 import { Folder as FolderIcon, FolderOpen as OpenFolderIcon } from "@styled-icons/boxicons-solid";
 import { CaretRight } from "@styled-icons/fa-solid";
 import { useRef } from "react";
+import { getBookmarkChildren } from "./helpers";
 
-export default function Folder({ folder }) {
+export default function Folder({ folder, data }) {
 	const [isList, toggleIsList] = useToggle(false);
 	const buttonRef = useRef(null);
 	const buttonPositionLeft = buttonRef.current && buttonRef.current.offsetLeft;
@@ -20,7 +21,7 @@ export default function Folder({ folder }) {
 			{isList && <BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />}
 			<Button
 				innerRef={buttonRef}
-				onClick={(e) => {
+				onClick={e => {
 					toggleIsList();
 				}}
 			>
@@ -37,34 +38,36 @@ export default function Folder({ folder }) {
 					folder={folder}
 					positionTop={buttonPositionTop + buttonHeight + 16}
 					positionLeft={buttonPositionLeft - buttonWidth / 2}
+					data={data}
 				/>
 			)}
 		</>
 	);
 }
 
-function List({ folder, positionTop, positionLeft }) {
+function List({ folder, positionTop, positionLeft, data }) {
+	const folderChildren = getBookmarkChildren(folder, data.bookmarks);
 	return (
 		<ListDiv
 			positionTop={positionTop}
 			positionLeft={positionLeft}
-			onClick={(e) => {
+			onClick={e => {
 				e.stopPropagation();
 			}}
 		>
-			{folder.children.map((child) => {
+			{folderChildren.map(child => {
 				if (child.type === "link") {
 					return (
 						<Link key={child.name} href={child.url} title={child.name} {...child}>
 							{child.name}
 						</Link>
 					);
-				} else
-					return (
-						<ListFolder key={child.name} folder={child}>
-							{child.name}
-						</ListFolder>
-					);
+				}
+				return (
+					<ListFolder key={child.name} folder={child} data={data}>
+						{child.name}
+					</ListFolder>
+				);
 			})}
 		</ListDiv>
 	);
@@ -80,8 +83,8 @@ const ListDiv = styled.div`
 	background-color: #373737;
 	border-radius: 12px;
 	position: absolute;
-	top: ${(props) => props.positionTop + "px"};
-	left: ${(props) => props.positionLeft + "px"};
+	top: ${props => props.positionTop + "px"};
+	left: ${props => props.positionLeft + "px"};
 `;
 
 function ListFolder(props) {
@@ -93,13 +96,13 @@ function ListFolder(props) {
 	const listFolderHeight = listFolderRef.current && listFolderRef.current.clientHeight;
 	const windowWidth = window.innerWidth;
 
-	console.log(listFolderPosisionTop);
 	return (
 		<>
 			<ListFolderContainer onClick={toggleIsNestedList} ref={listFolderRef}>
 				{isNestedList && (
 					<List
 						folder={props.folder}
+						data={props.data}
 						positionLeft={
 							listFolderPosisionLeft < windowWidth / 2
 								? listFolderPosisionLeft - listFolderWidth

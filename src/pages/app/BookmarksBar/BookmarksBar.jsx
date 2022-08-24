@@ -6,11 +6,12 @@ import { useContext } from "react";
 import Folder from "./Folder";
 import { Plus } from "@styled-icons/fa-solid";
 import { Cog } from "@styled-icons/boxicons-solid";
+import { getBookmarkChildren } from "./helpers";
 
 export default function BookmarksBar({ data, toggleIsAdd, toggleIsSettings }) {
 	const theme = useContext(ThemeContext);
 
-	const toggleSettings = (e) => {
+	const toggleSettings = e => {
 		toggleIsSettings();
 	};
 
@@ -18,17 +19,20 @@ export default function BookmarksBar({ data, toggleIsAdd, toggleIsSettings }) {
 		toggleIsAdd();
 	};
 
+	const bookmarksBarChildren = getBookmarkChildren(data.bookmarks[0], data.bookmarks);
+
 	return (
 		<StyledDiv backgroundColor={theme.containersColor}>
 			<Container>
-				{data.bookmarks[0].children.map((bookmark) => {
+				{bookmarksBarChildren.map(bookmark => {
 					if (bookmark.type === "link") {
 						return (
-							<Link key={bookmark.name} {...bookmark}>
+							<Link key={bookmark.id} {...bookmark}>
 								{bookmark.name}
 							</Link>
 						);
-					} else return <Folder folder={bookmark} />;
+					}
+					return <Folder key={bookmark.id} folder={bookmark} data={data} />;
 				})}
 			</Container>
 
@@ -36,7 +40,7 @@ export default function BookmarksBar({ data, toggleIsAdd, toggleIsSettings }) {
 				<Button onClick={toggleAddBookmarkContainer} backgroundColor={theme.fieldsColor}>
 					<Plus style={{ width: "1em", color: "white" }} />
 				</Button>
-				<Folder folder={data.bookmarks[1]} />
+				<Folder folder={data.bookmarks[1]} data={data} />
 				<Button onClick={toggleSettings} backgroundColor={theme.fieldsColor}>
 					<Cog style={{ width: "1.3em", color: "white" }} />
 				</Button>
@@ -46,7 +50,7 @@ export default function BookmarksBar({ data, toggleIsAdd, toggleIsSettings }) {
 }
 
 const StyledDiv = styled.div`
-	background-color: ${(props) => props.backgroundColor || "#383535 "};
+	background-color: ${props => props.backgroundColor || "#383535 "};
 	height: 2.5rem;
 	max-height: 2.5rem;
 	display: flex;

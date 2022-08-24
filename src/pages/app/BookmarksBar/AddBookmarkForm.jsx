@@ -2,37 +2,37 @@ import { useState } from "react";
 import styled from "styled-components";
 import Button from "../../../components/Button/Button";
 import Input from "../../../components/Input/Input";
-import ColorInput from "../../../components/ColorInput/ColorInput";
 import Select from "../../../components/Select/Select";
 import BackDrop from "../../../components/BackDrop/BackDrop";
-import { replaceNestedProperty } from "./helpers";
 import { useContext } from "react";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 
-export default function AddBookmarkForm({ setData, foldersList, toggleIsAdd }) {
+export default function AddBookmarkForm({ currentCount, setData, foldersList, toggleIsAdd }) {
 	const [url, setUrl] = useState("");
 	const [name, setName] = useState("");
-	const [target, setTarget] = useState("Bookmarks Bar");
+	const [target, setTarget] = useState(0);
 	const [type, setType] = useState("link");
-	const [backgroundColor, setBackgroundColor] = useState("#F5DEB3");
-	const [textColor, setTextColor] = useState("#000000");
 	const theme = useContext(ThemeContext);
 
 	function submitHandler(e) {
 		e.preventDefault();
 		const newBookmark =
 			type === "folder"
-				? { type, url, name, backgroundColor, textColor, children: [] }
-				: { type, url, name, backgroundColor, textColor };
+				? { id: currentCount, type, name, childrenIds: [], parentId: target - 0 }
+				: { id: currentCount, type, url, name, parentId: target - 0 };
 
-		setData((prevState) => {
-			//its important to copy state so react does recongizr its not the same object ===> https://pgarciacamou.medium.com/react-doesnt-always-trigger-a-re-render-on-setstate-4644212560a?source=post_page-----86c00f9cf489----2----------------------------
-			const newState = { ...prevState };
-			const folder = foldersList.filter((element) => {
-				return element.name === target;
-			})[0];
-			const updatedFolder = { ...folder, children: [...folder.children, newBookmark] };
-			replaceNestedProperty(newState, folder, updatedFolder);
+		// const targetFolder = foldersList.filter(element => element.id == target)[0];
+		// const updatedFolder = { ...targetFolder, children: [...targetFolder.children, currentCount] };
+
+		setData(prevState => {
+			const newState = { ...prevState, bookmarks: [...prevState.bookmarks, newBookmark], count: currentCount + 1 };
+
+			newState.bookmarks.map(obj => {
+				if (obj.id == target) {
+					obj.childrenIds = [...obj.childrenIds, currentCount];
+					return obj;
+				} else return obj;
+			});
 			return newState;
 		});
 		//TODO: validaton
@@ -42,11 +42,12 @@ export default function AddBookmarkForm({ setData, foldersList, toggleIsAdd }) {
 	return (
 		<>
 			<BackDrop onClick={toggleIsAdd} style={{ backgroundColor: "transparent" }} />
+
 			<StyledDiv backgroundColor={theme.containersColor}>
 				<Form action="none">
 					<Input
 						value={name}
-						onInput={(e) => {
+						onInput={e => {
 							setName(e.target.value);
 						}}
 						type="text"
@@ -55,7 +56,7 @@ export default function AddBookmarkForm({ setData, foldersList, toggleIsAdd }) {
 					{type === "link" ? (
 						<Input
 							value={url}
-							onInput={(e) => {
+							onInput={e => {
 								setUrl(e.target.value);
 							}}
 							type="text"
@@ -67,12 +68,12 @@ export default function AddBookmarkForm({ setData, foldersList, toggleIsAdd }) {
 						<Select
 							label={"location: "}
 							value={target}
-							onChange={(e) => {
+							onChange={e => {
 								setTarget(e.target.value);
 							}}
 						>
-							{foldersList.map((element) => (
-								<option value={element.name} key={element.name}>
+							{foldersList.map(element => (
+								<option value={element.id} key={element.id}>
 									{element.name}
 								</option>
 							))}
@@ -83,7 +84,7 @@ export default function AddBookmarkForm({ setData, foldersList, toggleIsAdd }) {
 						<Select
 							label={"type: "}
 							value={type}
-							onChange={(e) => {
+							onChange={e => {
 								setType(e.target.value);
 							}}
 						>
@@ -93,7 +94,7 @@ export default function AddBookmarkForm({ setData, foldersList, toggleIsAdd }) {
 					</div>
 					<Button
 						style={{ outline: "solid 1px black" }}
-						onClick={(e) => {
+						onClick={e => {
 							submitHandler(e);
 						}}
 					>
@@ -114,7 +115,7 @@ const StyledDiv = styled.div`
 	margin: 0.5rem;
 	padding: 1rem;
 	border-radius: 1rem;
-	background-color: ${(props) => props.backgroundColor || "#383535 "};
+	background-color: ${props => props.backgroundColor || "#383535 "};
 	color: white;
 `;
 

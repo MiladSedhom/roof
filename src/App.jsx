@@ -29,22 +29,18 @@ function App() {
 					<BookmarksBar data={data} toggleIsAdd={toggleIsAdd} toggleIsSettings={toggleIsSettings} />
 					{isAdd && (
 						<AddBookmarkForm
+							currentCount={data.count}
 							setData={setData}
-							foldersList={getFolders(data)}
+							foldersList={getFolders(data.bookmarks)}
 							toggleIsAdd={toggleIsAdd}
 						/>
 					)}
 
 					<Container>
-						{isSettings && (
-							<SettingsModal data={data} setData={setData} toggleIsSettings={toggleIsSettings} />
-						)}
+						{isSettings && <SettingsModal data={data} setData={setData} toggleIsSettings={toggleIsSettings} />}
 						<SearchBarLogoContainer>
 							<Logo>Roof</Logo>
-							<SearchBar
-								defaultSearchEngine={data.defaultSearchEngine}
-								shortcuts={data.shortcuts}
-							/>
+							<SearchBar defaultSearchEngine={data.defaultSearchEngine} shortcuts={data.shortcuts} />
 						</SearchBarLogoContainer>
 					</Container>
 				</StyledApp>
