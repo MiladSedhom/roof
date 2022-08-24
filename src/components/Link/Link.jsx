@@ -1,8 +1,10 @@
 import styled from "styled-components";
-import { useState } from "react";
+import LinkContextMenu from "./LinkContextMenu";
+import { useContextMenu } from "../../hooks/useContextMenu";
 
 export default function Link(props) {
-	const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
+	const [isContextMenuOpen, contextMenuStyle, contextMenuTrigger] = useContextMenu();
+
 	return (
 		<>
 			<A
@@ -10,8 +12,7 @@ export default function Link(props) {
 				title={props.children}
 				href={props.url}
 				onContextMenu={(e) => {
-					e.preventDefault();
-					setAnchorPoint({ x: e.pageX, y: e.pageY });
+					contextMenuTrigger(e);
 				}}
 			>
 				<img
@@ -21,6 +22,8 @@ export default function Link(props) {
 				/>
 				<Span>{props.children}</Span>
 			</A>
+
+			{isContextMenuOpen && <LinkContextMenu {...contextMenuStyle} />}
 		</>
 	);
 }
