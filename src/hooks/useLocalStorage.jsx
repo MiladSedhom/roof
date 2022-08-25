@@ -1,28 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export function useLocalStorage(string) {
-	const dataJSON = JSON.parse(localStorage.getItem(string));
-	if (typeof dataJSON !== "object") {
-		throw "no data in the local storage";
-	}
-	const [data, setState] = useState(dataJSON);
+const getSavedValue = (key, initialValue) => {
+	const savedValue = JSON.parse(localStorage.getItem(key));
+	if (savedValue) return savedValue;
 
-	const changeData = (input) => {
-		let updatedData;
+	if (initialValue instanceof Function) return initialValue;
+	return initialValue;
+};
 
-		if (input instanceof Function) {
-			updatedData = input(data);
-		} else updatedData = input;
+export function useLocalStorage(key, initialValue) {
+	const [value, setValue] = useState(() => getSavedValue(key, initialValue));
 
-		if (typeof updatedData !== "object") {
-			//TODO: handle this better
-			console.log(updatedData, " is no an object this may cause problems.");
-			return;
-		}
+	useEffect(() => {
+		localStorage.setItem(key, JSON.stringify(value));
+		console.log(value);
+	}, [value]);
 
-		setState(updatedData);
-		localStorage.setItem(string, JSON.stringify(updatedData));
-	};
-
-	return [data, changeData];
+	return [value, setValue];
 }

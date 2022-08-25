@@ -1,85 +1,18 @@
 const DATA = {
 	background: "",
-
 	defaultSearchEngine: {
 		name: "Google",
 		url: "https://www.google.com/search?q=%QUERY",
 		shortcut: "g",
 	},
-
+	bookmarksCount: 5,
 	bookmarks: [
-		{
-			name: "bookmarksBar",
-			type: "folder",
-			children: [
-				{
-					name: "Github",
-					type: "link",
-					url: "https://www.github.com",
-					backgroundColor: "#171515",
-					textColor: "white",
-				},
-				{
-					name: "Pintrest",
-					type: "link",
-					url: "https://pinterest.com",
-					backgroundColor: "#bd081c",
-					textColor: "white",
-				},
-				{
-					name: "Imdb",
-					type: "link",
-					url: "https://www.imdb.com",
-					backgroundColor: "#d9b226",
-					textColor: "black",
-				},
-				{
-					name: "Spotify",
-					type: "link",
-					url: "https://open.spotify.com",
-					backgroundColor: "#1DB954",
-					textColor: "black",
-				},
-				{
-					name: "Spoti",
-					type: "link",
-					url: "https://open.spotify.com",
-					backgroundColor: "#1DB954",
-					textColor: "black",
-				},
-			],
-		},
-
-		{
-			name: "others",
-			type: "folder",
-			children: [
-				{
-					name: "University Stuff",
-					type: "folder",
-					children: [
-						{
-							name: "Google Drive",
-							type: "link",
-							url: "https://drive.google.com",
-						},
-						{
-							name: "physics",
-							type: "folder",
-							children: [
-								{
-									name: "Google Drive",
-									type: "link",
-									url: "https://drive.google.com",
-								},
-							],
-						},
-					],
-				},
-			],
-		},
+		{ id: 0, name: "Bookmarks Bar", type: "folder", childrenIds: [2, 3, 4] },
+		{ id: 1, name: "Others", type: "folder", childrenIds: [] },
+		{ id: 2, name: "Github", type: "link", url: "https://github.io", parentId: 0 },
+		{ id: 3, name: "Pintrest", type: "link", url: "https://pintrest.com", parentId: 0 },
+		{ id: 4, name: "Series", type: "folder", parentId: 0, childrenIds: [] },
 	],
-
 	shortcuts: {
 		g: {
 			name: "Google",
@@ -87,16 +20,16 @@ const DATA = {
 			backgroundColor: "#1aa260 ",
 			textColor: "white",
 		},
-		yt: {
-			name: "Youtube",
-			url: "https://www.youtube.com/results?search_query=%QUERY",
-			backgroundColor: "#ff0000",
-			textColor: "white",
-		},
 		gm: {
 			name: "Google Maps",
 			url: "https://www.google.com/maps?q=%QUERY ",
 			backgroundColor: "#1aa260",
+			textColor: "white",
+		},
+		yt: {
+			name: "Youtube",
+			url: "https://www.youtube.com/results?search_query=%QUERY",
+			backgroundColor: "#ff0000",
 			textColor: "white",
 		},
 		d: {

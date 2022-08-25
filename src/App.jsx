@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import BookmarksBar from "./pages/app/BookmarksBar/BookmarksBar";
 import SearchBar from "./pages/app/SearchBar/SearchBar";
@@ -7,16 +6,11 @@ import { useToggle } from "./hooks/useToggle";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import AddBookmarkForm from "./pages/app/BookmarksBar/AddBookmarkForm";
 import SettingsModal from "./pages/app/SettingsModal/SettingsModal";
-import FileUpload from "./components/FileUpload";
 import { getFolders } from "./pages/app/BookmarksBar/helpers";
 import { ThemeContext, theme } from "./contexts/ThemeContext";
 
 function App() {
-	const [data, setData] = useLocalStorage("roofData");
-	if (!data) {
-		setData(DATA);
-	}
-
+	const [data, setData] = useLocalStorage("roofData", DATA);
 	const [isAdd, toggleIsAdd] = useToggle(false);
 	const [isSettings, toggleIsSettings] = useToggle(false);
 
