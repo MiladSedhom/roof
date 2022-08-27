@@ -11,7 +11,7 @@ export default function Link(props) {
 				{...props}
 				title={props.children}
 				href={props.url}
-				onContextMenu={(e) => {
+				onContextMenu={e => {
 					contextMenuTrigger(e);
 				}}
 			>
@@ -23,7 +23,7 @@ export default function Link(props) {
 				<Span>{props.children}</Span>
 			</A>
 
-			{isContextMenuOpen && <LinkContextMenu {...contextMenuStyle} />}
+			{isContextMenuOpen && <LinkContextMenu {...contextMenuStyle} id={props.id} dispatch={props.dispatch} />}
 		</>
 	);
 }
@@ -39,9 +39,9 @@ const A = styled.a`
 	/* outline: 2px solid black; */
 	background-color: "#383535";
 	color: white;
-	/* background-color: ${(props) => props.backgroundColor || "#383535"};
-	color: ${(props) => props.textColor || "black"}; */
-	font-size: ${(props) => props.fontSize || "11px"};
+	/* background-color: ${props => props.backgroundColor || "#383535"};
+	color: ${props => props.textColor || "black"}; */
+	font-size: ${props => props.fontSize || "11px"};
 	font-family: "Inter", sans-serif;
 	text-decoration: none;
 `;

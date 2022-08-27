@@ -2,20 +2,19 @@ import styled from "styled-components";
 import { useToggle } from "../../hooks/useToggle";
 import AddBookmarkForm from "../../pages/app/BookmarksBar/AddBookmarkForm";
 
-export default function LinkContextMenu(props) {
-	const deleteBookmark = () => {
-		setData(prevState => {
-			delete prevState.nnnnn;
-			const newState = prevState;
-		});
-	};
-
+export default function LinkContextMenu({ dispatch, id, ...restOfProps }) {
 	return (
-		<Div {...props}>
+		<Div {...restOfProps}>
 			<ContextMenuButton> open url </ContextMenuButton>
 			<ContextMenuButton> open url in a new tab </ContextMenuButton>
 			<ContextMenuButton> edit link </ContextMenuButton>
-			<ContextMenuButton> delete link </ContextMenuButton>
+			<ContextMenuButton
+				onClick={() => {
+					dispatch({ type: "deleteBookmark", payload: { id: id } });
+				}}
+			>
+				delete link
+			</ContextMenuButton>
 			<ContextMenuButton> about </ContextMenuButton>
 		</Div>
 	);

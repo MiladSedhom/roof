@@ -7,7 +7,7 @@ import BackDrop from "../../../components/BackDrop/BackDrop";
 import { useContext } from "react";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 
-export default function AddBookmarkForm({ currentCount, setData, foldersList, toggleIsAdd }) {
+export default function AddBookmarkForm({ currentCount, foldersList, toggleIsAdd, dispatch }) {
 	const [url, setUrl] = useState("");
 	const [name, setName] = useState("");
 	const [target, setTarget] = useState(0);
@@ -21,21 +21,7 @@ export default function AddBookmarkForm({ currentCount, setData, foldersList, to
 				? { id: currentCount, type, name, childrenIds: [], parentId: target - 0 }
 				: { id: currentCount, type, url, name, parentId: target - 0 };
 
-		// const targetFolder = foldersList.filter(element => element.id == target)[0];
-		// const updatedFolder = { ...targetFolder, children: [...targetFolder.children, currentCount] };
-
-		setData(prevState => {
-			const newState = { ...prevState, bookmarks: [...prevState.bookmarks, newBookmark], count: currentCount + 1 };
-
-			newState.bookmarks.map(obj => {
-				if (obj.id == target) {
-					obj.childrenIds = [...obj.childrenIds, currentCount];
-					return obj;
-				} else return obj;
-			});
-			return newState;
-		});
-		//TODO: validaton
+		dispatch({ type: "addBookmark", payload: { bookmark: newBookmark } });
 		toggleIsAdd();
 	}
 

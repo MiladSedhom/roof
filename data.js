@@ -5,7 +5,7 @@ const DATA = {
 		url: "https://www.google.com/search?q=%QUERY",
 		shortcut: "g",
 	},
-	bookmarksCount: 5,
+	count: 5,
 	bookmarks: [
 		{ id: 0, name: "Bookmarks Bar", type: "folder", childrenIds: [2, 3, 4] },
 		{ id: 1, name: "Others", type: "folder", childrenIds: [] },

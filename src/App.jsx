@@ -4,14 +4,72 @@ import SearchBar from "./pages/app/SearchBar/SearchBar";
 import { DATA } from "../data";
 import { useToggle } from "./hooks/useToggle";
 import { useLocalStorage } from "./hooks/useLocalStorage";
-import AddBookmarkForm from "./pages/app/BookmarksBar/AddBookmarkForm";
 import SettingsModal from "./pages/app/SettingsModal/SettingsModal";
-import { getFolders } from "./pages/app/BookmarksBar/helpers";
 import { ThemeContext, theme } from "./contexts/ThemeContext";
+import { useReducer } from "react";
+import { useEffect } from "react";
+
+let renderCount = 1;
 
 function App() {
+	console.log(renderCount);
+	renderCount++;
+
+	const reducer = (state, action) => {
+		const addBookmark = (state, newBookmark) => {
+			return {
+				...state,
+				count: state.count + 1,
+				bookmarks: [
+					...state.bookmarks.map(bookmark => {
+						if (bookmark.id === newBookmark.parentId) {
+							return { ...bookmark, childrenIds: [...bookmark.childrenIds, newBookmark.id] };
+						}
+						return bookmark;
+					}),
+					newBookmark,
+				],
+			};
+		};
+		const deleteBookmark = (state, id) => {
+			const parentId = state.bookmarks.find(element => element.id === id).parentId;
+
+			let updatedBookmarks = state.bookmarks.filter(element => element.id !== id);
+			updatedBookmarks = updatedBookmarks.map(element => {
+				if (element.id === parentId) {
+					element.childrenIds = element.childrenIds.filter(childId => childId !== id);
+					return element;
+				}
+				return element;
+			});
+			return { ...state, bookmarks: updatedBookmarks, count: state.count - 1 };
+		};
+		switch (action.type) {
+			case "addBookmark": {
+				//action.payload = {type:"add-bookmark", newBookmark}
+				return addBookmark(state, action.payload.bookmark);
+			}
+			case "deleteBookmark": {
+				//action.payload = {type:"delete-bookmark", Id}
+				return deleteBookmark(state, action.payload.id);
+			}
+			default:
+				return state;
+		}
+	};
+
 	const [data, setData] = useLocalStorage("roofData", DATA);
-	const [isAdd, toggleIsAdd] = useToggle(false);
+	const [roofData, dispatch] = useReducer(reducer, data);
+
+	useEffect(() => {
+		console.log("useEffect Start");
+		console.log("data:", data);
+		console.log("roofData: ", roofData);
+		setData(roofData);
+		console.log("data after setData:", data);
+		console.log("useEffect End");
+	}, [roofData]);
+
 	const [isSettings, toggleIsSettings] = useToggle(false);
 
 	return (
@@ -20,15 +78,7 @@ function App() {
 
 			<ThemeContext.Provider value={theme}>
 				<StyledApp>
-					<BookmarksBar data={data} toggleIsAdd={toggleIsAdd} toggleIsSettings={toggleIsSettings} />
-					{isAdd && (
-						<AddBookmarkForm
-							currentCount={data.count}
-							setData={setData}
-							foldersList={getFolders(data.bookmarks)}
-							toggleIsAdd={toggleIsAdd}
-						/>
-					)}
+					<BookmarksBar data={data} dispatch={dispatch} toggleIsSettings={toggleIsSettings} />
 
 					<Container>
 						{isSettings && <SettingsModal data={data} setData={setData} toggleIsSettings={toggleIsSettings} />}
