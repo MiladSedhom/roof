@@ -7,21 +7,35 @@ import BackDrop from "../../../components/BackDrop/BackDrop";
 import { useContext } from "react";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 
-export default function AddBookmarkForm({ currentCount, foldersList, toggleIsAdd, dispatch }) {
-	const [url, setUrl] = useState("");
-	const [name, setName] = useState("");
-	const [target, setTarget] = useState(0);
-	const [type, setType] = useState("link");
+export default function BookmarkForm(props) {
+	const { currentCount, foldersList, toggleIsAdd, dispatch, dispatchType, defaultBookmark } = props;
+
+	const [url, setUrl] = useState(defaultBookmark && defaultBookmark.url ? defaultBookmark.url : "");
+	const [name, setName] = useState(defaultBookmark ? defaultBookmark.name : "");
+	const [type, setType] = useState(defaultBookmark ? defaultBookmark.type : "link");
+	const [targetId, setTargetId] = useState(0);
 	const theme = useContext(ThemeContext);
 
 	function submitHandler(e) {
 		e.preventDefault();
 		const newBookmark =
 			type === "folder"
-				? { id: currentCount, type, name, childrenIds: [], parentId: target - 0 }
-				: { id: currentCount, type, url, name, parentId: target - 0 };
+				? {
+						id: defaultBookmark ? defaultBookmark.id : currentCount,
+						type,
+						name,
+						childrenIds: [],
+						parentId: targetId - 0,
+				  }
+				: {
+						id: defaultBookmark ? defaultBookmark.id : currentCount,
+						type,
+						url,
+						name,
+						parentId: targetId - 0,
+				  };
 
-		dispatch({ type: "addBookmark", payload: { bookmark: newBookmark } });
+		dispatch({ type: dispatchType, payload: { bookmark: newBookmark } });
 		toggleIsAdd();
 	}
 
@@ -53,9 +67,9 @@ export default function AddBookmarkForm({ currentCount, foldersList, toggleIsAdd
 					<div>
 						<Select
 							label={"location: "}
-							value={target}
+							value={targetId}
 							onChange={e => {
-								setTarget(e.target.value);
+								setTargetId(e.target.value);
 							}}
 						>
 							{foldersList.map(element => (
@@ -95,6 +109,7 @@ export default function AddBookmarkForm({ currentCount, foldersList, toggleIsAdd
 const StyledDiv = styled.div`
 	position: absolute;
 	right: 5rem;
+	top: 10rem;
 	width: 15rem;
 	max-height: 85vh;
 	overflow-y: auto;

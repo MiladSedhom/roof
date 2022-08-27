@@ -58,7 +58,7 @@ function List({ folder, positionTop, positionLeft, data }) {
 			{folderChildren.map(child => {
 				if (child.type === "link") {
 					return (
-						<Link key={child.name} href={child.url} title={child.name} {...child}>
+						<Link key={child.name} href={child.url} title={child.name} bookmark={child}>
 							{child.name}
 						</Link>
 					);

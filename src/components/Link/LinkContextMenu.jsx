@@ -1,22 +1,28 @@
 import styled from "styled-components";
-import { useToggle } from "../../hooks/useToggle";
-import AddBookmarkForm from "../../pages/app/BookmarksBar/AddBookmarkForm";
 
-export default function LinkContextMenu({ dispatch, id, ...restOfProps }) {
+export default function LinkContextMenu({ data, dispatch, id, isForm, toggleIsForm, ...restOfProps }) {
 	return (
-		<Div {...restOfProps}>
-			<ContextMenuButton> open url </ContextMenuButton>
-			<ContextMenuButton> open url in a new tab </ContextMenuButton>
-			<ContextMenuButton> edit link </ContextMenuButton>
-			<ContextMenuButton
-				onClick={() => {
-					dispatch({ type: "deleteBookmark", payload: { id: id } });
-				}}
-			>
-				delete link
-			</ContextMenuButton>
-			<ContextMenuButton> about </ContextMenuButton>
-		</Div>
+		<>
+			<Div {...restOfProps}>
+				<ContextMenuButton> open url </ContextMenuButton>
+				<ContextMenuButton> open url in a new tab </ContextMenuButton>
+				<ContextMenuButton
+					onClick={() => {
+						toggleIsForm(true);
+					}}
+				>
+					edit link
+				</ContextMenuButton>
+				<ContextMenuButton
+					onClick={() => {
+						dispatch({ type: "deleteBookmark", payload: { id: id } });
+					}}
+				>
+					delete link
+				</ContextMenuButton>
+				<ContextMenuButton> about </ContextMenuButton>
+			</Div>
+		</>
 	);
 }
 

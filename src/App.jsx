@@ -44,14 +44,42 @@ function App() {
 			});
 			return { ...state, bookmarks: updatedBookmarks, count: state.count - 1 };
 		};
+		const updateBookmark = (state, newBookmark) => {
+			console.log("start");
+			const id = newBookmark.id;
+			console.log("new bookmark", newBookmark);
+			console.log("id:", id);
+			const oldParentId = state.bookmarks.find(element => element.id === id).parentId;
+			const newParentId = newBookmark.parentId;
+
+			let updatedBookmarks = state.bookmarks.map(bookmark => {
+				if (bookmark.id === id) return newBookmark;
+				if (oldParentId === newParentId) return bookmark;
+
+				if (bookmark.id === oldParentId) {
+					bookmark.childrenIds = bookmark.childrenIds.filter(childId => childId !== id);
+					return bookmark;
+				}
+				if (bookmark.id === newParentId) {
+					bookmark.childrenIds = [...bookmark.childrenIds, id];
+					return bookmark;
+				}
+				return bookmark;
+			});
+
+			console.log("updated state", { ...state, bookmarks: updatedBookmarks });
+			console.log("end");
+			return { ...state, bookmarks: updatedBookmarks };
+		};
 		switch (action.type) {
 			case "addBookmark": {
-				//action.payload = {type:"add-bookmark", newBookmark}
 				return addBookmark(state, action.payload.bookmark);
 			}
 			case "deleteBookmark": {
-				//action.payload = {type:"delete-bookmark", Id}
 				return deleteBookmark(state, action.payload.id);
+			}
+			case "updateBookmark": {
+				return updateBookmark(state, action.payload.bookmark);
 			}
 			default:
 				return state;

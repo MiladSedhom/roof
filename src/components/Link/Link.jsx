@@ -1,16 +1,30 @@
 import styled from "styled-components";
 import LinkContextMenu from "./LinkContextMenu";
 import { useContextMenu } from "../../hooks/useContextMenu";
+import { useToggle } from "../../hooks/useToggle";
+import BookmarkForm from "../../pages/app/BookmarksBar/BookmarkForm";
+import { getFolders } from "../../pages/app/BookmarksBar/helpers";
 
-export default function Link(props) {
+export default function Link({ data, dispatch, bookmark, children }) {
 	const [isContextMenuOpen, contextMenuStyle, contextMenuTrigger] = useContextMenu();
+	const [isForm, toggleIsForm] = useToggle(false);
 
 	return (
 		<>
+			{isForm && (
+				<BookmarkForm
+					currentCount={data.count}
+					foldersList={getFolders(data.bookmarks)}
+					toggleIsAdd={toggleIsForm}
+					dispatch={dispatch}
+					dispatchType={"updateBookmark"}
+					defaultBookmark={bookmark}
+				/>
+			)}
+
 			<A
-				{...props}
-				title={props.children}
-				href={props.url}
+				title={children}
+				href={bookmark.url}
 				onContextMenu={e => {
 					contextMenuTrigger(e);
 				}}
@@ -18,12 +32,21 @@ export default function Link(props) {
 				<img
 					style={{ margin: "0 8px 0 0" }}
 					src={`
-					https://www.google.com/s2/favicons?domain=${props.url}&sz=${16}`}
+					https://www.google.com/s2/favicons?domain=${bookmark.url}&sz=${16}`}
 				/>
-				<Span>{props.children}</Span>
+				<Span>{children}</Span>
 			</A>
 
-			{isContextMenuOpen && <LinkContextMenu {...contextMenuStyle} id={props.id} dispatch={props.dispatch} />}
+			{isContextMenuOpen && (
+				<LinkContextMenu
+					{...contextMenuStyle}
+					data={data}
+					id={bookmark.id}
+					dispatch={dispatch}
+					isForm={isForm}
+					toggleIsForm={toggleIsForm}
+				/>
+			)}
 		</>
 	);
 }

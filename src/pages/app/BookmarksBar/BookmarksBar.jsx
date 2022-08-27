@@ -8,7 +8,7 @@ import { Plus } from "@styled-icons/fa-solid";
 import { Cog } from "@styled-icons/boxicons-solid";
 import { getBookmarkChildren } from "./helpers";
 import { useToggle } from "../../../hooks/useToggle";
-import AddBookmarkForm from "./AddBookmarkForm";
+import BookmarkForm from "./BookmarkForm";
 import { getFolders } from "./helpers";
 
 export default function BookmarksBar({ data, toggleIsSettings, dispatch }) {
@@ -25,7 +25,6 @@ export default function BookmarksBar({ data, toggleIsSettings, dispatch }) {
 	};
 
 	const bookmarksBarChildren = getBookmarkChildren(data.bookmarks[0], data.bookmarks);
-
 	return (
 		<>
 			<StyledDiv backgroundColor={theme.containersColor}>
@@ -33,7 +32,7 @@ export default function BookmarksBar({ data, toggleIsSettings, dispatch }) {
 					{bookmarksBarChildren.map(bookmark => {
 						if (bookmark.type === "link") {
 							return (
-								<Link key={bookmark.id} {...bookmark} dispatch={dispatch}>
+								<Link data={data} key={bookmark.id} bookmark={bookmark} dispatch={dispatch}>
 									{bookmark.name}
 								</Link>
 							);
@@ -54,11 +53,12 @@ export default function BookmarksBar({ data, toggleIsSettings, dispatch }) {
 			</StyledDiv>
 
 			{isAdd && (
-				<AddBookmarkForm
+				<BookmarkForm
 					currentCount={data.count}
 					foldersList={getFolders(data.bookmarks)}
 					toggleIsAdd={toggleIsAdd}
 					dispatch={dispatch}
+					dispatchType={"addBookmark"}
 				/>
 			)}
 		</>
