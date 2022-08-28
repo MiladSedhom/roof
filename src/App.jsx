@@ -45,10 +45,7 @@ function App() {
 			return { ...state, bookmarks: updatedBookmarks, count: state.count - 1 };
 		};
 		const updateBookmark = (state, newBookmark) => {
-			console.log("start");
 			const id = newBookmark.id;
-			console.log("new bookmark", newBookmark);
-			console.log("id:", id);
 			const oldParentId = state.bookmarks.find(element => element.id === id).parentId;
 			const newParentId = newBookmark.parentId;
 
@@ -67,8 +64,6 @@ function App() {
 				return bookmark;
 			});
 
-			console.log("updated state", { ...state, bookmarks: updatedBookmarks });
-			console.log("end");
 			return { ...state, bookmarks: updatedBookmarks };
 		};
 		switch (action.type) {
@@ -90,12 +85,7 @@ function App() {
 	const [roofData, dispatch] = useReducer(reducer, data);
 
 	useEffect(() => {
-		console.log("useEffect Start");
-		console.log("data:", data);
-		console.log("roofData: ", roofData);
 		setData(roofData);
-		console.log("data after setData:", data);
-		console.log("useEffect End");
 	}, [roofData]);
 
 	const [isSettings, toggleIsSettings] = useToggle(false);

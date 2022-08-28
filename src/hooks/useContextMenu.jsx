@@ -9,25 +9,26 @@ export function useContextMenu() {
 
 		window.removeEventListener("contextmenu", closeMenu);
 		window.removeEventListener("click", closeMenu);
-		window.removeEventListener("keyup", (e) => {
+		window.removeEventListener("keyup", e => {
 			onESC(e);
 		});
 	};
 
-	const onESC = (e) => {
+	const onESC = e => {
 		if (e.key === "Escape") {
 			closeMenu();
 		}
 	};
 
-	const onContextMenuHandler = (e) => {
+	const onContextMenuHandler = e => {
 		e.preventDefault();
 		setPoint({ x: e.pageX, y: e.pageY });
+		console.log([e.pageX, e.pageY]);
 		if (!isContextMenu) {
 			setIsContextMenu(true);
 
 			window.addEventListener("click", closeMenu);
-			window.addEventListener("keyup", (e) => {
+			window.addEventListener("keyup", e => {
 				onESC(e);
 			});
 			setTimeout(() => {
@@ -36,6 +37,6 @@ export function useContextMenu() {
 		}
 	};
 
-	const style = { position: "absolute", top: point.y, left: point.x };
+	const style = { position: "fixed", top: point.y, left: point.x };
 	return [isContextMenu, { style }, onContextMenuHandler];
 }
