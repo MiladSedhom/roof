@@ -37,7 +37,7 @@ export default function BookmarksBar({ data, toggleIsSettings, dispatch }) {
 								</Link>
 							);
 						}
-						return <Folder key={bookmark.id} folder={bookmark} data={data} />;
+						return <Folder key={bookmark.id} folder={bookmark} data={data} dispatch={dispatch} />;
 					})}
 				</Container>
 

@@ -107,7 +107,7 @@ export default function BookmarkForm(props) {
 }
 
 const StyledDiv = styled.div`
-	position: absolute;
+	position: fixed;
 	right: 5rem;
 	top: 10rem;
 	width: 15rem;

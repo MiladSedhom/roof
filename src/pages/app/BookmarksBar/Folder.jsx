@@ -8,7 +8,7 @@ import { CaretRight } from "@styled-icons/fa-solid";
 import { useRef } from "react";
 import { getBookmarkChildren } from "./helpers";
 
-export default function Folder({ folder, data }) {
+export default function Folder({ folder, data, dispatch }) {
 	const [isList, toggleIsList] = useToggle(false);
 	const buttonRef = useRef(null);
 	const buttonPositionLeft = buttonRef.current && buttonRef.current.offsetLeft;
@@ -35,6 +35,7 @@ export default function Folder({ folder, data }) {
 
 			{isList && (
 				<List
+					dispatch={dispatch}
 					folder={folder}
 					positionTop={buttonPositionTop + buttonHeight + 16}
 					positionLeft={buttonPositionLeft - buttonWidth / 2}
@@ -45,10 +46,11 @@ export default function Folder({ folder, data }) {
 	);
 }
 
-function List({ folder, positionTop, positionLeft, data }) {
+function List({ folder, positionTop, positionLeft, data, dispatch }) {
 	const folderChildren = getBookmarkChildren(folder, data.bookmarks);
 	return (
 		<ListDiv
+			dispatch={dispatch}
 			positionTop={positionTop}
 			positionLeft={positionLeft}
 			onClick={e => {
@@ -58,7 +60,14 @@ function List({ folder, positionTop, positionLeft, data }) {
 			{folderChildren.map(child => {
 				if (child.type === "link") {
 					return (
-						<Link key={child.name} href={child.url} title={child.name} bookmark={child}>
+						<Link
+							data={data}
+							dispatch={dispatch}
+							key={child.name}
+							href={child.url}
+							title={child.name}
+							bookmark={child}
+						>
 							{child.name}
 						</Link>
 					);
