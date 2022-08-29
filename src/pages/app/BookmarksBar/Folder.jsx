@@ -9,11 +9,12 @@ import { useRef } from "react";
 import { getBookmarkChildren } from "./helpers";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 
-export default function Folder({ folder, data, dispatch }) {
+export default function Folder({ folder, data, dispatch, parentListPosition }) {
 	const [isList, toggleIsList] = useToggle(false);
 	const buttonRef = useRef(null);
 
 	const buttonPosition = usePosition(buttonRef);
+	const windowWidth = window.innerWidth;
 
 	return (
 		<>
@@ -36,8 +37,14 @@ export default function Folder({ folder, data, dispatch }) {
 					toggleList={toggleIsList}
 					dispatch={dispatch}
 					folder={folder}
-					positionTop={buttonPosition.top + buttonPosition.height + 16}
-					positionLeft={buttonPosition.left - buttonPosition.width / 2}
+					positionTop={parentListPosition ? buttonPosition.top : buttonPosition.top + buttonPosition.height + 16}
+					positionLeft={
+						parentListPosition
+							? parentListPosition.left < windowWidth / 2
+								? parentListPosition.left + parentListPosition.width + 2
+								: parentListPosition.left - parentListPosition.width - 2
+							: buttonPosition.left - buttonPosition.width / 2
+					}
 					data={data}
 				/>
 			)}
@@ -47,12 +54,14 @@ export default function Folder({ folder, data, dispatch }) {
 
 function List({ folder, positionTop, positionLeft, data, dispatch, toggleList }) {
 	const folderChildren = getBookmarkChildren(folder, data.bookmarks);
-	const listClickOutsideRef = useRef();
-	useClickOutside(listClickOutsideRef, () => {
+	const listRef = useRef();
+	useClickOutside(listRef, () => {
 		toggleList(false);
 	});
+	const listPosition = usePosition(listRef);
+
 	return (
-		<div ref={listClickOutsideRef}>
+		<div style={{ position: "fixed", top: positionTop, left: positionLeft, width: "10rem" }} ref={listRef}>
 			<ListDiv
 				dispatch={dispatch}
 				positionTop={positionTop}
@@ -77,9 +86,9 @@ function List({ folder, positionTop, positionLeft, data, dispatch, toggleList })
 						);
 					}
 					return (
-						<ListFolder key={child.name} folder={child} data={data}>
+						<Folder key={child.name} folder={child} data={data} parentListPosition={listPosition}>
 							{child.name}
-						</ListFolder>
+						</Folder>
 					);
 				})}
 			</ListDiv>
