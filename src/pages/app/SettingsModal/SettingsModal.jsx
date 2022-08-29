@@ -1,33 +1,34 @@
 import { useState } from "react";
 import styled from "styled-components";
-import BackDrop from "../../../components/BackDrop/BackDrop";
 import { downloadData, shareData } from "./helper";
 import FileUpload from "../../../components/FileUpload";
+import { useRef } from "react";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 
 export default function SettingsPage({ data, setData, toggleIsSettings }) {
 	const [currentPanel, setCurrentPanel] = useState("shortcuts");
-
+	const clickOutsideRef = useRef();
+	useClickOutside(clickOutsideRef, toggleIsSettings);
 	return (
 		<>
-			<BackDrop onClick={toggleIsSettings} />
-			<Div>
+			<Div ref={clickOutsideRef}>
 				<SideBar>
 					<button
-						onClick={(e) => {
+						onClick={e => {
 							setCurrentPanel("bookmarks");
 						}}
 					>
 						bookmarks and data
 					</button>
 					<button
-						onClick={(e) => {
+						onClick={e => {
 							setCurrentPanel("shortcuts");
 						}}
 					>
 						shortcuts
 					</button>
 					<button
-						onClick={(e) => {
+						onClick={e => {
 							setCurrentPanel("apperance");
 						}}
 					>
@@ -40,7 +41,7 @@ export default function SettingsPage({ data, setData, toggleIsSettings }) {
 						<h3>Data: </h3>
 						<div>
 							<button
-								onClick={(e) => {
+								onClick={e => {
 									downloadData(data, "roofBookmarks.json");
 								}}
 							>
@@ -50,7 +51,7 @@ export default function SettingsPage({ data, setData, toggleIsSettings }) {
 								<FileUpload setData={setData} />
 							</button>
 							<button
-								onClick={(e) => {
+								onClick={e => {
 									shareData(data, "bookmarks.json");
 								}}
 							>

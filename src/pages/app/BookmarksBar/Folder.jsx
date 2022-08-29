@@ -1,12 +1,12 @@
 import Button from "../../../components/Button/Button";
 import styled from "styled-components";
-import BackDrop from "../../../components/BackDrop/BackDrop";
 import Link from "../../../components/Link/Link";
 import { useToggle } from "../../../hooks/useToggle";
 import { Folder as FolderIcon, FolderOpen as OpenFolderIcon } from "@styled-icons/boxicons-solid";
 import { CaretRight } from "@styled-icons/fa-solid";
 import { useRef } from "react";
 import { getBookmarkChildren } from "./helpers";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 
 export default function Folder({ folder, data, dispatch }) {
 	const [isList, toggleIsList] = useToggle(false);
@@ -16,9 +16,13 @@ export default function Folder({ folder, data, dispatch }) {
 	const buttonWidth = buttonRef.current && buttonRef.current.clientWidth;
 	const buttonHeight = buttonRef.current && buttonRef.current.clientHeight;
 
+	const listClickOutsideRef = useRef();
+	useClickOutside(listClickOutsideRef, () => {
+		toggleIsList(false);
+	});
+
 	return (
 		<>
-			{isList && <BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />}
 			<Button
 				innerRef={buttonRef}
 				onClick={e => {
@@ -35,6 +39,7 @@ export default function Folder({ folder, data, dispatch }) {
 
 			{isList && (
 				<List
+					ref={listClickOutsideRef}
 					dispatch={dispatch}
 					folder={folder}
 					positionTop={buttonPositionTop + buttonHeight + 16}

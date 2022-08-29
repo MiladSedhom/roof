@@ -3,9 +3,10 @@ import styled from "styled-components";
 import Button from "../../../components/Button/Button";
 import Input from "../../../components/Input/Input";
 import Select from "../../../components/Select/Select";
-import BackDrop from "../../../components/BackDrop/BackDrop";
 import { useContext } from "react";
 import { ThemeContext } from "../../../contexts/ThemeContext";
+import { useClickOutside } from "../../../hooks/useClickOutside";
+import { useRef } from "react";
 
 export default function BookmarkForm(props) {
 	const { currentCount, foldersList, toggleIsAdd, dispatch, dispatchType, defaultBookmark } = props;
@@ -15,6 +16,9 @@ export default function BookmarkForm(props) {
 	const [type, setType] = useState(defaultBookmark ? defaultBookmark.type : "link");
 	const [targetId, setTargetId] = useState(0);
 	const theme = useContext(ThemeContext);
+
+	const formRef = useRef();
+	useClickOutside(formRef, toggleIsAdd);
 
 	function submitHandler(e) {
 		e.preventDefault();
@@ -40,69 +44,65 @@ export default function BookmarkForm(props) {
 	}
 
 	return (
-		<>
-			<BackDrop onClick={toggleIsAdd} style={{ backgroundColor: "transparent" }} />
-
-			<StyledDiv backgroundColor={theme.containersColor}>
-				<Form action="none">
+		<StyledDiv ref={formRef} backgroundColor={theme.containersColor}>
+			<Form action="none">
+				<Input
+					value={name}
+					onInput={e => {
+						setName(e.target.value);
+					}}
+					type="text"
+					placeholder="Name"
+				/>
+				{type === "link" ? (
 					<Input
-						value={name}
+						value={url}
 						onInput={e => {
-							setName(e.target.value);
+							setUrl(e.target.value);
 						}}
 						type="text"
-						placeholder="Name"
+						placeholder="url"
 					/>
-					{type === "link" ? (
-						<Input
-							value={url}
-							onInput={e => {
-								setUrl(e.target.value);
-							}}
-							type="text"
-							placeholder="url"
-						/>
-					) : null}
+				) : null}
 
-					<div>
-						<Select
-							label={"location: "}
-							value={targetId}
-							onChange={e => {
-								setTargetId(e.target.value);
-							}}
-						>
-							{foldersList.map(element => (
-								<option value={element.id} key={element.id}>
-									{element.name}
-								</option>
-							))}
-						</Select>
-					</div>
-
-					<div>
-						<Select
-							label={"type: "}
-							value={type}
-							onChange={e => {
-								setType(e.target.value);
-							}}
-						>
-							<option value="link">Link</option>
-							<option value="folder">Folder</option>
-						</Select>
-					</div>
-					<Button
-						style={{ outline: "solid 1px black" }}
-						onClick={e => {
-							submitHandler(e);
+				<div>
+					<Select
+						label={"location: "}
+						value={targetId}
+						onChange={e => {
+							setTargetId(e.target.value);
 						}}
 					>
-						Add
-					</Button>
-				</Form>
-			</StyledDiv>
-		</>
+						{foldersList.map(element => (
+							<option value={element.id} key={element.id}>
+								{element.name}
+							</option>
+						))}
+					</Select>
+				</div>
+
+				<div>
+					<Select
+						label={"type: "}
+						value={type}
+						onChange={e => {
+							setType(e.target.value);
+						}}
+					>
+						<option value="link">Link</option>
+						<option value="folder">Folder</option>
+					</Select>
+				</div>
+				<Button
+					style={{ outline: "solid 1px black" }}
+					onClick={e => {
+						submitHandler(e);
+					}}
+				>
+					Add
+				</Button>
+			</Form>
+		</StyledDiv>
 	);
 }
 
