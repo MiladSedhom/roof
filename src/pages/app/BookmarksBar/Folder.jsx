@@ -8,6 +8,7 @@ import { CaretRight } from "@styled-icons/fa-solid";
 import { useRef } from "react";
 import { getBookmarkChildren } from "./helpers";
 import { useClickOutside } from "../../../hooks/useClickOutside";
+import BackDrop from "../../../components/BackDrop/BackDrop";
 
 export default function Folder({ folder, data, dispatch, parentListPosition }) {
 	const [isList, toggleIsList] = useToggle(false);
@@ -18,6 +19,10 @@ export default function Folder({ folder, data, dispatch, parentListPosition }) {
 
 	return (
 		<>
+			{isList && !parentListPosition && (
+				<BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />
+			)}
+
 			<Button
 				innerRef={buttonRef}
 				onClick={e => {
@@ -34,6 +39,7 @@ export default function Folder({ folder, data, dispatch, parentListPosition }) {
 
 			{isList && (
 				<List
+					isNested={!!parentListPosition}
 					toggleList={toggleIsList}
 					dispatch={dispatch}
 					folder={folder}
@@ -52,12 +58,16 @@ export default function Folder({ folder, data, dispatch, parentListPosition }) {
 	);
 }
 
-function List({ folder, positionTop, positionLeft, data, dispatch, toggleList }) {
+function List({ folder, positionTop, positionLeft, data, dispatch, toggleList, isNested }) {
 	const folderChildren = getBookmarkChildren(folder, data.bookmarks);
 	const listRef = useRef();
-	useClickOutside(listRef, () => {
-		toggleList(false);
-	});
+
+	if (isNested) {
+		useClickOutside(listRef, () => {
+			toggleList(false);
+		});
+	}
+
 	const listPosition = usePosition(listRef);
 
 	return (
