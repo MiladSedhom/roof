@@ -9,7 +9,7 @@ export const downloadData = async (data, fileName) => {
 	}
 };
 
-export const shareData = async (data) => {
+export const shareData = async data => {
 	if (navigator.share) {
 		const dataBlob = new Blob([JSON.stringify(data)], { type: "application/json" });
 		navigator.share({

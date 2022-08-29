@@ -1,6 +1,7 @@
 import Button from "../../../components/Button/Button";
 import styled from "styled-components";
 import Link from "../../../components/Link/Link";
+import { usePosition } from "../../../hooks/usePosition";
 import { useToggle } from "../../../hooks/useToggle";
 import { Folder as FolderIcon, FolderOpen as OpenFolderIcon } from "@styled-icons/boxicons-solid";
 import { CaretRight } from "@styled-icons/fa-solid";
@@ -11,10 +12,8 @@ import { useClickOutside } from "../../../hooks/useClickOutside";
 export default function Folder({ folder, data, dispatch }) {
 	const [isList, toggleIsList] = useToggle(false);
 	const buttonRef = useRef(null);
-	const buttonPositionLeft = buttonRef.current && buttonRef.current.offsetLeft;
-	const buttonPositionTop = buttonRef.current && buttonRef.current.offsetTop;
-	const buttonWidth = buttonRef.current && buttonRef.current.clientWidth;
-	const buttonHeight = buttonRef.current && buttonRef.current.clientHeight;
+
+	const buttonPosition = usePosition(buttonRef);
 
 	return (
 		<>
@@ -34,11 +33,11 @@ export default function Folder({ folder, data, dispatch }) {
 
 			{isList && (
 				<List
-					toggleIsList={toggleIsList}
+					toggleList={toggleIsList}
 					dispatch={dispatch}
 					folder={folder}
-					positionTop={buttonPositionTop + buttonHeight + 16}
-					positionLeft={buttonPositionLeft - buttonWidth / 2}
+					positionTop={buttonPosition.top + buttonPosition.height + 16}
+					positionLeft={buttonPosition.left - buttonPosition.width / 2}
 					data={data}
 				/>
 			)}
@@ -46,11 +45,11 @@ export default function Folder({ folder, data, dispatch }) {
 	);
 }
 
-function List({ folder, positionTop, positionLeft, data, dispatch, toggleIsList }) {
+function List({ folder, positionTop, positionLeft, data, dispatch, toggleList }) {
 	const folderChildren = getBookmarkChildren(folder, data.bookmarks);
 	const listClickOutsideRef = useRef();
 	useClickOutside(listClickOutsideRef, () => {
-		toggleIsList(false);
+		toggleList(false);
 	});
 	return (
 		<div ref={listClickOutsideRef}>
@@ -97,7 +96,7 @@ const ListDiv = styled.div`
 	padding: 0.5rem 0;
 	background-color: #373737;
 	border-radius: 12px;
-	position: absolute;
+	position: fixed;
 	top: ${props => props.positionTop + "px"};
 	left: ${props => props.positionLeft + "px"};
 `;
@@ -105,10 +104,8 @@ const ListDiv = styled.div`
 function ListFolder(props) {
 	const [isNestedList, toggleIsNestedList] = useToggle(false);
 	const listFolderRef = useRef();
-	const listFolderPosisionTop = listFolderRef.current && listFolderRef.current.offsetTop;
-	const listFolderPosisionLeft = listFolderRef.current && listFolderRef.current.offsetLeft;
-	const listFolderWidth = listFolderRef.current && listFolderRef.current.clientWidth;
-	const listFolderHeight = listFolderRef.current && listFolderRef.current.clientHeight;
+	const listFolderPosition = usePosition(listFolderRef);
+
 	const windowWidth = window.innerWidth;
 
 	return (
@@ -116,12 +113,13 @@ function ListFolder(props) {
 			<ListFolderContainer onClick={toggleIsNestedList} ref={listFolderRef}>
 				{isNestedList && (
 					<List
+						toggleList={toggleIsNestedList}
 						folder={props.folder}
 						data={props.data}
 						positionLeft={
-							listFolderPosisionLeft < windowWidth / 2
-								? listFolderPosisionLeft - listFolderWidth
-								: listFolderPosisionLeft + listFolderWidth
+							listFolderPosition.left < windowWidth / 2
+								? listFolderPosition.left + listFolderPosition.width + 2
+								: listFolderPosition.left - listFolderPosition.width - 2
 						}
 					/>
 				)}

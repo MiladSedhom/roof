@@ -23,7 +23,6 @@ export function useContextMenu() {
 	const onContextMenuHandler = e => {
 		e.preventDefault();
 		setPoint({ x: e.pageX, y: e.pageY });
-		console.log([e.pageX, e.pageY]);
 		if (!isContextMenu) {
 			setIsContextMenu(true);
 
