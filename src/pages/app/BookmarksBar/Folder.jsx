@@ -16,11 +16,6 @@ export default function Folder({ folder, data, dispatch }) {
 	const buttonWidth = buttonRef.current && buttonRef.current.clientWidth;
 	const buttonHeight = buttonRef.current && buttonRef.current.clientHeight;
 
-	const listClickOutsideRef = useRef();
-	useClickOutside(listClickOutsideRef, () => {
-		toggleIsList(false);
-	});
-
 	return (
 		<>
 			<Button
@@ -39,7 +34,7 @@ export default function Folder({ folder, data, dispatch }) {
 
 			{isList && (
 				<List
-					ref={listClickOutsideRef}
+					toggleIsList={toggleIsList}
 					dispatch={dispatch}
 					folder={folder}
 					positionTop={buttonPositionTop + buttonHeight + 16}
@@ -51,39 +46,45 @@ export default function Folder({ folder, data, dispatch }) {
 	);
 }
 
-function List({ folder, positionTop, positionLeft, data, dispatch }) {
+function List({ folder, positionTop, positionLeft, data, dispatch, toggleIsList }) {
 	const folderChildren = getBookmarkChildren(folder, data.bookmarks);
+	const listClickOutsideRef = useRef();
+	useClickOutside(listClickOutsideRef, () => {
+		toggleIsList(false);
+	});
 	return (
-		<ListDiv
-			dispatch={dispatch}
-			positionTop={positionTop}
-			positionLeft={positionLeft}
-			onClick={e => {
-				e.stopPropagation();
-			}}
-		>
-			{folderChildren.map(child => {
-				if (child.type === "link") {
+		<div ref={listClickOutsideRef}>
+			<ListDiv
+				dispatch={dispatch}
+				positionTop={positionTop}
+				positionLeft={positionLeft}
+				onClick={e => {
+					e.stopPropagation();
+				}}
+			>
+				{folderChildren.map(child => {
+					if (child.type === "link") {
+						return (
+							<Link
+								data={data}
+								dispatch={dispatch}
+								key={child.name}
+								href={child.url}
+								title={child.name}
+								bookmark={child}
+							>
+								{child.name}
+							</Link>
+						);
+					}
 					return (
-						<Link
-							data={data}
-							dispatch={dispatch}
-							key={child.name}
-							href={child.url}
-							title={child.name}
-							bookmark={child}
-						>
+						<ListFolder key={child.name} folder={child} data={data}>
 							{child.name}
-						</Link>
+						</ListFolder>
 					);
-				}
-				return (
-					<ListFolder key={child.name} folder={child} data={data}>
-						{child.name}
-					</ListFolder>
-				);
-			})}
-		</ListDiv>
+				})}
+			</ListDiv>
+		</div>
 	);
 }
 const ListDiv = styled.div`
