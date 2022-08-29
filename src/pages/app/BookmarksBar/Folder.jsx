@@ -10,7 +10,7 @@ import { getBookmarkChildren } from "./helpers";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 import BackDrop from "../../../components/BackDrop/BackDrop";
 
-export default function Folder({ folder, data, dispatch, parentListPosition }) {
+export default function Folder({ folder, data, dispatch }) {
 	const [isList, toggleIsList] = useToggle(false);
 	const buttonRef = useRef(null);
 
@@ -19,9 +19,7 @@ export default function Folder({ folder, data, dispatch, parentListPosition }) {
 
 	return (
 		<>
-			{isList && !parentListPosition && (
-				<BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />
-			)}
+			{isList && <BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />}
 
 			<Button
 				innerRef={buttonRef}
@@ -39,18 +37,11 @@ export default function Folder({ folder, data, dispatch, parentListPosition }) {
 
 			{isList && (
 				<List
-					isNested={!!parentListPosition}
 					toggleList={toggleIsList}
 					dispatch={dispatch}
 					folder={folder}
-					positionTop={parentListPosition ? buttonPosition.top : buttonPosition.top + buttonPosition.height + 16}
-					positionLeft={
-						parentListPosition
-							? parentListPosition.left < windowWidth / 2
-								? parentListPosition.left + parentListPosition.width + 2
-								: parentListPosition.left - parentListPosition.width - 2
-							: buttonPosition.left - buttonPosition.width / 2
-					}
+					positionTop={buttonPosition.top + buttonPosition.height + 16}
+					positionLeft={buttonPosition.left - buttonPosition.width / 2}
 					data={data}
 				/>
 			)}
@@ -96,9 +87,9 @@ function List({ folder, positionTop, positionLeft, data, dispatch, toggleList, i
 						);
 					}
 					return (
-						<Folder key={child.name} folder={child} data={data} parentListPosition={listPosition}>
+						<ListFolder key={child.name} folder={child} data={data}>
 							{child.name}
-						</Folder>
+						</ListFolder>
 					);
 				})}
 			</ListDiv>
@@ -132,6 +123,7 @@ function ListFolder(props) {
 			<ListFolderContainer onClick={toggleIsNestedList} ref={listFolderRef}>
 				{isNestedList && (
 					<List
+						isNested
 						toggleList={toggleIsNestedList}
 						folder={props.folder}
 						data={props.data}
