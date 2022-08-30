@@ -7,9 +7,11 @@ import { useContext } from "react";
 import { ThemeContext } from "../../../contexts/ThemeContext";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 import { useRef } from "react";
+import { getFolders } from "./helpers";
 
 export default function BookmarkForm(props) {
-	const { currentCount, foldersList, toggleIsAdd, dispatch, dispatchType, defaultBookmark } = props;
+	const { currentCount, bookmarks, toggleForm, dispatch, dispatchType, defaultBookmark } = props;
+	const foldersList = getFolders(bookmarks);
 
 	const [url, setUrl] = useState(defaultBookmark && defaultBookmark.url ? defaultBookmark.url : "");
 	const [name, setName] = useState(defaultBookmark ? defaultBookmark.name : "");
@@ -18,7 +20,7 @@ export default function BookmarkForm(props) {
 	const theme = useContext(ThemeContext);
 
 	const formRef = useRef();
-	useClickOutside(formRef, toggleIsAdd);
+	useClickOutside(formRef, toggleForm);
 
 	function submitHandler(e) {
 		e.preventDefault();
@@ -40,7 +42,7 @@ export default function BookmarkForm(props) {
 				  };
 
 		dispatch({ type: dispatchType, payload: { bookmark: newBookmark } });
-		toggleIsAdd();
+		toggleForm();
 	}
 
 	return (

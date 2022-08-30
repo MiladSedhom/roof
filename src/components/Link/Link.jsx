@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import LinkContextMenu from "./LinkContextMenu";
+import BookmarkContextMenu from "../../pages/app/BookmarksBar/BookmarkContextMenu";
 import { useContextMenu } from "../../hooks/useContextMenu";
 import { useToggle } from "../../hooks/useToggle";
 import BookmarkForm from "../../pages/app/BookmarksBar/BookmarkForm";
@@ -14,8 +15,8 @@ export default function Link({ data, dispatch, bookmark, children }) {
 			{isForm && (
 				<BookmarkForm
 					currentCount={data.count}
-					foldersList={getFolders(data.bookmarks)}
-					toggleIsAdd={toggleIsForm}
+					bookmarks={data.bookmarks}
+					toggleForm={toggleIsForm}
 					dispatch={dispatch}
 					dispatchType={"updateBookmark"}
 					defaultBookmark={bookmark}
@@ -38,12 +39,10 @@ export default function Link({ data, dispatch, bookmark, children }) {
 			</A>
 
 			{isContextMenuOpen && (
-				<LinkContextMenu
+				<BookmarkContextMenu
 					style={{ ...contextMenuPosition }}
-					data={data}
-					id={bookmark.id}
+					bookmark={bookmark}
 					dispatch={dispatch}
-					isForm={isForm}
 					toggleIsForm={toggleIsForm}
 				/>
 			)}

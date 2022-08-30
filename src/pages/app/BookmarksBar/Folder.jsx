@@ -8,21 +8,47 @@ import { CaretRight } from "@styled-icons/fa-solid";
 import { useRef } from "react";
 import { getBookmarkChildren } from "./helpers";
 import { useClickOutside } from "../../../hooks/useClickOutside";
+import { useContextMenu } from "../../../hooks/useContextMenu";
 import BackDrop from "../../../components/BackDrop/BackDrop";
+import BookmarkContextMenu from "./BookmarkContextMenu";
+import BookmarkForm from "./BookmarkForm";
 
 export default function Folder({ folder, data, dispatch }) {
+	const [isForm, toggleIsForm] = useToggle(false);
 	const [isList, toggleIsList] = useToggle(false);
 	const buttonRef = useRef(null);
-
 	const buttonPosition = usePosition(buttonRef);
-	const windowWidth = window.innerWidth;
+
+	const [isContextMenu, contextMenuPosition, contextMenuTrigger] = useContextMenu();
 
 	return (
 		<>
+			{isForm && (
+				<BookmarkForm
+					currentCount={data.count}
+					bookmarks={data.bookmarks}
+					toggleForm={toggleIsForm}
+					dispatch={dispatch}
+					dispatchType={"updateBookmark"}
+					defaultBookmark={folder}
+				/>
+			)}
+			{isContextMenu && (
+				<BookmarkContextMenu
+					style={{ ...contextMenuPosition }}
+					bookmark={folder}
+					dispatch={dispatch}
+					toggleIsForm={toggleIsForm}
+				/>
+			)}
 			{isList && <BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />}
 
 			<Button
 				innerRef={buttonRef}
+				onContextMenu={e => {
+					console.log("button context menu");
+					contextMenuTrigger(e);
+				}}
 				onClick={e => {
 					toggleIsList();
 				}}

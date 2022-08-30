@@ -1,24 +1,26 @@
 import styled from "styled-components";
 
-export default function LinkContextMenu({ dispatch, id, toggleIsForm, ...restOfProps }) {
+export default function BookmarkContextMenu({ dispatch, bookmark, toggleIsForm, ...restOfProps }) {
 	return (
 		<>
 			<Div {...restOfProps}>
-				<ContextMenuButton> open url </ContextMenuButton>
-				<ContextMenuButton> open url in a new tab </ContextMenuButton>
+				{bookmark.type === "link" && [
+					<ContextMenuButton> open url </ContextMenuButton>,
+					<ContextMenuButton> open url in a new tab </ContextMenuButton>,
+				]}
 				<ContextMenuButton
 					onClick={() => {
 						toggleIsForm(true);
 					}}
 				>
-					edit link
+					edit {bookmark.type}
 				</ContextMenuButton>
 				<ContextMenuButton
 					onClick={() => {
-						dispatch({ type: "deleteBookmark", payload: { id: id } });
+						dispatch({ type: "deleteBookmark", payload: { id: bookmark.id } });
 					}}
 				>
-					delete link
+					delete {bookmark.type}
 				</ContextMenuButton>
 				<ContextMenuButton> about </ContextMenuButton>
 			</Div>

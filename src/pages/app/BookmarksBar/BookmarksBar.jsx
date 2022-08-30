@@ -55,8 +55,8 @@ export default function BookmarksBar({ data, toggleIsSettings, dispatch }) {
 			{isAdd && (
 				<BookmarkForm
 					currentCount={data.count}
-					foldersList={getFolders(data.bookmarks)}
-					toggleIsAdd={toggleIsAdd}
+					bookmarks={data.bookmarks}
+					toggleForm={toggleIsAdd}
 					dispatch={dispatch}
 					dispatchType={"addBookmark"}
 				/>
