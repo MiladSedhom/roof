@@ -36,6 +36,5 @@ export function useContextMenu() {
 		}
 	};
 
-	const style = { position: "fixed", top: point.y, left: point.x };
-	return [isContextMenu, { style }, onContextMenuHandler];
+	return [isContextMenu, { position: "fixed", top: point.y, left: point.x }, onContextMenuHandler];
 }

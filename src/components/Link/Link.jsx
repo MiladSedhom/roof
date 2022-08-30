@@ -6,7 +6,7 @@ import BookmarkForm from "../../pages/app/BookmarksBar/BookmarkForm";
 import { getFolders } from "../../pages/app/BookmarksBar/helpers";
 
 export default function Link({ data, dispatch, bookmark, children }) {
-	const [isContextMenuOpen, contextMenuStyle, contextMenuTrigger] = useContextMenu();
+	const [isContextMenuOpen, contextMenuPosition, contextMenuTrigger] = useContextMenu();
 	const [isForm, toggleIsForm] = useToggle(false);
 
 	return (
@@ -39,7 +39,7 @@ export default function Link({ data, dispatch, bookmark, children }) {
 
 			{isContextMenuOpen && (
 				<LinkContextMenu
-					{...contextMenuStyle}
+					style={{ ...contextMenuPosition }}
 					data={data}
 					id={bookmark.id}
 					dispatch={dispatch}
