@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function LinkContextMenu({ data, dispatch, id, isForm, toggleIsForm, ...restOfProps }) {
+export default function LinkContextMenu({ dispatch, id, toggleIsForm, ...restOfProps }) {
 	return (
 		<>
 			<Div {...restOfProps}>
