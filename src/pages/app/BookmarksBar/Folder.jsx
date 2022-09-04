@@ -1,32 +1,32 @@
-import Button from "../../../components/Button/Button";
-import styled from "styled-components";
-import Link from "../../../components/Link/Link";
-import { usePosition } from "../../../hooks/usePosition";
-import { useToggle } from "../../../hooks/useToggle";
-import { Folder as FolderIcon, FolderOpen as OpenFolderIcon } from "@styled-icons/boxicons-solid";
-import { CaretRight } from "@styled-icons/fa-solid";
-import { useRef } from "react";
-import { getBookmarkChildren } from "./helpers";
-import { useClickOutside } from "../../../hooks/useClickOutside";
-import { useContextMenu } from "../../../hooks/useContextMenu";
-import BackDrop from "../../../components/BackDrop/BackDrop";
-import BookmarkContextMenu from "./BookmarkContextMenu";
-import BookmarkForm from "./BookmarkForm";
+import Button from "../../../components/Button/Button"
+import styled from "styled-components"
+import Link from "../../../components/Link/Link"
+import { usePosition } from "../../../hooks/usePosition"
+import { useToggle } from "../../../hooks/useToggle"
+import { Folder as FolderIcon, FolderOpen as OpenFolderIcon } from "@styled-icons/boxicons-solid"
+import { CaretRight } from "@styled-icons/fa-solid"
+import { useRef } from "react"
+import { getBookmarkChildren } from "./helpers"
+import { useClickOutside } from "../../../hooks/useClickOutside"
+import { useContextMenu } from "../../../hooks/useContextMenu"
+import BackDrop from "../../../components/BackDrop/BackDrop"
+import BookmarkContextMenu from "./BookmarkContextMenu"
+import BookmarkForm from "./BookmarkForm"
 
-export default function Folder({ folder, data, dispatch }) {
-	const [isForm, toggleIsForm] = useToggle(false);
-	const [isList, toggleIsList] = useToggle(false);
-	const buttonRef = useRef(null);
-	const buttonPosition = usePosition(buttonRef);
+export default function Folder({ folder, roofData, dispatch }) {
+	const [isForm, toggleIsForm] = useToggle(false)
+	const [isList, toggleIsList] = useToggle(false)
+	const buttonRef = useRef(null)
+	const buttonPosition = usePosition(buttonRef)
 
-	const [isContextMenu, contextMenuPosition, contextMenuTrigger] = useContextMenu();
+	const [isContextMenu, contextMenuPosition, contextMenuTrigger] = useContextMenu()
 
 	return (
 		<>
 			{isForm && (
 				<BookmarkForm
-					currentCount={data.count}
-					bookmarks={data.bookmarks}
+					currentCount={roofData.count}
+					bookmarks={roofData.bookmarks}
 					toggleForm={toggleIsForm}
 					dispatch={dispatch}
 					dispatchType={"updateBookmark"}
@@ -46,11 +46,11 @@ export default function Folder({ folder, data, dispatch }) {
 			<Button
 				innerRef={buttonRef}
 				onContextMenu={e => {
-					console.log("button context menu");
-					contextMenuTrigger(e);
+					console.log("button context menu")
+					contextMenuTrigger(e)
 				}}
 				onClick={e => {
-					toggleIsList();
+					toggleIsList()
 				}}
 			>
 				{isList ? (
@@ -68,24 +68,24 @@ export default function Folder({ folder, data, dispatch }) {
 					folder={folder}
 					positionTop={buttonPosition.top + buttonPosition.height + 16}
 					positionLeft={buttonPosition.left - buttonPosition.width / 2}
-					data={data}
+					roofData={roofData}
 				/>
 			)}
 		</>
-	);
+	)
 }
 
-function List({ folder, positionTop, positionLeft, data, dispatch, toggleList, isNested }) {
-	const folderChildren = getBookmarkChildren(folder, data.bookmarks);
-	const listRef = useRef();
+function List({ folder, positionTop, positionLeft, roofData, dispatch, toggleList, isNested }) {
+	const folderChildren = getBookmarkChildren(folder.id, roofData.bookmarks)
+	const listRef = useRef()
 
 	if (isNested) {
 		useClickOutside(listRef, () => {
-			toggleList(false);
-		});
+			toggleList(false)
+		})
 	}
 
-	const listPosition = usePosition(listRef);
+	const listPosition = usePosition(listRef)
 
 	return (
 		<div style={{ position: "fixed", top: positionTop, left: positionLeft, width: "10rem" }} ref={listRef}>
@@ -94,14 +94,14 @@ function List({ folder, positionTop, positionLeft, data, dispatch, toggleList, i
 				positionTop={positionTop}
 				positionLeft={positionLeft}
 				onClick={e => {
-					e.stopPropagation();
+					e.stopPropagation()
 				}}
 			>
 				{folderChildren.map(child => {
 					if (child.type === "link") {
 						return (
 							<Link
-								data={data}
+								roofData={roofData}
 								dispatch={dispatch}
 								key={child.name}
 								href={child.url}
@@ -110,17 +110,17 @@ function List({ folder, positionTop, positionLeft, data, dispatch, toggleList, i
 							>
 								{child.name}
 							</Link>
-						);
+						)
 					}
 					return (
-						<ListFolder key={child.name} folder={child} data={data}>
+						<ListFolder key={child.name} folder={child} roofData={roofData}>
 							{child.name}
 						</ListFolder>
-					);
+					)
 				})}
 			</ListDiv>
 		</div>
-	);
+	)
 }
 const ListDiv = styled.div`
 	display: flex;
@@ -135,14 +135,14 @@ const ListDiv = styled.div`
 	position: fixed;
 	top: ${props => props.positionTop + "px"};
 	left: ${props => props.positionLeft + "px"};
-`;
+`
 
 function ListFolder(props) {
-	const [isNestedList, toggleIsNestedList] = useToggle(false);
-	const listFolderRef = useRef();
-	const listFolderPosition = usePosition(listFolderRef);
+	const [isNestedList, toggleIsNestedList] = useToggle(false)
+	const listFolderRef = useRef()
+	const listFolderPosition = usePosition(listFolderRef)
 
-	const windowWidth = window.innerWidth;
+	const windowWidth = window.innerWidth
 
 	return (
 		<>
@@ -152,7 +152,7 @@ function ListFolder(props) {
 						isNested
 						toggleList={toggleIsNestedList}
 						folder={props.folder}
-						data={props.data}
+						roofData={props.roofData}
 						positionLeft={
 							listFolderPosition.left < windowWidth / 2
 								? listFolderPosition.left + listFolderPosition.width + 2
@@ -169,14 +169,14 @@ function ListFolder(props) {
 				</Container>
 			</ListFolderContainer>
 		</>
-	);
+	)
 }
 
 const Container = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
-`;
+`
 
 const ListFolderContainer = styled.div`
 	width: 100%;
@@ -186,4 +186,4 @@ const ListFolderContainer = styled.div`
 	background-color: #171717;
 	color: white;
 	position: relative;
-`;
+`

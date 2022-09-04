@@ -1,20 +1,20 @@
-import { saveAs } from "file-saver";
+import { saveAs } from "file-saver"
 
-export const downloadData = async (data, fileName) => {
+export const downloadroofData = async (roofData, fileName) => {
 	try {
-		const dataBlob = new Blob([JSON.stringify(data)], { type: "application/json" });
-		saveAs(dataBlob, fileName);
+		const roofDataBlob = new Blob([JSON.stringify(roofData)], { type: "application/json" })
+		saveAs(roofDataBlob, fileName)
 	} catch (err) {
-		console.log(err);
+		console.log(err)
 	}
-};
+}
 
-export const shareData = async data => {
+export const shareroofData = async roofData => {
 	if (navigator.share) {
-		const dataBlob = new Blob([JSON.stringify(data)], { type: "application/json" });
+		const roofDataBlob = new Blob([JSON.stringify(roofData)], { type: "application/json" })
 		navigator.share({
 			title: "roof bookmarks",
-			files: [dataBlob],
-		});
-	} else console.log("no share");
-};
+			files: [roofDataBlob],
+		})
+	} else console.log("no share")
+}

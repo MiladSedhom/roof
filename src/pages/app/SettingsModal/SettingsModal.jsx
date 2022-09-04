@@ -1,35 +1,35 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { downloadData, shareData } from "./helper";
-import FileUpload from "../../../components/FileUpload";
-import { useRef } from "react";
-import { useClickOutside } from "../../../hooks/useClickOutside";
+import { useState } from "react"
+import styled from "styled-components"
+import { downloadroofData, shareroofData } from "./helper"
+import FileUpload from "../../../components/FileUpload"
+import { useRef } from "react"
+import { useClickOutside } from "../../../hooks/useClickOutside"
 
-export default function SettingsPage({ data, setData, toggleIsSettings }) {
-	const [currentPanel, setCurrentPanel] = useState("shortcuts");
-	const clickOutsideRef = useRef();
-	useClickOutside(clickOutsideRef, toggleIsSettings);
+export default function SettingsPage({ roofData, setStoredRoofData, toggleIsSettings }) {
+	const [currentPanel, setCurrentPanel] = useState("shortcuts")
+	const clickOutsideRef = useRef()
+	useClickOutside(clickOutsideRef, toggleIsSettings)
 	return (
 		<>
 			<Div ref={clickOutsideRef}>
 				<SideBar>
 					<button
 						onClick={e => {
-							setCurrentPanel("bookmarks");
+							setCurrentPanel("bookmarks")
 						}}
 					>
-						bookmarks and data
+						bookmarks and roofData
 					</button>
 					<button
 						onClick={e => {
-							setCurrentPanel("shortcuts");
+							setCurrentPanel("shortcuts")
 						}}
 					>
 						shortcuts
 					</button>
 					<button
 						onClick={e => {
-							setCurrentPanel("apperance");
+							setCurrentPanel("apperance")
 						}}
 					>
 						apperance
@@ -38,21 +38,21 @@ export default function SettingsPage({ data, setData, toggleIsSettings }) {
 
 				{currentPanel === "bookmarks" ? (
 					<Main>
-						<h3>Data: </h3>
+						<h3>roofData: </h3>
 						<div>
 							<button
 								onClick={e => {
-									downloadData(data, "roofBookmarks.json");
+									downloadroofData(roofData, "roofBookmarks.json")
 								}}
 							>
 								Download
 							</button>
 							<button>
-								<FileUpload setData={setData} />
+								<FileUpload setStoredRoofData={setStoredRoofData} />
 							</button>
 							<button
 								onClick={e => {
-									shareData(data, "bookmarks.json");
+									shareroofData(roofData, "bookmarks.json")
 								}}
 							>
 								share
@@ -66,7 +66,7 @@ export default function SettingsPage({ data, setData, toggleIsSettings }) {
 				) : null}
 			</Div>
 		</>
-	);
+	)
 }
 
 const Div = styled.div`
@@ -79,7 +79,7 @@ const Div = styled.div`
 	position: absolute;
 	top: 20%;
 	left: 20%;
-`;
+`
 const SideBar = styled.div`
 	display: flex;
 	flex-flow: column;
@@ -87,8 +87,8 @@ const SideBar = styled.div`
 	height: 100%;
 	float: left;
 	border-right: 2px #474343 solid;
-`;
+`
 
 const Main = styled.main`
 	padding: 2rem;
-`;
+`

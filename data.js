@@ -1,17 +1,17 @@
 const DATA = {
+	count: 5,
 	background: "",
 	defaultSearchEngine: {
 		name: "Google",
 		url: "https://www.google.com/search?q=%QUERY",
 		shortcut: "g",
 	},
-	count: 5,
 	bookmarks: [
-		{ id: 0, name: "Bookmarks Bar", type: "folder", childrenIds: [2, 3, 4] },
-		{ id: 1, name: "Others", type: "folder", childrenIds: [] },
+		{ id: 0, name: "Bookmarks Bar", type: "folder" },
+		{ id: 1, name: "Others", type: "folder" },
 		{ id: 2, name: "Github", type: "link", url: "https://github.io", parentId: 0 },
 		{ id: 3, name: "Pintrest", type: "link", url: "https://pintrest.com", parentId: 0 },
-		{ id: 4, name: "Series", type: "folder", parentId: 0, childrenIds: [] },
+		{ id: 4, name: "Series", type: "folder", parentId: 0 },
 	],
 	shortcuts: {
 		g: {
@@ -63,6 +63,6 @@ const DATA = {
 			textColor: "black",
 		},
 	},
-};
+}
 
-export { DATA };
+export { DATA }

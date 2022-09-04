@@ -1,21 +1,19 @@
-import styled from "styled-components";
-import LinkContextMenu from "./LinkContextMenu";
-import BookmarkContextMenu from "../../pages/app/BookmarksBar/BookmarkContextMenu";
-import { useContextMenu } from "../../hooks/useContextMenu";
-import { useToggle } from "../../hooks/useToggle";
-import BookmarkForm from "../../pages/app/BookmarksBar/BookmarkForm";
-import { getFolders } from "../../pages/app/BookmarksBar/helpers";
+import styled from "styled-components"
+import BookmarkContextMenu from "../../pages/app/BookmarksBar/BookmarkContextMenu"
+import { useContextMenu } from "../../hooks/useContextMenu"
+import { useToggle } from "../../hooks/useToggle"
+import BookmarkForm from "../../pages/app/BookmarksBar/BookmarkForm"
 
-export default function Link({ data, dispatch, bookmark, children }) {
-	const [isContextMenuOpen, contextMenuPosition, contextMenuTrigger] = useContextMenu();
-	const [isForm, toggleIsForm] = useToggle(false);
+export default function Link({ roofData, dispatch, bookmark, children }) {
+	const [isContextMenuOpen, contextMenuPosition, contextMenuTrigger] = useContextMenu()
+	const [isForm, toggleIsForm] = useToggle(false)
 
 	return (
 		<>
 			{isForm && (
 				<BookmarkForm
-					currentCount={data.count}
-					bookmarks={data.bookmarks}
+					currentCount={roofData.count}
+					bookmarks={roofData.bookmarks}
 					toggleForm={toggleIsForm}
 					dispatch={dispatch}
 					dispatchType={"updateBookmark"}
@@ -27,7 +25,7 @@ export default function Link({ data, dispatch, bookmark, children }) {
 				title={children}
 				href={bookmark.url}
 				onContextMenu={e => {
-					contextMenuTrigger(e);
+					contextMenuTrigger(e)
 				}}
 			>
 				<img
@@ -47,7 +45,7 @@ export default function Link({ data, dispatch, bookmark, children }) {
 				/>
 			)}
 		</>
-	);
+	)
 }
 
 const A = styled.a`
@@ -66,7 +64,7 @@ const A = styled.a`
 	font-size: ${props => props.fontSize || "11px"};
 	font-family: "Inter", sans-serif;
 	text-decoration: none;
-`;
+`
 
 const Span = styled.span`
 	//this prevents text from overflowing and adds
@@ -74,4 +72,4 @@ const Span = styled.span`
 	white-space: nowrap;
 	overflow: hidden;
 	//
-`;
+`

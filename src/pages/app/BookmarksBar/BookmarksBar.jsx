@@ -1,30 +1,30 @@
-import styled from "styled-components";
-import Button from "../../../components/Button/Button";
-import Link from "../../../components/Link/Link";
-import { ThemeContext } from "../../../contexts/ThemeContext";
-import { useContext } from "react";
-import Folder from "./Folder";
-import { Plus } from "@styled-icons/fa-solid";
-import { Cog } from "@styled-icons/boxicons-solid";
-import { getBookmarkChildren } from "./helpers";
-import { useToggle } from "../../../hooks/useToggle";
-import BookmarkForm from "./BookmarkForm";
-import { getFolders } from "./helpers";
+import styled from "styled-components"
+import Button from "../../../components/Button/Button"
+import Link from "../../../components/Link/Link"
+import { ThemeContext } from "../../../contexts/ThemeContext"
+import { useContext } from "react"
+import Folder from "./Folder"
+import { Plus } from "@styled-icons/fa-solid"
+import { Cog } from "@styled-icons/boxicons-solid"
+import { getBookmarkChildren } from "./helpers"
+import { useToggle } from "../../../hooks/useToggle"
+import BookmarkForm from "./BookmarkForm"
 
-export default function BookmarksBar({ data, toggleIsSettings, dispatch }) {
-	const [isAdd, toggleIsAdd] = useToggle(false);
+export default function BookmarksBar({ roofData, toggleIsSettings, dispatch }) {
+	const [isAdd, toggleIsAdd] = useToggle(false)
 
-	const theme = useContext(ThemeContext);
+	const theme = useContext(ThemeContext)
 
 	const toggleSettings = e => {
-		toggleIsSettings();
-	};
+		toggleIsSettings()
+	}
 
 	const toggleAddBookmarkContainer = () => {
-		toggleIsAdd();
-	};
+		toggleIsAdd()
+	}
 
-	const bookmarksBarChildren = getBookmarkChildren(data.bookmarks[0], data.bookmarks);
+	// getting the children of the bar whos id is 0
+	const bookmarksBarChildren = getBookmarkChildren(0, roofData.bookmarks)
 	return (
 		<>
 			<StyledDiv backgroundColor={theme.containersColor}>
@@ -32,12 +32,12 @@ export default function BookmarksBar({ data, toggleIsSettings, dispatch }) {
 					{bookmarksBarChildren.map(bookmark => {
 						if (bookmark.type === "link") {
 							return (
-								<Link data={data} key={bookmark.id} bookmark={bookmark} dispatch={dispatch}>
+								<Link roofData={roofData} key={bookmark.id} bookmark={bookmark} dispatch={dispatch}>
 									{bookmark.name}
 								</Link>
-							);
+							)
 						}
-						return <Folder key={bookmark.id} folder={bookmark} data={data} dispatch={dispatch} />;
+						return <Folder key={bookmark.id} folder={bookmark} roofData={roofData} dispatch={dispatch} />
 					})}
 				</Container>
 
@@ -45,7 +45,7 @@ export default function BookmarksBar({ data, toggleIsSettings, dispatch }) {
 					<Button onClick={toggleAddBookmarkContainer} backgroundColor={theme.fieldsColor}>
 						<Plus style={{ width: "1em", color: "white" }} />
 					</Button>
-					<Folder folder={data.bookmarks[1]} data={data} />
+					<Folder folder={roofData.bookmarks[1]} roofData={roofData} />
 					<Button onClick={toggleSettings} backgroundColor={theme.fieldsColor}>
 						<Cog style={{ width: "1.3em", color: "white" }} />
 					</Button>
@@ -54,15 +54,15 @@ export default function BookmarksBar({ data, toggleIsSettings, dispatch }) {
 
 			{isAdd && (
 				<BookmarkForm
-					currentCount={data.count}
-					bookmarks={data.bookmarks}
+					currentCount={roofData.count}
+					bookmarks={roofData.bookmarks}
 					toggleForm={toggleIsAdd}
 					dispatch={dispatch}
 					dispatchType={"addBookmark"}
 				/>
 			)}
 		</>
-	);
+	)
 }
 
 const StyledDiv = styled.div`
@@ -73,11 +73,11 @@ const StyledDiv = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	position: relative;
-`;
+`
 
 const Container = styled.div`
 	display: flex;
 	align-items: center;
 	height: rem;
 	overflow: visible;
-`;
+`

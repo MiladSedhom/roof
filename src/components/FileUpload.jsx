@@ -1,20 +1,20 @@
-export default function FileUpload({ setData }) {
-	const onInputHandler = async (e) => {
-		const reader = new FileReader();
-		reader.readAsText(e.target.files[0]);
+export default function FileUpload({ setStoredRoofData }) {
+	const onInputHandler = async e => {
+		const reader = new FileReader()
+		reader.readAsText(e.target.files[0])
 		reader.onload = () => {
-			let parsedJSON = JSON.parse(reader.result);
-			setData(parsedJSON);
-		};
-	};
+			let parsedJSON = JSON.parse(reader.result)
+			setStoredRoofData(parsedJSON)
+		}
+	}
 
 	return (
 		<input
 			type="file"
 			accept=".json"
-			onInput={(e) => {
-				onInputHandler(e);
+			onInput={e => {
+				onInputHandler(e)
 			}}
 		/>
-	);
+	)
 }
