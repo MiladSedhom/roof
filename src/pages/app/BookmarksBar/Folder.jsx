@@ -6,23 +6,73 @@ import { useToggle } from "../../../hooks/useToggle"
 import { Folder as FolderIcon, FolderOpen as OpenFolderIcon } from "@styled-icons/boxicons-solid"
 import { CaretRight } from "@styled-icons/fa-solid"
 import { useRef } from "react"
-import { getBookmarkChildren } from "./helpers"
-import { useClickOutside } from "../../../hooks/useClickOutside"
+import { getBookmarkChildren, getListPosition } from "./helpers"
 import { useContextMenu } from "../../../hooks/useContextMenu"
 import BackDrop from "../../../components/BackDrop/BackDrop"
 import BookmarkContextMenu from "./BookmarkContextMenu"
 import BookmarkForm from "./BookmarkForm"
+import { useClickOutside } from "../../../hooks/useClickOutside"
 
-export default function Folder({ folder, roofData, dispatch }) {
+export default function Folder({ folder, roofData, dispatch, isNested }) {
 	const [isForm, toggleIsForm] = useToggle(false)
 	const [isList, toggleIsList] = useToggle(false)
 	const buttonRef = useRef(null)
 	const buttonPosition = usePosition(buttonRef)
 
+	const listPosition = getListPosition(buttonPosition, isNested)
+
 	const [isContextMenu, contextMenuPosition, contextMenuTrigger] = useContextMenu()
 
 	return (
 		<>
+			{isList && !isNested && <BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />}
+			{!isNested ? (
+				<Button
+					innerRef={buttonRef}
+					onContextMenu={e => {
+						contextMenuTrigger(e)
+					}}
+					onClick={e => {
+						toggleIsList()
+					}}
+				>
+					{isList ? (
+						<OpenFolderIcon style={{ width: "1.2em", marginRight: "4px" }} />
+					) : (
+						<FolderIcon style={{ width: "1.2em", marginRight: "4px" }} />
+					)}
+					{folder.name}
+				</Button>
+			) : (
+				<NestedButton
+					innerRef={buttonRef}
+					onContextMenu={e => {
+						contextMenuTrigger(e)
+					}}
+					onClick={e => {
+						toggleIsList()
+					}}
+				>
+					{isList ? (
+						<OpenFolderIcon style={{ width: "1.2em", marginRight: "4px" }} />
+					) : (
+						<FolderIcon style={{ width: "1.2em", marginRight: "4px" }} />
+					)}
+					{folder.name}
+				</NestedButton>
+			)}
+
+			{isList && (
+				<List
+					folder={folder}
+					roofData={roofData}
+					dispatch={dispatch}
+					positionLeft={listPosition.left}
+					positionTop={listPosition.top}
+					toggleIsList={toggleIsList}
+				/>
+			)}
+
 			{isForm && (
 				<BookmarkForm
 					parentPosition={buttonPosition}
@@ -42,92 +92,47 @@ export default function Folder({ folder, roofData, dispatch }) {
 					toggleIsForm={toggleIsForm}
 				/>
 			)}
-			{isList && <BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />}
-
-			<Button
-				innerRef={buttonRef}
-				onContextMenu={e => {
-					console.log("button context menu")
-					contextMenuTrigger(e)
-				}}
-				onClick={e => {
-					toggleIsList()
-				}}
-			>
-				{isList ? (
-					<OpenFolderIcon style={{ width: "1.2em", marginRight: "4px" }} />
-				) : (
-					<FolderIcon style={{ width: "1.2em", marginRight: "4px" }} />
-				)}
-				{folder.name}
-			</Button>
-
-			{isList && (
-				<List
-					toggleList={toggleIsList}
-					dispatch={dispatch}
-					folder={folder}
-					positionTop={buttonPosition.top + buttonPosition.height + 16}
-					positionLeft={buttonPosition.left - buttonPosition.width / 2}
-					roofData={roofData}
-				/>
-			)}
 		</>
 	)
 }
 
-function List({ folder, positionTop, positionLeft, roofData, dispatch, toggleList, isNested }) {
+function List({ folder, roofData, dispatch, positionLeft, positionTop, toggleIsList }) {
 	const folderChildren = getBookmarkChildren(folder.id, roofData.bookmarks)
-	const listRef = useRef()
-
-	if (isNested) {
-		useClickOutside(listRef, () => {
-			toggleList(false)
-		})
-	}
-
-	const listPosition = usePosition(listRef)
+	const listRef = useRef(null)
+	console.log(listRef.current)
+	useClickOutside(listRef, toggleIsList)
 
 	return (
-		<div style={{ position: "fixed", top: positionTop, left: positionLeft, width: "10rem" }} ref={listRef}>
-			<ListDiv
-				dispatch={dispatch}
-				positionTop={positionTop}
-				positionLeft={positionLeft}
-				onClick={e => {
-					e.stopPropagation()
-				}}
-			>
-				{folderChildren.map(child => {
-					if (child.type === "link") {
-						return (
-							<Link
-								roofData={roofData}
-								dispatch={dispatch}
-								key={child.name}
-								href={child.url}
-								title={child.name}
-								bookmark={child}
-							>
-								{child.name}
-							</Link>
-						)
-					}
+		<ListWrapper ref={listRef} positionTop={positionTop} positionLeft={positionLeft}>
+			{folderChildren.map(child => {
+				if (child.type === "link") {
 					return (
-						<ListFolder key={child.name} folder={child} roofData={roofData}>
+						<Link
+							roofData={roofData}
+							dispatch={dispatch}
+							key={child.name}
+							href={child.url}
+							title={child.name}
+							bookmark={child}
+						>
 							{child.name}
-						</ListFolder>
+						</Link>
 					)
-				})}
-			</ListDiv>
-		</div>
+				}
+				return (
+					<Folder key={child.name} folder={child} roofData={roofData} isNested>
+						{child.name}
+					</Folder>
+				)
+			})}
+		</ListWrapper>
 	)
 }
-const ListDiv = styled.div`
+const ListWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	justify-content: center;
+	align-items: center;
 	width: 10rem;
 	min-height: 3rem;
 	padding: 0.5rem 0;
@@ -138,53 +143,22 @@ const ListDiv = styled.div`
 	left: ${props => props.positionLeft + "px"};
 `
 
-function ListFolder(props) {
-	const [isNestedList, toggleIsNestedList] = useToggle(false)
-	const listFolderRef = useRef()
-	const listFolderPosition = usePosition(listFolderRef)
-
-	const windowWidth = window.innerWidth
-
+function NestedButton(props) {
 	return (
-		<>
-			<ListFolderContainer onClick={toggleIsNestedList} ref={listFolderRef}>
-				{isNestedList && (
-					<List
-						isNested
-						toggleList={toggleIsNestedList}
-						folder={props.folder}
-						roofData={props.roofData}
-						positionLeft={
-							listFolderPosition.left < windowWidth / 2
-								? listFolderPosition.left + listFolderPosition.width + 2
-								: listFolderPosition.left - listFolderPosition.width - 2
-						}
-					/>
-				)}
-				<Container>
-					<div style={{ maxWidth: "90%" }}>
-						<FolderIcon style={{ width: "1em", marginRight: "4px" }} />
-						{props.children}
-					</div>
-					<CaretRight style={{ width: "0.5em" }} />
-				</Container>
-			</ListFolderContainer>
-		</>
+		<NestedButtonWrapper ref={props.innerRef} {...props}>
+			<div style={{ maxWidth: "90%" }}>{props.children}</div>
+			<CaretRight style={{ width: "0.5em" }} />
+		</NestedButtonWrapper>
 	)
 }
 
-const Container = styled.div`
-	width: 100%;
+const NestedButtonWrapper = styled.button`
 	display: flex;
 	justify-content: space-between;
-`
-
-const ListFolderContainer = styled.div`
 	width: 100%;
 	padding: 0.25rem 1rem;
 	margin: 0.25rem;
 	font-size: 12px;
 	background-color: #171717;
 	color: white;
-	position: relative;
 `
