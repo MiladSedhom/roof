@@ -1,29 +1,29 @@
-import { useState } from "react";
-import styled from "styled-components";
-import Button from "../../../components/Button/Button";
-import Input from "../../../components/Input/Input";
-import Select from "../../../components/Select/Select";
-import { useContext } from "react";
-import { ThemeContext } from "../../../contexts/ThemeContext";
-import { useClickOutside } from "../../../hooks/useClickOutside";
-import { useRef } from "react";
-import { getFolders } from "./helpers";
+import { useState } from "react"
+import styled from "styled-components"
+import Button from "../../../components/Button/Button"
+import Input from "../../../components/Input/Input"
+import Select from "../../../components/Select/Select"
+import { useContext } from "react"
+import { ThemeContext } from "../../../contexts/ThemeContext"
+import { useClickOutside } from "../../../hooks/useClickOutside"
+import { useRef } from "react"
+import { getFolders } from "./helpers"
 
 export default function BookmarkForm(props) {
-	const { currentCount, bookmarks, toggleForm, dispatch, dispatchType, defaultBookmark } = props;
-	const foldersList = getFolders(bookmarks);
+	const { currentCount, bookmarks, toggleForm, dispatch, dispatchType, defaultBookmark, parentPosition } = props
+	const foldersList = getFolders(bookmarks)
 
-	const [url, setUrl] = useState(defaultBookmark && defaultBookmark.url ? defaultBookmark.url : "");
-	const [name, setName] = useState(defaultBookmark ? defaultBookmark.name : "");
-	const [type, setType] = useState(defaultBookmark ? defaultBookmark.type : "link");
-	const [targetId, setTargetId] = useState(0);
-	const theme = useContext(ThemeContext);
+	const [url, setUrl] = useState(defaultBookmark && defaultBookmark.url ? defaultBookmark.url : "")
+	const [name, setName] = useState(defaultBookmark ? defaultBookmark.name : "")
+	const [type, setType] = useState(defaultBookmark ? defaultBookmark.type : "link")
+	const [targetId, setTargetId] = useState(0)
+	const theme = useContext(ThemeContext)
 
-	const formRef = useRef();
-	useClickOutside(formRef, toggleForm);
+	const formRef = useRef()
+	useClickOutside(formRef, toggleForm)
 
 	function submitHandler(e) {
-		e.preventDefault();
+		e.preventDefault()
 		const newBookmark =
 			type === "folder"
 				? {
@@ -39,19 +39,19 @@ export default function BookmarkForm(props) {
 						url,
 						name,
 						parentId: targetId - 0,
-				  };
+				  }
 
-		dispatch({ type: dispatchType, payload: { bookmark: newBookmark } });
-		toggleForm();
+		dispatch({ type: dispatchType, payload: { bookmark: newBookmark } })
+		toggleForm()
 	}
 
 	return (
-		<StyledDiv ref={formRef} backgroundColor={theme.containersColor}>
+		<StyledDiv ref={formRef} backgroundColor={theme.containersColor} parentPosition={parentPosition}>
 			<Form action="none">
 				<Input
 					value={name}
 					onInput={e => {
-						setName(e.target.value);
+						setName(e.target.value)
 					}}
 					type="text"
 					placeholder="Name"
@@ -60,7 +60,7 @@ export default function BookmarkForm(props) {
 					<Input
 						value={url}
 						onInput={e => {
-							setUrl(e.target.value);
+							setUrl(e.target.value)
 						}}
 						type="text"
 						placeholder="url"
@@ -72,7 +72,7 @@ export default function BookmarkForm(props) {
 						label={"location: "}
 						value={targetId}
 						onChange={e => {
-							setTargetId(e.target.value);
+							setTargetId(e.target.value)
 						}}
 					>
 						{foldersList.map(element => (
@@ -88,7 +88,7 @@ export default function BookmarkForm(props) {
 						label={"type: "}
 						value={type}
 						onChange={e => {
-							setType(e.target.value);
+							setType(e.target.value)
 						}}
 					>
 						<option value="link">Link</option>
@@ -98,20 +98,23 @@ export default function BookmarkForm(props) {
 				<Button
 					style={{ outline: "solid 1px black" }}
 					onClick={e => {
-						submitHandler(e);
+						submitHandler(e)
 					}}
 				>
 					Add
 				</Button>
 			</Form>
 		</StyledDiv>
-	);
+	)
 }
 
 const StyledDiv = styled.div`
 	position: fixed;
-	right: 5rem;
-	top: 10rem;
+	left: ${props => {
+		const left = props.parentPosition.left + props.parentPosition.width / 2 - 7.5 * 16
+		return left < 0 ? 0 : left + "px"
+	}};
+	top: ${props => props.parentPosition.top + 32 + "px"};
 	width: 15rem;
 	max-height: 85vh;
 	overflow-y: auto;
@@ -120,7 +123,7 @@ const StyledDiv = styled.div`
 	border-radius: 1rem;
 	background-color: ${props => props.backgroundColor || "#383535 "};
 	color: white;
-`;
+`
 
 const Form = styled.form`
 	display: flex;
@@ -129,4 +132,4 @@ const Form = styled.form`
 	align-items: flex-start;
 	width: 100%;
 	height: 100%;
-`;
+`

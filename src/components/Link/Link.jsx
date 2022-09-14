@@ -2,26 +2,20 @@ import styled from "styled-components"
 import BookmarkContextMenu from "../../pages/app/BookmarksBar/BookmarkContextMenu"
 import { useContextMenu } from "../../hooks/useContextMenu"
 import { useToggle } from "../../hooks/useToggle"
+import { useRef } from "react"
+import { usePosition } from "../../hooks/usePosition"
 import BookmarkForm from "../../pages/app/BookmarksBar/BookmarkForm"
 
 export default function Link({ roofData, dispatch, bookmark, children }) {
 	const [isContextMenuOpen, contextMenuPosition, contextMenuTrigger] = useContextMenu()
 	const [isForm, toggleIsForm] = useToggle(false)
+	const linkRef = useRef(null)
+	const linkPosition = usePosition(linkRef)
 
 	return (
 		<>
-			{isForm && (
-				<BookmarkForm
-					currentCount={roofData.count}
-					bookmarks={roofData.bookmarks}
-					toggleForm={toggleIsForm}
-					dispatch={dispatch}
-					dispatchType={"updateBookmark"}
-					defaultBookmark={bookmark}
-				/>
-			)}
-
 			<A
+				ref={linkRef}
 				title={children}
 				href={bookmark.url}
 				onContextMenu={e => {
@@ -42,6 +36,17 @@ export default function Link({ roofData, dispatch, bookmark, children }) {
 					bookmark={bookmark}
 					dispatch={dispatch}
 					toggleIsForm={toggleIsForm}
+				/>
+			)}
+			{isForm && (
+				<BookmarkForm
+					parentPosition={linkPosition}
+					currentCount={roofData.count}
+					bookmarks={roofData.bookmarks}
+					toggleForm={toggleIsForm}
+					dispatch={dispatch}
+					dispatchType={"updateBookmark"}
+					defaultBookmark={bookmark}
 				/>
 			)}
 		</>

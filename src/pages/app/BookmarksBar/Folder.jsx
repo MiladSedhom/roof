@@ -25,6 +25,7 @@ export default function Folder({ folder, roofData, dispatch }) {
 		<>
 			{isForm && (
 				<BookmarkForm
+					parentPosition={buttonPosition}
 					currentCount={roofData.count}
 					bookmarks={roofData.bookmarks}
 					toggleForm={toggleIsForm}
