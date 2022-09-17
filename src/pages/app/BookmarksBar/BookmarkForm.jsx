@@ -7,108 +7,128 @@ import { useContext } from "react"
 import { ThemeContext } from "../../../contexts/ThemeContext"
 import { useClickOutside } from "../../../hooks/useClickOutside"
 import { useRef } from "react"
-import { getFolders } from "./helpers"
+import { getFolders, isValidURL } from "./helpers"
 
 export default function BookmarkForm(props) {
 	const { currentCount, bookmarks, toggleForm, dispatch, dispatchType, defaultBookmark, parentPosition } = props
-	const foldersList = getFolders(bookmarks)
-
-	const [url, setUrl] = useState(defaultBookmark && defaultBookmark.url ? defaultBookmark.url : "")
-	const [name, setName] = useState(defaultBookmark ? defaultBookmark.name : "")
-	const [type, setType] = useState(defaultBookmark ? defaultBookmark.type : "link")
-	const [targetId, setTargetId] = useState(0)
 	const theme = useContext(ThemeContext)
-
+	const foldersList = getFolders(bookmarks)
 	const formRef = useRef()
 	useClickOutside(formRef, toggleForm)
 
+	const [formValues, setFormValues] = useState({
+		name: defaultBookmark ? defaultBookmark.name : "",
+		url: defaultBookmark && defaultBookmark.url ? defaultBookmark.url : "",
+		type: defaultBookmark ? defaultBookmark.type : "link",
+		targetId: 0,
+	})
+	const [formErrors, setFormErrors] = useState({})
+
+	const validate = values => {
+		const errors = {}
+		if (!values.name) {
+			errors.name = "name is required"
+		}
+		if (values.type === "link" && !isValidURL(values.url)) {
+			errors.url = "this is not a valid url"
+		}
+		if (values.type === "link" && !values.url) {
+			errors.url = "url is required"
+		}
+		setFormErrors(errors)
+		return Object.keys(errors).length === 0
+	}
+
+	const onChange = e => {
+		setFormValues(formValues => {
+			return { ...formValues, [e.target.name]: e.target.value }
+		})
+	}
+
 	function submitHandler(e) {
 		e.preventDefault()
-		const newBookmark =
-			type === "folder"
-				? {
-						id: defaultBookmark ? defaultBookmark.id : currentCount,
-						type,
-						name,
-						childrenIds: [],
-						parentId: targetId - 0,
-				  }
-				: {
-						id: defaultBookmark ? defaultBookmark.id : currentCount,
-						type,
-						url,
-						name,
-						parentId: targetId - 0,
-				  }
-
+		if (!validate(formValues)) return
+		const newBookmark = {
+			id: defaultBookmark ? defaultBookmark.id : currentCount,
+			name: formValues.name,
+			type: formValues.type,
+			parentId: formValues.targetId - 0,
+			childrenIds: formValues.type === "folder" ? [] : undefined,
+			url: formValues.type === "link" ? formValues.url : undefined,
+		}
 		dispatch({ type: dispatchType, payload: { bookmark: newBookmark } })
 		toggleForm()
 	}
 
 	return (
-		<StyledDiv ref={formRef} backgroundColor={theme.containersColor} parentPosition={parentPosition}>
-			<Form action="none">
+		<Wrapper ref={formRef} backgroundColor={theme.containersColor} parentPosition={parentPosition}>
+			<Form action="#" id="form" autoComplete="off">
 				<Input
-					value={name}
-					onInput={e => {
-						setName(e.target.value)
-					}}
-					type="text"
+					name="name"
+					value={formValues.name}
 					placeholder="Name"
+					onChange={e => {
+						onChange(e)
+					}}
+					errorMessage={formErrors["name"]}
 				/>
-				{type === "link" ? (
-					<Input
-						value={url}
-						onInput={e => {
-							setUrl(e.target.value)
-						}}
-						type="text"
-						placeholder="url"
-					/>
-				) : null}
+				<Input
+					name="url"
+					value={formValues.url}
+					placeholder="Url"
+					onChange={e => {
+						onChange(e)
+					}}
+					errorMessage={formErrors["url"]}
+					disabled={formValues.type === "folder"}
+				/>
 
-				<div>
-					<Select
-						label={"location: "}
-						value={targetId}
-						onChange={e => {
-							setTargetId(e.target.value)
-						}}
-					>
-						{foldersList.map(element => (
-							<option value={element.id} key={element.id}>
-								{element.name}
-							</option>
-						))}
-					</Select>
-				</div>
+				<Select
+					label="location: "
+					value={formValues.targetId}
+					onChange={e => {
+						setFormValues(prevState => {
+							return { ...prevState, targetId: e.target.value }
+						})
+					}}
+				>
+					{foldersList.map(element => (
+						<option value={element.id} key={element.id}>
+							{element.name}
+						</option>
+					))}
+				</Select>
 
-				<div>
-					<Select
-						label={"type: "}
-						value={type}
-						onChange={e => {
-							setType(e.target.value)
-						}}
-					>
-						<option value="link">Link</option>
-						<option value="folder">Folder</option>
-					</Select>
-				</div>
-				<Button
+				<Select
+					label={"type: "}
+					value={formValues.type}
+					onChange={e => {
+						setFormValues(prevState => {
+							return { ...prevState, type: e.target.value }
+						})
+					}}
+					disabled={!!defaultBookmark}
+				>
+					<option value="link">Link</option>
+					<option value="folder">Folder</option>
+				</Select>
+
+				<FormButton
+					type="submit"
+					form="form"
 					style={{ outline: "solid 1px black" }}
 					onClick={e => {
 						submitHandler(e)
 					}}
 				>
-					Add
-				</Button>
+					ADD
+				</FormButton>
 			</Form>
-		</StyledDiv>
+		</Wrapper>
 	)
 }
 
-const StyledDiv = styled.div`
+const Wrapper = styled.div`
 	position: fixed;
 	left: ${props => {
 		const left = props.parentPosition.left + props.parentPosition.width / 2 - 7.5 * 16
@@ -118,8 +138,8 @@ const StyledDiv = styled.div`
 	width: 15rem;
 	max-height: 85vh;
 	overflow-y: auto;
+	padding: 1.5rem 1rem;
 	margin: 0.5rem;
-	padding: 1rem;
 	border-radius: 1rem;
 	background-color: ${props => props.backgroundColor || "#383535 "};
 	color: white;
@@ -131,5 +151,11 @@ const Form = styled.form`
 	justify-content: center;
 	align-items: flex-start;
 	width: 100%;
-	height: 100%;
+`
+const FormButton = styled(Button)`
+	width: 5rem;
+	background-color: wheat;
+	color: black;
+	font-weight: 600;
+	margin: 0.5rem 0 0 0;
 `
