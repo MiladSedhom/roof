@@ -10,18 +10,22 @@ import { useRef } from "react"
 import { getFolders, isValidURL } from "./helpers"
 
 export default function BookmarkForm(props) {
-	const { currentCount, bookmarks, toggleForm, dispatch, dispatchType, defaultBookmark, parentPosition } = props
+	const { currentCount, bookmarks, toggleForm, dispatch, dispatchType, bookmarkBeingEdited, parentPosition } = props
 	const theme = useContext(ThemeContext)
 	const foldersList = getFolders(bookmarks)
 	const formRef = useRef()
 	useClickOutside(formRef, toggleForm)
 
-	const [formValues, setFormValues] = useState({
-		name: defaultBookmark ? defaultBookmark.name : "",
-		url: defaultBookmark && defaultBookmark.url ? defaultBookmark.url : "",
-		type: defaultBookmark ? defaultBookmark.type : "link",
-		targetId: 0,
-	})
+	const defaultFormValues = bookmarkBeingEdited
+		? {
+				name: bookmarkBeingEdited.name,
+				url: bookmarkBeingEdited.url,
+				type: bookmarkBeingEdited.type,
+				targetId: bookmarkBeingEdited.targetId,
+		  }
+		: { name: "", url: "", type: "link", targetId: 0 }
+
+	const [formValues, setFormValues] = useState(defaultFormValues)
 	const [formErrors, setFormErrors] = useState({})
 
 	const validate = values => {
@@ -49,7 +53,7 @@ export default function BookmarkForm(props) {
 		e.preventDefault()
 		if (!validate(formValues)) return
 		const newBookmark = {
-			id: defaultBookmark ? defaultBookmark.id : currentCount,
+			id: bookmarkBeingEdited ? bookmarkBeingEdited.id : currentCount,
 			name: formValues.name,
 			type: formValues.type,
 			parentId: formValues.targetId - 0,
@@ -107,7 +111,7 @@ export default function BookmarkForm(props) {
 							return { ...prevState, type: e.target.value }
 						})
 					}}
-					disabled={!!defaultBookmark}
+					disabled={!!bookmarkBeingEdited}
 				>
 					<option value="link">Link</option>
 					<option value="folder">Folder</option>

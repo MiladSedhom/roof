@@ -81,7 +81,7 @@ export default function Folder({ folder, roofData, dispatch, isNested }) {
 					toggleForm={toggleIsForm}
 					dispatch={dispatch}
 					dispatchType={"updateBookmark"}
-					defaultBookmark={folder}
+					bookmarkBeingEdited={folder}
 				/>
 			)}
 			{isContextMenu && (

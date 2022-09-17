@@ -46,7 +46,7 @@ export default function Link({ roofData, dispatch, bookmark, children }) {
 					toggleForm={toggleIsForm}
 					dispatch={dispatch}
 					dispatchType={"updateBookmark"}
-					defaultBookmark={bookmark}
+					bookmarkBeingEdited={bookmark}
 				/>
 			)}
 		</>
