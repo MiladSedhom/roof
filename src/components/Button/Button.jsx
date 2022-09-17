@@ -1,14 +1,16 @@
 import styled from "styled-components"
 
 export default function Button(props) {
+	const { innerRef, children, ...restOfProps } = props
 	return (
-		<StyledButton ref={props.innerRef} title={props.children} {...props}>
-			{props.children}
+		<StyledButton ref={innerRef} title={children[1]} {...restOfProps}>
+			{children}
 		</StyledButton>
 	)
 }
 
 const StyledButton = styled.button`
+	max-width: 12rem;
 	padding: 0.25em 1em;
 	margin: 0.5em;
 	border: none;
@@ -18,4 +20,9 @@ const StyledButton = styled.button`
 	font-size: ${props => props.fontSize || "12px"};
 	font-family: "Inter", sans-serif;
 	cursor: pointer;
+	//this prevents text from overflowing and adds
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	//
 `
