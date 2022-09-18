@@ -162,6 +162,7 @@ const Wrapper = styled.div`
 	border-radius: 1rem;
 	background-color: ${props => props.backgroundColor || "#383535 "};
 	color: white;
+	outline: 2px solid black;
 `
 
 const Form = styled.form`
