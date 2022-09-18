@@ -48,7 +48,7 @@ export default function BookmarksBar({ roofData, toggleIsSettings, dispatch }) {
 					<Button innerRef={addButtonRef} onClick={toggleAddBookmarkContainer} backgroundColor={theme.fieldsColor}>
 						<Plus style={{ width: "1em", color: "white" }} />
 					</Button>
-					<Folder folder={roofData.bookmarks[1]} roofData={roofData} />
+					<Folder folder={roofData.bookmarks[1]} roofData={roofData} dispatch={dispatch} />
 					<Button onClick={toggleSettings} backgroundColor={theme.fieldsColor}>
 						<Cog style={{ width: "1.3em", color: "white" }} />
 					</Button>
