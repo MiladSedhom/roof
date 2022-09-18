@@ -13,20 +13,18 @@ import BookmarkContextMenu from "./BookmarkContextMenu"
 import BookmarkForm from "./BookmarkForm"
 import { useClickOutside } from "../../../hooks/useClickOutside"
 
-export default function Folder({ folder, roofData, dispatch, isNested }) {
+export default function Folder({ folder, roofData, dispatch, isNestedFolder }) {
 	const [isForm, toggleIsForm] = useToggle(false)
 	const [isList, toggleIsList] = useToggle(false)
 	const buttonRef = useRef(null)
 	const buttonPosition = usePosition(buttonRef)
 
-	const listPosition = getListPosition(buttonPosition, isNested)
-
 	const [isContextMenu, contextMenuPosition, contextMenuTrigger] = useContextMenu()
 
 	return (
 		<>
-			{isList && !isNested && <BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />}
-			{!isNested ? (
+			{isList && !isNestedFolder && <BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />}
+			{!isNestedFolder ? (
 				<Button
 					innerRef={buttonRef}
 					onContextMenu={e => {
@@ -67,9 +65,9 @@ export default function Folder({ folder, roofData, dispatch, isNested }) {
 					folder={folder}
 					roofData={roofData}
 					dispatch={dispatch}
-					positionLeft={listPosition.left}
-					positionTop={listPosition.top}
+					parentPosition={buttonPosition}
 					toggleIsList={toggleIsList}
+					isNestedList={isNestedFolder}
 				/>
 			)}
 
@@ -96,13 +94,16 @@ export default function Folder({ folder, roofData, dispatch, isNested }) {
 	)
 }
 
-function List({ folder, roofData, dispatch, positionLeft, positionTop, toggleIsList }) {
+function List({ folder, roofData, dispatch, parentPosition, toggleIsList, isNestedList }) {
 	const folderChildren = getBookmarkChildren(folder.id, roofData.bookmarks)
 	const listRef = useRef(null)
 	useClickOutside(listRef, toggleIsList)
 
+	const LIST_WIDTH = 80
+	const listPosition = getListPosition(parentPosition, isNestedList, LIST_WIDTH)
+
 	return (
-		<ListWrapper ref={listRef} positionTop={positionTop} positionLeft={positionLeft}>
+		<ListWrapper ref={listRef} positionLeft={listPosition.left} positionTop={listPosition.top}>
 			{folderChildren.map(child => {
 				if (child.type === "link") {
 					return (
@@ -119,7 +120,7 @@ function List({ folder, roofData, dispatch, positionLeft, positionTop, toggleIsL
 					)
 				}
 				return (
-					<Folder folder={child} dispatch={dispatch} roofData={roofData} isNested key={child.name}>
+					<Folder folder={child} dispatch={dispatch} roofData={roofData} isNestedFolder key={child.name}>
 						{child.name}
 					</Folder>
 				)
