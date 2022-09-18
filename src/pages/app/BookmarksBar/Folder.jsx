@@ -8,7 +8,6 @@ import { CaretRight } from "@styled-icons/fa-solid"
 import { useRef } from "react"
 import { getBookmarkChildren, getListPosition } from "./helpers"
 import { useContextMenu } from "../../../hooks/useContextMenu"
-import BackDrop from "../../../components/BackDrop/BackDrop"
 import BookmarkContextMenu from "./BookmarkContextMenu"
 import BookmarkForm from "./BookmarkForm"
 import { useClickOutside } from "../../../hooks/useClickOutside"
@@ -23,7 +22,6 @@ export default function Folder({ folder, roofData, dispatch, isNestedFolder }) {
 
 	return (
 		<>
-			{isList && !isNestedFolder && <BackDrop onClick={toggleIsList} style={{ backgroundColor: "transparent" }} />}
 			{!isNestedFolder ? (
 				<Button
 					innerRef={buttonRef}
