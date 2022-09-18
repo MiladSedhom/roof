@@ -1,10 +1,10 @@
-export default function FileUpload({ setStoredRoofData }) {
+export default function FileUpload({ dispatch }) {
 	const onInputHandler = async e => {
 		const reader = new FileReader()
 		reader.readAsText(e.target.files[0])
 		reader.onload = () => {
 			let parsedJSON = JSON.parse(reader.result)
-			setStoredRoofData(parsedJSON)
+			dispatch({ type: "uploadJSON", payload: { uploadedJSON: parsedJSON } })
 		}
 	}
 

@@ -5,7 +5,7 @@ import FileUpload from "../../../components/FileUpload"
 import { useRef } from "react"
 import { useClickOutside } from "../../../hooks/useClickOutside"
 
-export default function SettingsPage({ roofData, setStoredRoofData, toggleIsSettings }) {
+export default function SettingsPage({ roofData, dispatch, toggleIsSettings }) {
 	const [currentPanel, setCurrentPanel] = useState("shortcuts")
 	const clickOutsideRef = useRef()
 	useClickOutside(clickOutsideRef, toggleIsSettings)
@@ -48,7 +48,7 @@ export default function SettingsPage({ roofData, setStoredRoofData, toggleIsSett
 								Download
 							</button>
 							<button>
-								<FileUpload setStoredRoofData={setStoredRoofData} />
+								<FileUpload dispatch={dispatch} />
 							</button>
 							<button
 								onClick={e => {

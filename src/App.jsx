@@ -45,6 +45,9 @@ function App() {
 			case "updateBookmark": {
 				return updateBookmark(state, action.payload.bookmark)
 			}
+			case "uploadJSON": {
+				return action.payload.uploadedJSON
+			}
 			default:
 				return state
 		}
@@ -69,11 +72,7 @@ function App() {
 
 					<Container>
 						{isSettings && (
-							<SettingsModal
-								roofData={roofData}
-								setStoredRoofData={setStoredRoofData}
-								toggleIsSettings={toggleIsSettings}
-							/>
+							<SettingsModal roofData={roofData} dispatch={dispatch} toggleIsSettings={toggleIsSettings} />
 						)}
 						<SearchBarLogoContainer>
 							<Logo>Roof</Logo>
