@@ -8,13 +8,26 @@ import { ThemeContext } from "../../../contexts/ThemeContext"
 import { useClickOutside } from "../../../hooks/useClickOutside"
 import { useRef } from "react"
 import { getFolders, isValidURL } from "./helpers"
+import { useEffect } from "react"
 
 export default function BookmarkForm(props) {
 	const { currentCount, bookmarks, toggleForm, dispatch, dispatchType, bookmarkBeingEdited, parentPosition } = props
 	const theme = useContext(ThemeContext)
 	const foldersList = getFolders(bookmarks)
+
 	const formRef = useRef()
 	useClickOutside(formRef, toggleForm)
+
+	useEffect(() => {
+		async function getClipboardUrl() {
+			const clipboardText = await navigator.clipboard.readText()
+			if (isValidURL(clipboardText)) {
+				setFormValues({ ...formValues, url: clipboardText })
+			}
+		}
+
+		getClipboardUrl()
+	}, [])
 
 	const defaultFormValues = bookmarkBeingEdited
 		? {
