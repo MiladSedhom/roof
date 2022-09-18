@@ -99,7 +99,6 @@ export default function Folder({ folder, roofData, dispatch, isNested }) {
 function List({ folder, roofData, dispatch, positionLeft, positionTop, toggleIsList }) {
 	const folderChildren = getBookmarkChildren(folder.id, roofData.bookmarks)
 	const listRef = useRef(null)
-	console.log(listRef.current)
 	useClickOutside(listRef, toggleIsList)
 
 	return (
@@ -120,7 +119,7 @@ function List({ folder, roofData, dispatch, positionLeft, positionTop, toggleIsL
 					)
 				}
 				return (
-					<Folder key={child.name} folder={child} roofData={roofData} isNested>
+					<Folder folder={child} dispatch={dispatch} roofData={roofData} isNested key={child.name}>
 						{child.name}
 					</Folder>
 				)
