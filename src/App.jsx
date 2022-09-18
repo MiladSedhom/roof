@@ -24,8 +24,8 @@ function App() {
 			}
 		}
 		const deleteBookmark = (state, id) => {
-			let updatedBookmarks = state.bookmarks.filter(element => element.id !== id)
-			return { ...state, bookmarks: updatedBookmarks, count: state.count - 1 }
+			let updatedBookmarks = state.bookmarks.filter(element => element.id !== id && element.parentId !== id)
+			return { ...state, bookmarks: updatedBookmarks }
 		}
 		const updateBookmark = (state, newBookmark) => {
 			let updatedBookmarks = state.bookmarks.map(bookmark => {
