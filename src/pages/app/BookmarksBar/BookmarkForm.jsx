@@ -26,7 +26,9 @@ export default function BookmarkForm(props) {
 			}
 		}
 
-		getClipboardUrl()
+		if (!bookmarkBeingEdited) {
+			getClipboardUrl()
+		}
 	}, [])
 
 	const defaultFormValues = bookmarkBeingEdited
@@ -34,7 +36,7 @@ export default function BookmarkForm(props) {
 				name: bookmarkBeingEdited.name,
 				url: bookmarkBeingEdited.url,
 				type: bookmarkBeingEdited.type,
-				targetId: bookmarkBeingEdited.targetId,
+				targetId: bookmarkBeingEdited.parentId,
 		  }
 		: { name: "", url: "", type: "link", targetId: 0 }
 
