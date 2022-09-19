@@ -36,16 +36,16 @@ const Div = styled.div`
 	padding: 5px;
 	display: flex;
 	flex-direction: column;
-	background-color: #514f4d;
+	background-color: #3f3e3d;
 	border-radius: 10px;
 `
 
 const ContextMenuButton = styled.button`
-	background-color: #514f4d;
+	background-color: #3f3e3d;
 	border: none;
 	padding: 0.25rem;
 	color: white;
 	&:hover {
-		background-color: #747474;
+		background-color: #514f4d;
 	}
 `
