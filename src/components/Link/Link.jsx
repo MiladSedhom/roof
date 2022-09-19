@@ -6,7 +6,7 @@ import { useRef } from "react"
 import { usePosition } from "../../hooks/usePosition"
 import BookmarkForm from "../../pages/app/BookmarksBar/BookmarkForm"
 
-export default function Link({ roofData, dispatch, bookmark, children }) {
+export default function Link({ bookmark, children }) {
 	const [isContextMenuOpen, contextMenuPosition, contextMenuTrigger] = useContextMenu()
 	const [isForm, toggleIsForm] = useToggle(false)
 	const linkRef = useRef(null)
@@ -31,23 +31,10 @@ export default function Link({ roofData, dispatch, bookmark, children }) {
 			</A>
 
 			{isContextMenuOpen && (
-				<BookmarkContextMenu
-					style={{ ...contextMenuPosition }}
-					bookmark={bookmark}
-					dispatch={dispatch}
-					toggleIsForm={toggleIsForm}
-				/>
+				<BookmarkContextMenu style={{ ...contextMenuPosition }} bookmark={bookmark} toggleIsForm={toggleIsForm} />
 			)}
 			{isForm && (
-				<BookmarkForm
-					parentPosition={linkPosition}
-					currentCount={roofData.count}
-					bookmarks={roofData.bookmarks}
-					toggleForm={toggleIsForm}
-					dispatch={dispatch}
-					dispatchType={"updateBookmark"}
-					bookmarkBeingEdited={bookmark}
-				/>
+				<BookmarkForm parentPosition={linkPosition} toggleForm={toggleIsForm} bookmarkBeingEdited={bookmark} />
 			)}
 		</>
 	)

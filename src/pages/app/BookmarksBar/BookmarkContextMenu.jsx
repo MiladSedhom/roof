@@ -1,6 +1,9 @@
-import styled from "styled-components";
+import styled from "styled-components"
+import { useBookmarksDispatch } from "../../../stores/useBookmarksStore"
 
-export default function BookmarkContextMenu({ dispatch, bookmark, toggleIsForm, ...restOfProps }) {
+export default function BookmarkContextMenu({ bookmark, toggleIsForm, ...restOfProps }) {
+	const bookmarksDispatch = useBookmarksDispatch()
+
 	return (
 		<>
 			<Div {...restOfProps}>
@@ -10,14 +13,14 @@ export default function BookmarkContextMenu({ dispatch, bookmark, toggleIsForm, 
 				]}
 				<ContextMenuButton
 					onClick={() => {
-						toggleIsForm(true);
+						toggleIsForm(true)
 					}}
 				>
 					edit {bookmark.type}
 				</ContextMenuButton>
 				<ContextMenuButton
 					onClick={() => {
-						dispatch({ type: "deleteBookmark", payload: { id: bookmark.id } });
+						bookmarksDispatch({ type: "deleteBookmark", payload: { id: bookmark.id } })
 					}}
 				>
 					delete {bookmark.type}
@@ -25,7 +28,7 @@ export default function BookmarkContextMenu({ dispatch, bookmark, toggleIsForm, 
 				<ContextMenuButton> about </ContextMenuButton>
 			</Div>
 		</>
-	);
+	)
 }
 
 const Div = styled.div`
@@ -35,7 +38,7 @@ const Div = styled.div`
 	flex-direction: column;
 	background-color: #514f4d;
 	border-radius: 10px;
-`;
+`
 
 const ContextMenuButton = styled.button`
 	background-color: #514f4d;
@@ -45,4 +48,4 @@ const ContextMenuButton = styled.button`
 	&:hover {
 		background-color: #747474;
 	}
-`;
+`

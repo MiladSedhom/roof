@@ -9,10 +9,13 @@ import { useClickOutside } from "../../../hooks/useClickOutside"
 import { useRef } from "react"
 import { getFolders, isValidURL } from "./helpers"
 import { useEffect } from "react"
+import { useBookmarksDispatch, useBookmarksStore } from "../../../stores/useBookmarksStore"
 
-export default function BookmarkForm(props) {
-	const { currentCount, bookmarks, toggleForm, dispatch, dispatchType, bookmarkBeingEdited, parentPosition } = props
+export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPosition }) {
 	const theme = useContext(ThemeContext)
+
+	const bookmarks = useBookmarksStore()
+	const bookmarksDispatch = useBookmarksDispatch()
 	const foldersList = getFolders(bookmarks)
 
 	const formRef = useRef()
@@ -68,14 +71,17 @@ export default function BookmarkForm(props) {
 		e.preventDefault()
 		if (!validate(formValues)) return
 		const newBookmark = {
-			id: bookmarkBeingEdited ? bookmarkBeingEdited.id : currentCount,
+			id: bookmarkBeingEdited ? bookmarkBeingEdited.id : bookmarks[bookmarks.length - 1].id + 1,
 			name: formValues.name,
 			type: formValues.type,
 			parentId: formValues.targetId - 0,
 			childrenIds: formValues.type === "folder" ? [] : undefined,
 			url: formValues.type === "link" ? formValues.url : undefined,
 		}
-		dispatch({ type: dispatchType, payload: { bookmark: newBookmark } })
+		bookmarksDispatch({
+			type: bookmarkBeingEdited ? "updateBookmark" : "addBookmark",
+			payload: { bookmark: newBookmark },
+		})
 		toggleForm()
 	}
 

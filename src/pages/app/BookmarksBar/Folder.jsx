@@ -11,8 +11,9 @@ import { useContextMenu } from "../../../hooks/useContextMenu"
 import BookmarkContextMenu from "./BookmarkContextMenu"
 import BookmarkForm from "./BookmarkForm"
 import { useClickOutside } from "../../../hooks/useClickOutside"
+import { useBookmarksStore } from "../../../stores/useBookmarksStore"
 
-export default function Folder({ folder, roofData, dispatch, isNestedFolder }) {
+export default function Folder({ folder, isNestedFolder }) {
 	const [isForm, toggleIsForm] = useToggle(false)
 	const [isList, toggleIsList] = useToggle(false)
 	const buttonRef = useRef(null)
@@ -61,8 +62,6 @@ export default function Folder({ folder, roofData, dispatch, isNestedFolder }) {
 			{isList && (
 				<List
 					folder={folder}
-					roofData={roofData}
-					dispatch={dispatch}
 					parentPosition={buttonPosition}
 					toggleIsList={toggleIsList}
 					isNestedList={isNestedFolder}
@@ -70,30 +69,19 @@ export default function Folder({ folder, roofData, dispatch, isNestedFolder }) {
 			)}
 
 			{isForm && (
-				<BookmarkForm
-					parentPosition={buttonPosition}
-					currentCount={roofData.count}
-					bookmarks={roofData.bookmarks}
-					toggleForm={toggleIsForm}
-					dispatch={dispatch}
-					dispatchType={"updateBookmark"}
-					bookmarkBeingEdited={folder}
-				/>
+				<BookmarkForm parentPosition={buttonPosition} toggleForm={toggleIsForm} bookmarkBeingEdited={folder} />
 			)}
 			{isContextMenu && (
-				<BookmarkContextMenu
-					style={{ ...contextMenuPosition }}
-					bookmark={folder}
-					dispatch={dispatch}
-					toggleIsForm={toggleIsForm}
-				/>
+				<BookmarkContextMenu style={{ ...contextMenuPosition }} bookmark={folder} toggleIsForm={toggleIsForm} />
 			)}
 		</>
 	)
 }
 
-function List({ folder, roofData, dispatch, parentPosition, toggleIsList, isNestedList }) {
-	const folderChildren = getBookmarkChildren(folder.id, roofData.bookmarks)
+function List({ folder, parentPosition, toggleIsList, isNestedList }) {
+	const bookmarks = useBookmarksStore()
+
+	const folderChildren = getBookmarkChildren(folder.id, bookmarks)
 	const listRef = useRef(null)
 	useClickOutside(listRef, toggleIsList)
 
@@ -105,20 +93,13 @@ function List({ folder, roofData, dispatch, parentPosition, toggleIsList, isNest
 			{folderChildren.map(child => {
 				if (child.type === "link") {
 					return (
-						<Link
-							roofData={roofData}
-							dispatch={dispatch}
-							key={child.name}
-							href={child.url}
-							title={child.name}
-							bookmark={child}
-						>
+						<Link key={child.name} href={child.url} title={child.name} bookmark={child}>
 							{child.name}
 						</Link>
 					)
 				}
 				return (
-					<Folder folder={child} dispatch={dispatch} roofData={roofData} isNestedFolder key={child.name}>
+					<Folder folder={child} isNestedFolder key={child.name}>
 						{child.name}
 					</Folder>
 				)

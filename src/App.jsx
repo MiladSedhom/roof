@@ -1,13 +1,11 @@
 import styled, { createGlobalStyle } from "styled-components"
 import BookmarksBar from "./pages/app/BookmarksBar/BookmarksBar"
 import SearchBar from "./pages/app/SearchBar/SearchBar"
-import { DATA } from "../data"
 import { useToggle } from "./hooks/useToggle"
-import { useLocalStorage } from "./hooks/useLocalStorage"
 import SettingsModal from "./pages/app/SettingsModal/SettingsModal"
 import { ThemeContext, theme } from "./contexts/ThemeContext"
-import { useReducer } from "react"
 import { useEffect } from "react"
+import { BookmarksProvider } from "./stores/useBookmarksStore"
 
 let renderCount = 1
 
@@ -15,72 +13,28 @@ function App() {
 	console.log(renderCount)
 	renderCount++
 
-	const reducer = (state, action) => {
-		const addBookmark = (state, newBookmark) => {
-			return {
-				...state,
-				count: state.count + 1,
-				bookmarks: [...state.bookmarks, newBookmark],
-			}
-		}
-		const deleteBookmark = (state, id) => {
-			let updatedBookmarks = state.bookmarks.filter(element => element.id !== id && element.parentId !== id)
-			return { ...state, bookmarks: updatedBookmarks }
-		}
-		const updateBookmark = (state, newBookmark) => {
-			let updatedBookmarks = state.bookmarks.map(bookmark => {
-				if (bookmark.id === newBookmark.id) return newBookmark
-				return bookmark
-			})
-
-			return { ...state, bookmarks: updatedBookmarks }
-		}
-		switch (action.type) {
-			case "addBookmark": {
-				return addBookmark(state, action.payload.bookmark)
-			}
-			case "deleteBookmark": {
-				return deleteBookmark(state, action.payload.id)
-			}
-			case "updateBookmark": {
-				return updateBookmark(state, action.payload.bookmark)
-			}
-			case "uploadJSON": {
-				return action.payload.uploadedJSON
-			}
-			default:
-				return state
-		}
-	}
-
-	const [storedRoofData, setStoredRoofData] = useLocalStorage("roofData", DATA)
-	const [roofData, dispatch] = useReducer(reducer, storedRoofData)
-
-	useEffect(() => {
-		setStoredRoofData(roofData)
-	}, [roofData])
-
 	const [isSettings, toggleIsSettings] = useToggle(false)
 
 	return (
 		<div className="App">
 			<GlobalStyle />
-
-			<ThemeContext.Provider value={theme}>
-				<StyledApp>
-					<BookmarksBar roofData={roofData} dispatch={dispatch} toggleIsSettings={toggleIsSettings} />
-
-					<Container>
-						{isSettings && (
-							<SettingsModal roofData={roofData} dispatch={dispatch} toggleIsSettings={toggleIsSettings} />
-						)}
-						<SearchBarLogoContainer>
-							<Logo>Roof</Logo>
-							<SearchBar defaultSearchEngine={roofData.defaultSearchEngine} shortcuts={roofData.shortcuts} />
-						</SearchBarLogoContainer>
-					</Container>
-				</StyledApp>
-			</ThemeContext.Provider>
+			<BookmarksProvider>
+				<ThemeContext.Provider value={theme}>
+					<StyledApp>
+						<BookmarksBar toggleIsSettings={toggleIsSettings} />
+						{/* 
+						<Container>
+							{isSettings && (
+								<SettingsModal toggleIsSettings={toggleIsSettings} />
+							)}
+							<SearchBarLogoContainer>
+								<Logo>Roof</Logo>
+								<SearchBar/>
+							</SearchBarLogoContainer>
+						</Container> */}
+					</StyledApp>
+				</ThemeContext.Provider>
+			</BookmarksProvider>
 		</div>
 	)
 }

@@ -10,24 +10,18 @@ import { getBookmarkChildren } from "./helpers"
 import { useToggle } from "../../../hooks/useToggle"
 import BookmarkForm from "./BookmarkForm"
 import { usePosition } from "../../../hooks/usePosition"
+import { useBookmarksStore } from "../../../stores/useBookmarksStore"
 
-export default function BookmarksBar({ roofData, toggleIsSettings, dispatch }) {
+export default function BookmarksBar({ toggleIsSettings }) {
 	const [isAdd, toggleIsAdd] = useToggle(false)
 	const addButtonRef = useRef()
 	const addButtonPosition = usePosition(addButtonRef)
-
 	const theme = useContext(ThemeContext)
 
-	const toggleSettings = e => {
-		toggleIsSettings()
-	}
-
-	const toggleAddBookmarkContainer = () => {
-		toggleIsAdd()
-	}
+	const bookmarks = useBookmarksStore()
 
 	// getting the children of the bar whos id is 0
-	const bookmarksBarChildren = getBookmarkChildren(0, roofData.bookmarks)
+	const bookmarksBarChildren = getBookmarkChildren(0, bookmarks)
 	return (
 		<>
 			<StyledDiv backgroundColor={theme.containersColor}>
@@ -35,36 +29,27 @@ export default function BookmarksBar({ roofData, toggleIsSettings, dispatch }) {
 					{bookmarksBarChildren.map(bookmark => {
 						if (bookmark.type === "link") {
 							return (
-								<Link roofData={roofData} key={bookmark.id} bookmark={bookmark} dispatch={dispatch}>
+								<Link key={bookmark.id} bookmark={bookmark}>
 									{bookmark.name}
 								</Link>
 							)
 						}
-						return <Folder key={bookmark.id} folder={bookmark} roofData={roofData} dispatch={dispatch} />
+						return <Folder key={bookmark.id} folder={bookmark} />
 					})}
 				</Container>
 
 				<Container>
-					<Button innerRef={addButtonRef} onClick={toggleAddBookmarkContainer} backgroundColor={theme.fieldsColor}>
+					<Button innerRef={addButtonRef} onClick={toggleIsAdd} backgroundColor={theme.fieldsColor}>
 						<Plus style={{ width: "1em", color: "white" }} />
 					</Button>
-					<Folder folder={roofData.bookmarks[1]} roofData={roofData} dispatch={dispatch} />
-					<Button onClick={toggleSettings} backgroundColor={theme.fieldsColor}>
+					<Folder folder={bookmarks[1]} />
+					<Button onClick={toggleIsSettings} backgroundColor={theme.fieldsColor}>
 						<Cog style={{ width: "1.3em", color: "white" }} />
 					</Button>
 				</Container>
 			</StyledDiv>
 
-			{isAdd && (
-				<BookmarkForm
-					parentPosition={addButtonPosition}
-					currentCount={roofData.count}
-					bookmarks={roofData.bookmarks}
-					toggleForm={toggleIsAdd}
-					dispatch={dispatch}
-					dispatchType={"addBookmark"}
-				/>
-			)}
+			{isAdd && <BookmarkForm parentPosition={addButtonPosition} toggleForm={toggleIsAdd} />}
 		</>
 	)
 }
