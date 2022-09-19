@@ -6,6 +6,7 @@ export default function makeStore(userReducer, initialState, key) {
 
 	try {
 		initialState = JSON.parse(localStorage.getItem(key)) || initialState
+		localStorage.setItem(key, JSON.stringify(initialState))
 	} catch {}
 
 	const reducer = (state, action) => {
