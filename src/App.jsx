@@ -6,6 +6,7 @@ import SettingsModal from "./pages/app/SettingsModal/SettingsModal"
 import { ThemeContext, theme } from "./contexts/ThemeContext"
 import { useEffect } from "react"
 import { BookmarksProvider } from "./stores/useBookmarksStore"
+import { ShortcutsProvider } from "./stores/useShortcutStore"
 
 let renderCount = 1
 
@@ -22,16 +23,15 @@ function App() {
 				<ThemeContext.Provider value={theme}>
 					<StyledApp>
 						<BookmarksBar toggleIsSettings={toggleIsSettings} />
-						{/* 
+
 						<Container>
-							{isSettings && (
-								<SettingsModal toggleIsSettings={toggleIsSettings} />
-							)}
-							<SearchBarLogoContainer>
-								<Logo>Roof</Logo>
-								<SearchBar/>
-							</SearchBarLogoContainer>
-						</Container> */}
+							<ShortcutsProvider>
+								<SearchBarLogoContainer>
+									<Logo>Roof</Logo>
+									<SearchBar />
+								</SearchBarLogoContainer>
+							</ShortcutsProvider>
+						</Container>
 					</StyledApp>
 				</ThemeContext.Provider>
 			</BookmarksProvider>

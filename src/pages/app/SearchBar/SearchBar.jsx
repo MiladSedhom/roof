@@ -1,40 +1,43 @@
-import { useState } from "react";
-import styled from "styled-components";
-import Prefix from "./Prefix";
+import { useState } from "react"
+import styled from "styled-components"
+import { useShortcutsStore } from "../../../stores/useShortcutStore"
+import Prefix from "./Prefix"
 
-export default function SearchBar(props) {
-	const { defaultSearchEngine, shortcuts } = props;
-	const [currentUsedShortcut, setCurrentUsedShortcut] = useState(defaultSearchEngine.shortcut);
-	const [inputText, setInputText] = useState("");
+export default function SearchBar({}) {
+	const shortcuts = useShortcutsStore().shortcuts
+	const defaultSearchEngine = useShortcutsStore().defaultSearchEngine
 
-	const onChangeHandler = (e) => {
-		setInputText(e.target.value);
-	};
+	const [currentUsedShortcut, setCurrentUsedShortcut] = useState(defaultSearchEngine.shortcut)
+	const [inputText, setInputText] = useState("")
 
-	const submitHandler = (e) => {
-		if (e.key === " ") {
-			e.preventDefault();
-			let firstWord = e.target.value.split(/\s/g)[0]; // /\s/g is a regex for white spaces
-			if (firstWord in shortcuts) {
-				setCurrentUsedShortcut(firstWord);
-				setInputText("");
-			} else setInputText((inputText) => inputText + " ");
+	const onChangeHandler = e => {
+		setInputText(e.target.value)
+	}
+
+	const onkeyDownHandler = e => {
+		if (e.key === ";") {
+			e.preventDefault()
+			let prefix = e.target.value.split(";")[0]
+			if (prefix in shortcuts) {
+				setCurrentUsedShortcut(prefix)
+				setInputText("")
+			} else setInputText(inputText => inputText + ";")
 		}
 
 		if (e.key === "Backspace" && !inputText) {
-			setCurrentUsedShortcut(null);
+			setCurrentUsedShortcut(null)
 		}
 
 		if (e.key === "Enter") {
-			e.preventDefault();
-			const target = e.ctrlKey ? "_newtab" : "_self";
+			e.preventDefault()
+			const target = e.ctrlKey ? "_newtab" : "_self"
 			if (currentUsedShortcut) {
-				window.open(shortcuts[currentUsedShortcut].url.replace("%QUERY", inputText), target);
-				return;
+				window.open(shortcuts[currentUsedShortcut].url.replace("%QUERY", inputText), target)
+				return
 			}
-			window.open(defaultSearchEngine.url.replace("%QUERY", inputText), target);
+			window.open(defaultSearchEngine.url.replace("%QUERY", inputText), target)
 		}
-	};
+	}
 
 	return (
 		<StyledDiv>
@@ -43,11 +46,11 @@ export default function SearchBar(props) {
 			<Input
 				value={inputText}
 				type="search"
-				onChange={(e) => {
-					onChangeHandler(e);
+				onChange={e => {
+					onChangeHandler(e)
 				}}
-				onKeyDown={(e) => {
-					submitHandler(e);
+				onKeyDown={e => {
+					onkeyDownHandler(e)
 				}}
 				placeholder={
 					"Search with " +
@@ -56,7 +59,7 @@ export default function SearchBar(props) {
 				}
 			/>
 		</StyledDiv>
-	);
+	)
 }
 
 const StyledDiv = styled.div`
@@ -69,7 +72,7 @@ const StyledDiv = styled.div`
 	border: 2px solid black;
 	border-radius: 10rem;
 	background-color: wheat;
-`;
+`
 
 const Input = styled.input`
 	width: 100%;
@@ -82,4 +85,4 @@ const Input = styled.input`
 	&:focus {
 		outline: none;
 	}
-`;
+`
