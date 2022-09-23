@@ -80,7 +80,7 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 		}
 		bookmarksDispatch({
 			type: bookmarkBeingEdited ? "updateBookmark" : "addBookmark",
-			payload: { bookmark: newBookmark },
+			payload: { newBookmark: newBookmark },
 		})
 		toggleForm()
 	}
