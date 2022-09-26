@@ -1,4 +1,3 @@
-import { useState } from "react"
 import styled from "styled-components"
 import Button from "../../../components/Button/Button"
 import Input from "../../../components/Input/Input"
@@ -10,6 +9,7 @@ import { useRef } from "react"
 import { getFolders, isValidURL } from "./helpers"
 import { useEffect } from "react"
 import { useBookmarksDispatch, useBookmarksStore } from "../../../stores/useBookmarksStore"
+import { useForm } from "../../../hooks/useForm"
 
 export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPosition }) {
 	const theme = useContext(ThemeContext)
@@ -43,10 +43,7 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 		  }
 		: { name: "", url: "", type: "link", targetId: 0 }
 
-	const [formValues, setFormValues] = useState(defaultFormValues)
-	const [formErrors, setFormErrors] = useState({})
-
-	const validate = values => {
+	const getErrors = values => {
 		const errors = {}
 		if (!values.name) {
 			errors.name = "name is required"
@@ -57,19 +54,15 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 		if (values.type === "link" && !values.url) {
 			errors.url = "url is required"
 		}
-		setFormErrors(errors)
-		return Object.keys(errors).length === 0
+		return errors
 	}
 
-	const onChange = e => {
-		setFormValues(formValues => {
-			return { ...formValues, [e.target.name]: e.target.value }
-		})
-	}
+	const [formValues, onChange, validate, formErrors, isValid] = useForm(defaultFormValues, getErrors)
 
 	function submitHandler(e) {
 		e.preventDefault()
-		if (!validate(formValues)) return
+		validate(formValues)
+		if (!isValid) return
 		const newBookmark = {
 			id: bookmarkBeingEdited ? bookmarkBeingEdited.id : bookmarks[bookmarks.length - 1].id + 1,
 			name: formValues.name,
