@@ -16,6 +16,6 @@ const intialTheme = {
 	secondaryColor: "#514F4D",
 }
 
-const [ThemeProvider, useThemeStore, useThemeDispatch] = makeStore(reducer, intialTheme)
+const [ThemeProvider, useThemeStore, useThemeDispatch] = makeStore(reducer, intialTheme, "roofTheme")
 
 export { ThemeProvider, useThemeStore, useThemeDispatch }
