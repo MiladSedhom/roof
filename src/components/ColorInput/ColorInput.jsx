@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export default function Input(props) {
-	return <StyledInput {...props} />;
+	return <StyledInput {...props} />
 }
 
 const StyledInput = styled.input`
@@ -10,7 +10,6 @@ const StyledInput = styled.input`
 	padding: 0;
 	margin: 0.5rem;
 	border: 0;
-	clip-path: circle();
 	background: none;
 	appearance: none;
 	-moz-appearance: none;
@@ -27,8 +26,8 @@ const StyledInput = styled.input`
 	}
 
 	::-webkit-color-swatch {
-		border: 0;
-		border-radius: 0;
+		border: 2px solid black;
+		border-radius: 50%;
 	}
 
 	::-moz-color-swatch,
@@ -39,4 +38,4 @@ const StyledInput = styled.input`
 	::-moz-focus-inner {
 		padding: 0;
 	}
-`;
+`
