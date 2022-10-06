@@ -1,94 +1,153 @@
 import { useState } from "react"
 import styled from "styled-components"
-import { downloadroofData, shareroofData } from "./helper"
-import FileUpload from "../../../components/FileUpload"
 import { useRef } from "react"
 import { useClickOutside } from "../../../hooks/useClickOutside"
+import BackDrop from "../../../components/BackDrop/BackDrop"
+import Button from "../../../components/Button/Button"
+import { useThemeDispatch, useThemeStore } from "../../../stores/useThemeStore"
+import ColorInput from "../../../components/ColorInput/ColorInput"
+import { useForm } from "../../../hooks/useForm"
 
-export default function SettingsPage({ roofData, dispatch, toggleIsSettings }) {
-	const [currentPanel, setCurrentPanel] = useState("shortcuts")
+export default function SettingsPage({ toggleIsSettings, undoStack }) {
+	const theme = useThemeStore()
+	const themeDispatch = useThemeDispatch()
 	const clickOutsideRef = useRef()
 	useClickOutside(clickOutsideRef, toggleIsSettings)
+
+	const colorsInitialValues = {
+		backgroundColor: theme.backgroundColor,
+		containersColor: theme.containersColor,
+		primaryColor: theme.primaryColor,
+		secondaryColor: theme.secondaryColor,
+	}
+	const [colorFormValues, colorsOnChange] = useForm(colorsInitialValues)
+
+	const [isSaveButton, setIsSaveButton] = useState(false)
+
 	return (
 		<>
-			<Div ref={clickOutsideRef}>
-				<SideBar>
-					<button
-						onClick={e => {
-							setCurrentPanel("bookmarks")
-						}}
-					>
-						bookmarks and roofData
-					</button>
-					<button
-						onClick={e => {
-							setCurrentPanel("shortcuts")
-						}}
-					>
-						shortcuts
-					</button>
-					<button
-						onClick={e => {
-							setCurrentPanel("apperance")
-						}}
-					>
-						apperance
-					</button>
-				</SideBar>
-
-				{currentPanel === "bookmarks" ? (
-					<Main>
-						<h3>roofData: </h3>
-						<div>
-							<button
-								onClick={e => {
-									downloadroofData(roofData, "roofBookmarks.json")
+			<Wrapper>
+				<BackDrop style={{ backgroundColor: "rgba(56,53,53,0.70)" }} />
+				<SettingsContainer ref={clickOutsideRef} theme={theme}>
+					<StyledSection>
+						<StyledTitle>Data:</StyledTitle>
+						<Container>
+							<StyledButton theme={theme}>Upload</StyledButton>
+							<StyledButton theme={theme}>Download</StyledButton>
+							<StyledButton theme={theme}>Share</StyledButton>
+						</Container>
+					</StyledSection>
+					<StyledSection>
+						<StyledTitle>Apperence:</StyledTitle>
+						<Container>
+							<StyledH3>Background color:</StyledH3>
+							<ColorInput
+								name="backgroundColor"
+								value={colorFormValues.backgroundColor}
+								type="color"
+								onChange={e => {
+									setIsSaveButton(true)
+									colorsOnChange(e)
+								}}
+							/>
+						</Container>
+						<Container>
+							<StyledH3>Accent color:</StyledH3>
+							<ColorInput
+								name="primaryColor"
+								value={colorFormValues.primaryColor}
+								type="color"
+								onChange={e => {
+									setIsSaveButton(true)
+									colorsOnChange(e)
+								}}
+							/>
+						</Container>
+					</StyledSection>
+					{isSaveButton && (
+						<Container style={{ position: "absolute", bottom: 0, justifyContent: "space-around" }}>
+							<StyledButton
+								theme={theme}
+								onClick={() => {
+									undoStack.push(theme)
+									setIsSaveButton(true)
+									themeDispatch({ type: "update", payload: { newTheme: colorFormValues } })
 								}}
 							>
-								Download
-							</button>
-							<button>
-								<FileUpload dispatch={dispatch} />
-							</button>
-							<button
-								onClick={e => {
-									shareroofData(roofData, "bookmarks.json")
+								Save
+							</StyledButton>
+							<StyledButton
+								theme={theme}
+								onClick={() => {
+									const lastTheme = undoStack.pop()
+									lastTheme && themeDispatch({ type: "update", payload: { newTheme: lastTheme } })
 								}}
+								disabled={undoStack.stack.length === 0}
 							>
-								share
-							</button>
-						</div>
-					</Main>
-				) : currentPanel === "shortcuts" ? (
-					<Main>shortcuts</Main>
-				) : currentPanel === "apperance" ? (
-					<Main>apperance</Main>
-				) : null}
-			</Div>
+								Undo
+							</StyledButton>
+							<StyledButton>Cancel</StyledButton>
+						</Container>
+					)}
+				</SettingsContainer>
+			</Wrapper>
 		</>
 	)
 }
 
-const Div = styled.div`
-	display: flex;
-	width: 60%;
-	height: 60%;
-	border-radius: 1rem;
-	background-color: #383535;
-	color: white;
-	position: absolute;
-	top: 20%;
-	left: 20%;
-`
-const SideBar = styled.div`
-	display: flex;
-	flex-flow: column;
-	width: 25%;
+const Wrapper = styled.div`
+	width: 100%;
 	height: 100%;
-	float: left;
-	border-right: 2px #474343 solid;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
 `
 
-const Main = styled.main`
-	padding: 2rem;
+const SettingsContainer = styled.div`
+	min-width: 390px;
+	width: 30%;
+	height: 70%;
+	padding: 1rem;
+	background-color: ${props => props.theme.containersColor};
+	border-radius: 10px;
+	z-index: 2;
+	position: relative;
+`
+const StyledSection = styled.section`
+	margin: 0 0 1em 0;
+`
+
+const StyledTitle = styled.h1`
+	color: white;
+	font-size: 1.3rem;
+	font-weight: 600;
+	margin-bottom: 0.4em;
+`
+
+const StyledH3 = styled.h3`
+	color: white;
+	font-size: 1rem;
+	font-weight: 400;
+	margin-bottom: 0.2em;
+`
+
+const Container = styled.div`
+	width: 90%;
+	display: flex;
+	justify-content: space-between;
+	margin: auto;
+`
+const StyledButton = styled(Button)`
+	background-color: ${props => props.theme.primaryColor};
+	color: black;
+	height: 2rem;
+	min-width: 5.5rem;
+	border-radius: 10rem;
+	font-size: 14px;
+	font-weight: 550;
+	opacity: ${props => (props.disabled ? 0.2 : 1)};
+	pointer-events: ${props => props.disabled && "none"};
 `
