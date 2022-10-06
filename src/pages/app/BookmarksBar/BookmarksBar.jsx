@@ -13,7 +13,7 @@ import { useBookmarksStore } from "../../../stores/useBookmarksStore"
 import { useThemeStore } from "../../../stores/useThemeStore"
 
 export default function BookmarksBar({ toggleIsSettings }) {
-	const [isAdd, toggleIsAdd] = useToggle(false)
+	const [isAddFrom, toggleIsAddForm] = useToggle(false)
 	const addButtonRef = useRef()
 	const addButtonPosition = usePosition(addButtonRef)
 	const theme = useThemeStore()
@@ -39,7 +39,7 @@ export default function BookmarksBar({ toggleIsSettings }) {
 				</Container>
 
 				<Container>
-					<Button innerRef={addButtonRef} onClick={toggleIsAdd} backgroundColor={theme.fieldsColor}>
+					<Button innerRef={addButtonRef} onClick={toggleIsAddForm} backgroundColor={theme.fieldsColor}>
 						<Plus style={{ width: "1em", color: "white" }} />
 					</Button>
 					<Folder folder={bookmarks[1]} />
@@ -49,7 +49,7 @@ export default function BookmarksBar({ toggleIsSettings }) {
 				</Container>
 			</StyledDiv>
 
-			{isAdd && <BookmarkForm parentPosition={addButtonPosition} toggleForm={toggleIsAdd} />}
+			{isAddFrom && <BookmarkForm parentPosition={addButtonPosition} toggleForm={toggleIsAddForm} />}
 		</>
 	)
 }
