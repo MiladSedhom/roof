@@ -1,22 +1,22 @@
 import styled from "styled-components"
 import Button from "../../../components/Button/Button"
 import Link from "../../../components/Link/Link"
-import { ThemeContext } from "../../../contexts/ThemeContext"
-import { useContext, useRef } from "react"
 import Folder from "./Folder"
+import BookmarkForm from "./BookmarkForm"
+import { useRef } from "react"
 import { Plus } from "@styled-icons/fa-solid"
 import { Cog } from "@styled-icons/boxicons-solid"
 import { getBookmarkChildren } from "./helpers"
 import { useToggle } from "../../../hooks/useToggle"
-import BookmarkForm from "./BookmarkForm"
 import { usePosition } from "../../../hooks/usePosition"
 import { useBookmarksStore } from "../../../stores/useBookmarksStore"
+import { useThemeStore } from "../../../stores/useThemeStore"
 
 export default function BookmarksBar({ toggleIsSettings }) {
 	const [isAdd, toggleIsAdd] = useToggle(false)
 	const addButtonRef = useRef()
 	const addButtonPosition = usePosition(addButtonRef)
-	const theme = useContext(ThemeContext)
+	const theme = useThemeStore()
 
 	const bookmarks = useBookmarksStore()
 

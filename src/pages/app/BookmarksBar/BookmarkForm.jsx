@@ -10,9 +10,10 @@ import { getFolders, isValidURL } from "./helpers"
 import { useEffect } from "react"
 import { useBookmarksDispatch, useBookmarksStore } from "../../../stores/useBookmarksStore"
 import { useForm } from "../../../hooks/useForm"
+import { useThemeStore } from "../../../stores/useThemeStore"
 
 export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPosition }) {
-	const theme = useContext(ThemeContext)
+	const theme = useThemeStore()
 
 	const bookmarks = useBookmarksStore()
 	const bookmarksDispatch = useBookmarksDispatch()
@@ -132,6 +133,7 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 				</Select>
 
 				<FormButton
+					theme={theme}
 					type="submit"
 					form="form"
 					style={{ outline: "solid 1px black" }}
@@ -173,7 +175,7 @@ const Form = styled.form`
 `
 const FormButton = styled(Button)`
 	width: 5rem;
-	background-color: wheat;
+	background-color: ${props => props.theme.primaryColor};
 	color: black;
 	font-weight: 600;
 	margin: 0.5rem 0 0 0;
