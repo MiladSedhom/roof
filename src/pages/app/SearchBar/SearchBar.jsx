@@ -1,9 +1,11 @@
 import { useState } from "react"
 import styled from "styled-components"
 import { useShortcutsStore } from "../../../stores/useShortcutStore"
+import { useThemeStore } from "../../../stores/useThemeStore"
 import Prefix from "./Prefix"
 
 export default function SearchBar({}) {
+	const theme = useThemeStore()
 	const shortcuts = useShortcutsStore().shortcuts
 	const defaultSearchEngine = useShortcutsStore().defaultSearchEngine
 
@@ -40,7 +42,7 @@ export default function SearchBar({}) {
 	}
 
 	return (
-		<StyledDiv>
+		<StyledDiv theme={theme}>
 			{currentUsedShortcut && <Prefix {...shortcuts[currentUsedShortcut]} />}
 
 			<Input
@@ -57,6 +59,7 @@ export default function SearchBar({}) {
 					(currentUsedShortcut ? shortcuts[currentUsedShortcut].name : defaultSearchEngine.name) +
 					"..."
 				}
+				theme={theme}
 			/>
 		</StyledDiv>
 	)
@@ -71,7 +74,7 @@ const StyledDiv = styled.div`
 	height: 3rem;
 	border: 2px solid black;
 	border-radius: 10rem;
-	background-color: wheat;
+	background-color: ${props => props.theme.primaryColor};
 `
 
 const Input = styled.input`
@@ -79,7 +82,7 @@ const Input = styled.input`
 	padding: 0 1em;
 	border: none;
 	border-radius: 10rem;
-	background-color: wheat;
+	background-color: ${props => props.theme.primaryColor};
 	color: black;
 	font-size: 1.2rem;
 	&:focus {
