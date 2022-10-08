@@ -14,7 +14,7 @@ const StyledButton = styled.button`
 	padding: 0.25em 1em;
 	margin: 0.5em;
 	border: none;
-	border-radius: 10px;
+	border-radius: 8px;
 	background-color: ${props => props.theme.primaryColor || "#514F4D"};
 	color: ${props => props.color || "white"};
 	font-size: ${props => props.fontSize || "12px"};
