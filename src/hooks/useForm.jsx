@@ -17,5 +17,5 @@ export function useForm(initalValue, getErrors) {
 		setFormErrors(errors)
 	}
 
-	return [formValues, onChange, validate, formErrors, isValid]
+	return [formValues, setFormValues, onChange, validate, formErrors, isValid]
 }
