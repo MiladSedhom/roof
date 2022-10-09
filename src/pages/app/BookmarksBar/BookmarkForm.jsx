@@ -174,6 +174,7 @@ const FormButton = styled(Button)`
 	width: 5rem;
 	background-color: ${props => props.theme.primaryColor};
 	color: black;
-	font-weight: 600;
+	font-size: 14px;
+	font-weight: 550;
 	margin: 0.5rem 0 0 0;
 `
