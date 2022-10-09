@@ -66,7 +66,6 @@ export default function SettingsPage({ toggleIsSettings, undoStack, redoStack })
 								onClick={() => {
 									undoStack.push(theme)
 									themeDispatch({ type: "update", payload: { newTheme: colorFormValues } })
-									setIsChange(true)
 								}}
 							>
 								Save
