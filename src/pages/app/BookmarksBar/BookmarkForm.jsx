@@ -61,7 +61,7 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 	function submitHandler(e) {
 		e.preventDefault()
 		if (!validate(formValues)) return
-		console.log("afterValidation")
+
 		const newBookmark = {
 			id: bookmarkBeingEdited ? bookmarkBeingEdited.id : bookmarks[bookmarks.length - 1].id + 1,
 			name: formValues.name,
@@ -70,10 +70,9 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 			childrenIds: formValues.type === "folder" ? [] : undefined,
 			url: formValues.type === "link" ? formValues.url : undefined,
 		}
-		bookmarksDispatch({
-			type: bookmarkBeingEdited ? "updateBookmark" : "addBookmark",
-			payload: { newBookmark: newBookmark },
-		})
+		!bookmarkBeingEdited
+			? bookmarksDispatch({ type: "addBookmark", payload: { newBookmark: newBookmark } })
+			: bookmarksDispatch({ type: "updateBookmark", payload: { bookmark: newBookmark } })
 		toggleForm()
 	}
 
