@@ -8,7 +8,7 @@ import { useThemeDispatch, useThemeStore } from "../../../stores/useThemeStore"
 import ColorInput from "../../../components/ColorInput/ColorInput"
 import { useForm } from "../../../hooks/useForm"
 
-export default function SettingsPage({ toggleIsSettings, undoStack }) {
+export default function SettingsPage({ toggleIsSettings, undoStack, redoStack }) {
 	const theme = useThemeStore()
 	const themeDispatch = useThemeDispatch()
 	const clickOutsideRef = useRef()
@@ -21,8 +21,6 @@ export default function SettingsPage({ toggleIsSettings, undoStack }) {
 		secondaryColor: theme.secondaryColor,
 	}
 	const [colorFormValues, colorsOnChange] = useForm(colorsInitialValues)
-
-	const [isSaveButton, setIsSaveButton] = useState(false)
 
 	return (
 		<>
@@ -37,6 +35,7 @@ export default function SettingsPage({ toggleIsSettings, undoStack }) {
 							<StyledButton theme={theme}>Share</StyledButton>
 						</Container>
 					</StyledSection>
+
 					<StyledSection>
 						<StyledTitle>Apperence:</StyledTitle>
 						<Container>
@@ -63,15 +62,13 @@ export default function SettingsPage({ toggleIsSettings, undoStack }) {
 								}}
 							/>
 						</Container>
-					</StyledSection>
-					{isSaveButton && (
-						<Container style={{ position: "absolute", bottom: 0, justifyContent: "space-around" }}>
+						<Container>
 							<StyledButton
 								theme={theme}
 								onClick={() => {
 									undoStack.push(theme)
-									setIsSaveButton(true)
 									themeDispatch({ type: "update", payload: { newTheme: colorFormValues } })
+									setIsChange(true)
 								}}
 							>
 								Save
@@ -80,15 +77,30 @@ export default function SettingsPage({ toggleIsSettings, undoStack }) {
 								theme={theme}
 								onClick={() => {
 									const lastTheme = undoStack.pop()
-									lastTheme && themeDispatch({ type: "update", payload: { newTheme: lastTheme } })
+									if (lastTheme) {
+										redoStack.push(theme)
+										themeDispatch({ type: "update", payload: { newTheme: lastTheme } })
+									}
 								}}
 								disabled={undoStack.stack.length === 0}
 							>
 								Undo
 							</StyledButton>
-							<StyledButton>Cancel</StyledButton>
+							<StyledButton
+								theme={theme}
+								onClick={() => {
+									const nextTheme = redoStack.pop()
+									if (nextTheme) {
+										undoStack.push(theme)
+										themeDispatch({ type: "update", payload: { newTheme: nextTheme } })
+									}
+								}}
+								disabled={redoStack.stack.length === 0}
+							>
+								Redo
+							</StyledButton>
 						</Container>
-					)}
+					</StyledSection>
 				</SettingsContainer>
 			</Wrapper>
 		</>

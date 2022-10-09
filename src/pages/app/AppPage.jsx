@@ -1,12 +1,13 @@
 import styled, { createGlobalStyle } from "styled-components"
 import { useStack } from "../../hooks/useStack"
 import { useToggle } from "../../hooks/useToggle"
-import { useThemeDispatch, useThemeStore } from "../../stores/useThemeStore"
+import { useThemeStore } from "../../stores/useThemeStore"
 import BookmarksBar from "./BookmarksBar/BookmarksBar"
 import SearchBar from "./SearchBar/SearchBar"
 import SettingsModal from "./SettingsModal/SettingsModal"
 import { BookmarksProvider } from "../../stores/useBookmarksStore"
 import { ShortcutsProvider } from "../../stores/useShortcutStore"
+import { useEffect } from "react"
 
 let renderCount = 1
 
@@ -16,18 +17,20 @@ export default function AppPage() {
 
 	const [isSettings, toggleIsSettings] = useToggle(false)
 	const undoStack = useStack([])
+	const redoStack = useStack([])
 
-	const themeDispatch = useThemeDispatch()
 	return (
-		<div>
+		<>
 			<GlobalStyle />
-			<StyledApp>
+			<Wrapper>
 				<BookmarksProvider>
 					<BookmarksBar toggleIsSettings={toggleIsSettings} />
 				</BookmarksProvider>
 
 				<ShortcutsProvider>
-					{isSettings && <SettingsModal toggleIsSettings={toggleIsSettings} undoStack={undoStack} />}
+					{isSettings && (
+						<SettingsModal toggleIsSettings={toggleIsSettings} undoStack={undoStack} redoStack={redoStack} />
+					)}
 					<Container>
 						<SearchBarLogoContainer>
 							<Logo>Roof</Logo>
@@ -35,12 +38,12 @@ export default function AppPage() {
 						</SearchBarLogoContainer>
 					</Container>
 				</ShortcutsProvider>
-			</StyledApp>
-		</div>
+			</Wrapper>
+		</>
 	)
 }
 
-const StyledApp = styled.div`
+const Wrapper = styled.div`
 	background-color: ${props => {
 		const theme = useThemeStore()
 		return theme.backgroundColor
