@@ -56,12 +56,12 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 		return errors
 	}
 
-	const [formValues, onChange, validate, formErrors, isValid] = useForm(defaultFormValues, getErrors)
+	const [formValues, setFormValues, onChange, validate, formErrors] = useForm(defaultFormValues, getErrors)
 
 	function submitHandler(e) {
 		e.preventDefault()
-		validate(formValues)
-		if (!isValid) return
+		if (!validate(formValues)) return
+		console.log("afterValidation")
 		const newBookmark = {
 			id: bookmarkBeingEdited ? bookmarkBeingEdited.id : bookmarks[bookmarks.length - 1].id + 1,
 			name: formValues.name,
