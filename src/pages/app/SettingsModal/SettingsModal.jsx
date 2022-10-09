@@ -25,7 +25,7 @@ export default function SettingsPage({ toggleIsSettings, undoStack, redoStack })
 	return (
 		<>
 			<Wrapper>
-				<BackDrop style={{ backgroundColor: "rgba(56,53,53,0.70)" }} />
+				<BackDrop style={{ backgroundColor: "rgba(56,53,53,0.40)" }} />
 				<SettingsContainer ref={clickOutsideRef} theme={theme}>
 					<StyledSection>
 						<StyledTitle>Data:</StyledTitle>
