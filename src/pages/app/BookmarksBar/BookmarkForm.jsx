@@ -56,10 +56,9 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 		return errors
 	}
 
-	const [formValues, setFormValues, onChange, validate, formErrors, isValid] = useForm(defaultFormValues, getErrors)
+	const [formValues, onChange, validate, formErrors, isValid] = useForm(defaultFormValues, getErrors)
 
 	function submitHandler(e) {
-		console.log("clicked")
 		e.preventDefault()
 		validate(formValues)
 		if (!isValid) return
@@ -102,11 +101,12 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 				/>
 
 				<Select
-					name="targetId"
 					label="location: "
 					value={formValues.targetId}
 					onChange={e => {
-						onChange(e)
+						setFormValues(prevState => {
+							return { ...prevState, targetId: e.target.value }
+						})
 					}}
 				>
 					{foldersList.map(element => (
@@ -117,11 +117,12 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 				</Select>
 
 				<Select
-					name="type"
 					label={"type: "}
 					value={formValues.type}
 					onChange={e => {
-						onChange(e)
+						setFormValues(prevState => {
+							return { ...prevState, type: e.target.value }
+						})
 					}}
 					disabled={!!bookmarkBeingEdited}
 				>
@@ -131,6 +132,8 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 
 				<FormButton
 					theme={theme}
+					type="submit"
+					form="form"
 					style={{ outline: "solid 1px black" }}
 					onClick={e => {
 						submitHandler(e)
