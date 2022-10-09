@@ -138,7 +138,7 @@ export default function BookmarkForm({ toggleForm, bookmarkBeingEdited, parentPo
 						submitHandler(e)
 					}}
 				>
-					ADD
+					{bookmarkBeingEdited ? "Update" : "Add"}
 				</FormButton>
 			</Form>
 		</Wrapper>
