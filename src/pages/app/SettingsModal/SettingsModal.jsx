@@ -45,7 +45,6 @@ export default function SettingsPage({ toggleIsSettings, undoStack, redoStack })
 								value={colorFormValues.backgroundColor}
 								type="color"
 								onChange={e => {
-									setIsSaveButton(true)
 									colorsOnChange(e)
 								}}
 							/>
@@ -57,7 +56,6 @@ export default function SettingsPage({ toggleIsSettings, undoStack, redoStack })
 								value={colorFormValues.primaryColor}
 								type="color"
 								onChange={e => {
-									setIsSaveButton(true)
 									colorsOnChange(e)
 								}}
 							/>
