@@ -20,7 +20,7 @@ export default function SettingsPage({ toggleIsSettings, undoStack, redoStack })
 		primaryColor: theme.primaryColor,
 		secondaryColor: theme.secondaryColor,
 	}
-	const [colorFormValues, colorsOnChange] = useForm(colorsInitialValues)
+	const [colorFormValues, setColorFormValues, colorsOnChange] = useForm(colorsInitialValues)
 
 	return (
 		<>
@@ -78,6 +78,7 @@ export default function SettingsPage({ toggleIsSettings, undoStack, redoStack })
 									if (lastTheme) {
 										redoStack.push(theme)
 										themeDispatch({ type: "update", payload: { newTheme: lastTheme } })
+										setColorFormValues(lastTheme)
 									}
 								}}
 								disabled={undoStack.stack.length === 0}
@@ -91,6 +92,7 @@ export default function SettingsPage({ toggleIsSettings, undoStack, redoStack })
 									if (nextTheme) {
 										undoStack.push(theme)
 										themeDispatch({ type: "update", payload: { newTheme: nextTheme } })
+										setColorFormValues(nextTheme)
 									}
 								}}
 								disabled={redoStack.stack.length === 0}
