@@ -4,6 +4,9 @@ const reducer = (state, action) => {
 	switch (action.type) {
 		case "update":
 			return action.payload.newTheme
+		case "upload": {
+			return action.payload.uploadedThemes
+		}
 		default:
 			return state
 	}

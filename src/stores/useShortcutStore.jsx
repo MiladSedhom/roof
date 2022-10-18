@@ -3,6 +3,9 @@ import { DATA } from "../../data"
 
 const reducer = (state, action) => {
 	switch (action.type) {
+		case "upload": {
+			return action.payload.uploadedShortcuts
+		}
 		default:
 			return state
 	}

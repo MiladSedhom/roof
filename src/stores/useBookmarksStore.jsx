@@ -19,6 +19,9 @@ const reducer = (state, action) => {
 			})
 			return [...updatedBookmarks]
 		}
+		case "upload": {
+			return action.payload.uploadedBookmarks
+		}
 		default:
 			return state
 	}
