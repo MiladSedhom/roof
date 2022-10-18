@@ -10,6 +10,6 @@ const reducer = (state, action) => {
 
 const initialState = { shortcuts: DATA.shortcuts, defaultSearchEngine: DATA.defaultSearchEngine }
 
-const [ShortcutsProvider, useShortcutsStore, useDispatchStore] = makeStore(reducer, initialState, "roofShortcuts")
+const [ShortcutsProvider, useShortcutsStore, useShortcutsDispatch] = makeStore(reducer, initialState, "roofShortcuts")
 
-export { ShortcutsProvider, useShortcutsStore, useDispatchStore }
+export { ShortcutsProvider, useShortcutsStore, useShortcutsDispatch }
