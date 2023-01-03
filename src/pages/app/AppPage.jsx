@@ -25,19 +25,18 @@ export default function AppPage() {
 			<Wrapper>
 				<BookmarksProvider>
 					<BookmarksBar toggleIsSettings={toggleIsSettings} />
+					<ShortcutsProvider>
+						{isSettings && (
+							<SettingsModal toggleIsSettings={toggleIsSettings} undoStack={undoStack} redoStack={redoStack} />
+						)}
+						<Container>
+							<SearchBarLogoContainer>
+								<Logo>Roof</Logo>
+								<SearchBar />
+							</SearchBarLogoContainer>
+						</Container>
+					</ShortcutsProvider>
 				</BookmarksProvider>
-
-				<ShortcutsProvider>
-					{isSettings && (
-						<SettingsModal toggleIsSettings={toggleIsSettings} undoStack={undoStack} redoStack={redoStack} />
-					)}
-					<Container>
-						<SearchBarLogoContainer>
-							<Logo>Roof</Logo>
-							<SearchBar />
-						</SearchBarLogoContainer>
-					</Container>
-				</ShortcutsProvider>
 			</Wrapper>
 		</>
 	)
