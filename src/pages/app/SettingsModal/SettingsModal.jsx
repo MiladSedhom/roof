@@ -1,18 +1,46 @@
 import { useState } from "react"
-import styled from "styled-components"
 import { useRef } from "react"
 import { useClickOutside } from "../../../hooks/useClickOutside"
+import { useForm } from "../../../hooks/useForm"
+import { useThemeDispatch, useThemeStore } from "../../../stores/useThemeStore"
+import styled from "styled-components"
 import BackDrop from "../../../components/BackDrop/BackDrop"
 import Button from "../../../components/Button/Button"
-import { useThemeDispatch, useThemeStore } from "../../../stores/useThemeStore"
 import ColorInput from "../../../components/ColorInput/ColorInput"
-import { useForm } from "../../../hooks/useForm"
+import FileUpload from "../../../components/FileUpload"
+import { downloadJSON } from "./helper"
+import { useBookmarksDispatch, useBookmarksStore } from "../../../stores/useBookmarksStore"
+import { useShortcutsDispatch, useShortcutsStore } from "../../../stores/useShortcutStore"
 
 export default function SettingsPage({ toggleIsSettings, undoStack, redoStack }) {
 	const theme = useThemeStore()
 	const themeDispatch = useThemeDispatch()
+	const shortcuts = useShortcutsStore()
+	const shortcutsDispatch = useShortcutsDispatch()
+	const bookmarks = useBookmarksStore()
+	const bookmarksDispatch = useBookmarksDispatch()
+
+	const upload = uploadedObject => {
+		console.log(uploadedObject)
+
+		themeDispatch({ type: "upload", payload: { uploadedTheme: uploadedObject.theme } })
+		console.log(theme)
+		shortcutsDispatch({
+			type: "upload",
+			payload: {
+				uploadedShortcuts: uploadedObject.shortcuts,
+			},
+		})
+		bookmarksDispatch({
+			type: "upload",
+			payload: { uploadedBookmarks: uploadedObject.bookmarks },
+		})
+	}
+
 	const clickOutsideRef = useRef()
 	useClickOutside(clickOutsideRef, toggleIsSettings)
+
+	const hiddenUploadRef = useRef(null)
 
 	const colorsInitialValues = {
 		backgroundColor: theme.backgroundColor,
@@ -30,8 +58,25 @@ export default function SettingsPage({ toggleIsSettings, undoStack, redoStack })
 					<StyledSection>
 						<StyledTitle>Data:</StyledTitle>
 						<Container>
-							<StyledButton theme={theme}>Upload</StyledButton>
-							<StyledButton theme={theme}>Download</StyledButton>
+							<FileUpload callback={upload} innerRef={hiddenUploadRef} style={{ display: "none" }} />
+							<StyledButton
+								theme={theme}
+								onClick={() => {
+									console.log(hiddenUploadRef.current)
+									hiddenUploadRef.current.click()
+								}}
+							>
+								Upload
+							</StyledButton>
+							<StyledButton
+								theme={theme}
+								onClick={() => {
+									const obj = { bookmarks: [...bookmarks], shortcuts: { ...shortcuts }, theme: { ...theme } }
+									downloadJSON(obj, "roofData")
+								}}
+							>
+								Download
+							</StyledButton>
 							<StyledButton theme={theme}>Share</StyledButton>
 						</Container>
 					</StyledSection>
