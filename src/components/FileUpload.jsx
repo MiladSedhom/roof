@@ -1,4 +1,4 @@
-export default function FileUpload({ callback }) {
+export default function FileUpload({ callback, innerRef, ...restOfProps }) {
 	const onInputHandler = async e => {
 		const reader = new FileReader()
 		reader.readAsText(e.target.files[0])
@@ -15,6 +15,8 @@ export default function FileUpload({ callback }) {
 			onInput={e => {
 				onInputHandler(e)
 			}}
+			ref={innerRef}
+			{...restOfProps}
 		/>
 	)
 }
