@@ -5,7 +5,7 @@ const reducer = (state, action) => {
 		case "update":
 			return action.payload.newTheme
 		case "upload": {
-			return action.payload.uploadedThemes
+			return action.payload.uploadedTheme
 		}
 		default:
 			return state
