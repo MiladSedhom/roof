@@ -32,20 +32,21 @@ export default function BookmarkContextMenu({ bookmark, toggleIsForm, ...restOfP
 }
 
 const Div = styled.div`
-	width: 10rem;
-	padding: 5px;
+	width: 12rem;
+	padding: 5px 0;
 	display: flex;
 	flex-direction: column;
-	background-color: #3f3e3d;
-	border-radius: 10px;
+	background-color: #4b4949;
+	border-radius: 5px;
 `
 
 const ContextMenuButton = styled.button`
-	background-color: #3f3e3d;
+	background-color: #4b4949;
+	text-align: left;
 	border: none;
-	padding: 0.25rem;
+	padding: 0.4rem 0.25rem 0.4rem 1rem;
 	color: white;
 	&:hover {
-		background-color: #514f4d;
+		background-color: #5f5c5a;
 	}
 `
