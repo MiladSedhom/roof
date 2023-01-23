@@ -39,13 +39,13 @@ export default function BookmarksBar({ toggleIsSettings }) {
 				</Container>
 
 				<Container>
-					<Button innerRef={addButtonRef} onClick={toggleIsAddForm} backgroundColor={theme.fieldsColor}>
-						<Plus style={{ width: "1em", color: "white" }} />
-					</Button>
 					<Folder folder={bookmarks[1]} />
-					<Button onClick={toggleIsSettings} backgroundColor={theme.fieldsColor}>
-						<Cog style={{ width: "1.3em", color: "white" }} />
-					</Button>
+					<div onClick={toggleIsAddForm} style={{ cursor: "pointer" }}>
+						<Plus ref={addButtonRef} style={{ width: ".8em", margin: "0.5rem", color: "white" }} />
+					</div>
+					<div onClick={toggleIsSettings} style={{ cursor: "pointer" }}>
+						<Cog style={{ width: "1em", margin: "0.5rem", color: "white" }} />
+					</div>
 				</Container>
 			</StyledDiv>
 

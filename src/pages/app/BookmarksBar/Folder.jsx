@@ -24,7 +24,7 @@ export default function Folder({ folder, isNestedFolder }) {
 	return (
 		<>
 			{!isNestedFolder ? (
-				<Button
+				<FolderButton
 					innerRef={buttonRef}
 					onContextMenu={e => {
 						contextMenuTrigger(e)
@@ -39,7 +39,7 @@ export default function Folder({ folder, isNestedFolder }) {
 						<FolderIcon style={{ width: "1.2em", marginRight: "4px" }} />
 					)}
 					{folder.name}
-				</Button>
+				</FolderButton>
 			) : (
 				<NestedButton
 					innerRef={buttonRef}
@@ -107,6 +107,7 @@ function List({ folder, parentPosition, toggleIsList, isNestedList }) {
 		</ListWrapper>
 	)
 }
+
 const ListWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -116,7 +117,7 @@ const ListWrapper = styled.div`
 	min-height: 3rem;
 	padding: 0.5rem 0;
 	background-color: #373737;
-	border-radius: 12px;
+	border-radius: 10px;
 	position: fixed;
 	top: ${props => props.positionTop + "px"};
 	left: ${props => props.positionLeft + "px"};
@@ -140,4 +141,8 @@ const NestedButtonWrapper = styled.button`
 	font-size: 12px;
 	background-color: #171717;
 	color: white;
+`
+const FolderButton = styled(Button)`
+	background-color: #383535;
+	font-size: 12px;
 `

@@ -47,7 +47,6 @@ const A = styled.a`
 	max-width: 7rem;
 	padding: 0.25em 1em;
 	margin: 0 0.5em 0 0;
-	border-radius: 10rem;
 	/* outline: 2px solid black; */
 	background-color: "#383535";
 	color: white;
