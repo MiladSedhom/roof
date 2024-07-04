@@ -1,43 +1,42 @@
-import { useState } from "react"
-import styled from "styled-components"
-import { useShortcutsStore } from "../../../stores/useShortcutStore"
-import { useThemeStore } from "../../../stores/useThemeStore"
-import Prefix from "./Prefix"
+import { useState } from 'react'
+import styled from 'styled-components'
+import { useShortcutsStore } from '../../../stores/useShortcutStore'
+import { useThemeStore } from '../../../stores/useThemeStore'
+import Prefix from './Prefix'
 
 export default function SearchBar({}) {
 	const theme = useThemeStore()
-	const shortcuts = useShortcutsStore().shortcuts
-	const defaultSearchEngine = useShortcutsStore().defaultSearchEngine
+	const { shortcuts, defaultSearchEngine } = useShortcutsStore()
 
 	const [currentUsedShortcut, setCurrentUsedShortcut] = useState(defaultSearchEngine.shortcut)
-	const [inputText, setInputText] = useState("")
+	const [inputText, setInputText] = useState('')
 
 	const onChangeHandler = e => {
 		setInputText(e.target.value)
 	}
 
 	const onkeyDownHandler = e => {
-		if (e.key === ";") {
+		if (e.key === ';') {
 			e.preventDefault()
-			let prefix = e.target.value.split(";")[0]
+			let prefix = e.target.value.split(';')[0]
 			if (prefix in shortcuts) {
 				setCurrentUsedShortcut(prefix)
-				setInputText("")
-			} else setInputText(inputText => inputText + ";")
+				setInputText('')
+			} else setInputText(inputText => inputText + ';')
 		}
 
-		if (e.key === "Backspace" && !inputText) {
+		if (e.key === 'Backspace' && !inputText) {
 			setCurrentUsedShortcut(null)
 		}
 
-		if (e.key === "Enter") {
+		if (e.key === 'Enter') {
 			e.preventDefault()
-			const target = e.ctrlKey ? "_newtab" : "_self"
+			const target = e.ctrlKey ? '_newtab' : '_self'
 			if (currentUsedShortcut) {
-				window.open(shortcuts[currentUsedShortcut].url.replace("%QUERY", inputText), target)
+				window.open(shortcuts[currentUsedShortcut].url.replace('%QUERY', inputText), target)
 				return
 			}
-			window.open(defaultSearchEngine.url.replace("%QUERY", inputText), target)
+			window.open(defaultSearchEngine.url.replace('%QUERY', inputText), target)
 		}
 	}
 
@@ -55,9 +54,9 @@ export default function SearchBar({}) {
 					onkeyDownHandler(e)
 				}}
 				placeholder={
-					"Search with " +
+					'Search with ' +
 					(currentUsedShortcut ? shortcuts[currentUsedShortcut].name : defaultSearchEngine.name) +
-					"..."
+					'...'
 				}
 				theme={theme}
 			/>
